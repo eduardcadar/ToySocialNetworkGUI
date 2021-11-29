@@ -48,7 +48,7 @@ public class UserDbRepo implements UserRepository {
     public void save(User u) {
         validator.validate(u);
         if (getUser(u.getEmail()) != null)
-            throw new RepoException("Exista deja un utilizator cu acest email");
+            throw new RepoException("There is already a user with same email");
         String sql = "INSERT INTO " + usersTable + " (firstname, lastname, email, password) VALUES (?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -172,7 +172,7 @@ public class UserDbRepo implements UserRepository {
     @Override
     public void update(User user) {
         if (getUser(user.getEmail()) == null)
-            throw new RepoException("Utilizatorul nu este salvat");
+            throw new RepoException("Update failed");
         String sql = "UPDATE " + usersTable + " SET firstname = ?, lastname = ?, password = ? WHERE email = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
