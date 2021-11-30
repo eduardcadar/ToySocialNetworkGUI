@@ -1,7 +1,11 @@
 # Toy-Social-Network
 
 Toy Social Newtork - University Project in collaboration with [Butacu Stefan](https://github.com/StefanButacu) 
-
+Technologies used
+  - JavaFx
+  - SceneBuilder
+  - Gradle 
+  
 Functionalities:
   - Add users and friendships
   - Add PostreSQL database
