@@ -16,8 +16,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LoginSceneController {
-    private Stage stage;
-    private Scene scene;
     private Service service;
 
     @FXML
@@ -48,8 +46,8 @@ public class LoginSceneController {
         LoggedSceneController controller = loader.getController();
         controller.setService(service);
         controller.initialize(loggedUser);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
 
         stage.show();
