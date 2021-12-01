@@ -2,7 +2,6 @@ package com.toysocialnetworkgui;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
-import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,18 +11,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 
 public class LoggedSceneController {
+    @FXML
+    ComboBox<String> comboBoxMonth = new ComboBox<String>();
     @FXML
     Button buttonUpdateUser = new Button();
     @FXML
@@ -46,7 +45,8 @@ public class LoggedSceneController {
 
     public void initialize(User user) {
         setLoggedUser(user);
-        initializeFriendsList(user);
+        initializeFriendsList();
+        comboBoxMonth.setItems(getMonths());
     }
 
     private void setLoggedUser(User user) {
@@ -54,18 +54,54 @@ public class LoggedSceneController {
         labelLoggedUser.setText("Logged user: " + user);
     }
 
-    private ObservableList<UserFriendDTO> getFriends() {
-        ObservableList<UserFriendDTO> friends = FXCollections.observableArrayList();
-        friends.setAll(service.getFriendshipsDTO(loggedUser.getEmail()));
-        return friends;
+    private ObservableList<String> getMonths() {
+        return FXCollections.observableArrayList(Arrays.asList(
+                "any month",
+                "january", "february", "march", "april",
+                "may", "june", "july", "august",
+                "september", "october", "november", "december"));
     }
 
-    private void initializeFriendsList(User user) {
+    @FXML
+    protected void onSelectMonth(ActionEvent event) throws IOException {
+        String month = comboBoxMonth.getValue().toString();
+        int monthNr;
+        switch (month) {
+            case "january" -> monthNr = 1;
+            case "february" -> monthNr = 2;
+            case "march" -> monthNr = 3;
+            case "april" -> monthNr = 4;
+            case "may" -> monthNr = 5;
+            case "june" -> monthNr = 6;
+            case "july" -> monthNr = 7;
+            case "august" -> monthNr = 8;
+            case "september" -> monthNr = 9;
+            case "october" -> monthNr = 10;
+            case "november" -> monthNr = 11;
+            case "december" -> monthNr = 12;
+            default -> monthNr = 0;
+        }
+        if (monthNr == 0)
+            setFriendsList(getFriends());
+        else
+            setFriendsList(getFriends().
+                    filtered(x -> x.getDate().getMonthValue() == monthNr));
+    }
+
+    private ObservableList<UserFriendDTO> getFriends() {
+        return FXCollections.observableArrayList(service.getFriendshipsDTO(loggedUser.getEmail()));
+    }
+
+    private void setFriendsList(ObservableList<UserFriendDTO> friends) {
+        tableViewFriends.setItems(friends);
+    }
+
+    private void initializeFriendsList() {
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        tableViewFriends.setItems(getFriends());
+        setFriendsList(getFriends());
     }
 
     @FXML
