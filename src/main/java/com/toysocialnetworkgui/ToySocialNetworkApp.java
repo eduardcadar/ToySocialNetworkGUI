@@ -27,6 +27,9 @@ public class ToySocialNetworkApp extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("loginScene.fxml"));
         FXMLLoader fxmlLogged = new FXMLLoader(ToySocialNetworkApp.class.getResource("loggedScene.fxml"));
+
+        FXMLLoader fxmlAdmin = new FXMLLoader(ToySocialNetworkApp.class.getResource("adminScene.fxml"));
+
         initialize();
 
         loginScene = new Scene(fxmlLogin.load(), 400, 400);

@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -27,14 +28,15 @@ public class LoginSceneController {
     @FXML
     private TextField textFieldPassword;
 
+    @FXML
+    private Button buttonAdminInterface;
+
     public void setService(Service service) {
         this.service = service;
     }
 
     @FXML
     protected void onLoginButtonClick(ActionEvent event) throws IOException {
-        welcomeText.setText("Welcome to JavaFX Application!");
-
         User loggedUser = this.service.getUser(textFieldEmail.getText());
         if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
             //login failed
@@ -51,5 +53,21 @@ public class LoginSceneController {
         stage.setScene(scene);
 
         stage.show();
+    }
+
+    public void onAdminButtonClick(ActionEvent event) throws IOException {
+        System.out.println("Admin clicked");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("adminScene.fxml"));
+        Parent root = loader.load();
+        AdminSceneController controller = loader.getController();
+        controller.initialize(service);
+
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+
+        stage.show();
+
     }
 }

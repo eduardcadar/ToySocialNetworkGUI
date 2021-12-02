@@ -104,11 +104,10 @@ public class LoggedSceneController {
     }
 
     private void initializeFriendsList() {
-        tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("email"));
+    //    tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-
         setFriendsList(getFriends());
     }
 
