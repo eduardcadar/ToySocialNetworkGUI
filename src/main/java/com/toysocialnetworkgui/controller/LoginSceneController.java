@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,13 +58,11 @@ public class LoginSceneController {
         Parent root = loader.load();
         AdminSceneController controller = loader.getController();
         controller.initialize(service);
-
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-
-        stage.show();
-
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
+        stage.setTitle("Admin interface");
+        stage.setScene( new Scene(root));
+        stage.showAndWait();
     }
 }
