@@ -29,7 +29,6 @@ public class ToySocialNetworkApp extends Application {
 
         FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loginScene.fxml"));
         FXMLLoader fxmlLogged = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loggedScene.fxml"));
-        FXMLLoader fxmlAdmin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/adminScene.fxml"));
 
         initialize();
 

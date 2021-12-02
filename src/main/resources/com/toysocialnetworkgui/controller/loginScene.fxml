@@ -27,8 +27,5 @@
       </children>
    </GridPane>
    <Button layoutX="187.0" layoutY="216.0" onAction="#onLoginButtonClick" text="Login" />
-<<<<<<< HEAD:src/main/resources/com/toysocialnetworkgui/loginScene.fxml
    <Button fx:id="buttonAdminInterface" mnemonicParsing="false" onAction="#onAdminButtonClick" text="Admin" />
-=======
->>>>>>> 2bb8000e38eac9028be5e35b2f8e8862414978b2:src/main/resources/com/toysocialnetworkgui/controller/loginScene.fxml
 </VBox>
