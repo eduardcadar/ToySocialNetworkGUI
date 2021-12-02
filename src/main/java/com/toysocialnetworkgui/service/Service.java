@@ -205,7 +205,7 @@ public class Service {
             else{
                  friend = userService.getUser(friendship.getFirst());
             }
-            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friendship.getDate());
+            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
             userFriendDTOS.add(userFriendDTO);
         }
         return userFriendDTOS;

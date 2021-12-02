@@ -25,6 +25,7 @@
             <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
             <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
             <Button fx:id="buttonUpdateUser" mnemonicParsing="false" onAction="#onUpdateButtonClick" text="Update user" />
+            <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
          </children>
       </VBox>
    </children>

@@ -17,8 +17,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class LoggedSceneController {
     @FXML
@@ -26,9 +28,13 @@ public class LoggedSceneController {
     @FXML
     Button buttonUpdateUser = new Button();
     @FXML
+    Button buttonSendMessage = new Button();
+    @FXML
     private Label labelLoggedUser = new Label();
     @FXML
     TableView<UserFriendDTO> tableViewFriends;
+    @FXML
+    TableColumn<UserFriendDTO, String> tableColumnEmail;
     @FXML
     TableColumn<UserFriendDTO, String> tableColumnFirstname;
     @FXML
@@ -46,6 +52,7 @@ public class LoggedSceneController {
     public void initialize(User user) {
         setLoggedUser(user);
         initializeFriendsList();
+        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         comboBoxMonth.setItems(getMonths());
     }
 
@@ -63,8 +70,8 @@ public class LoggedSceneController {
     }
 
     @FXML
-    protected void onSelectMonth(ActionEvent event) throws IOException {
-        String month = comboBoxMonth.getValue().toString();
+    protected void onSelectMonth() {
+        String month = comboBoxMonth.getValue();
         int monthNr;
         switch (month) {
             case "january" -> monthNr = 1;
@@ -97,6 +104,7 @@ public class LoggedSceneController {
     }
 
     private void initializeFriendsList() {
+        tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -115,6 +123,34 @@ public class LoggedSceneController {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Update user information");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
+        setLoggedUser(service.getUser(loggedUser.getEmail()));
+    }
+
+    @FXML
+    protected void onSendMessageButtonClick(ActionEvent event) throws IOException {
+        List<String> receivers = new ArrayList<>();
+        tableViewFriends.getSelectionModel().getSelectedItems()
+                .forEach(x -> receivers.add(x.getEmail()));
+        if (receivers.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No friends selected");
+            alert.setHeaderText(null);
+            alert.setContentText("Select at least one friend!");
+            alert.showAndWait();
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sendMessage.fxml"));
+        Parent root = loader.load();
+        SendMessageController controller = loader.getController();
+        controller.initialize(service, receivers, loggedUser);
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
+        stage.setTitle("Send message");
         stage.setScene(new Scene(root));
         stage.showAndWait();
 

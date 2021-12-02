@@ -28,8 +28,7 @@ public class UpdateUserController {
             System.out.println(e.getMessage());
         }
 
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        stage.close();
+        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
 
     public void setService(Service service) {
