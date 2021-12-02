@@ -1,4 +1,4 @@
-package com.toysocialnetworkgui;
+package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
@@ -18,10 +18,6 @@ import java.io.IOException;
 
 public class LoginSceneController {
     private Service service;
-
-    @FXML
-    private Label welcomeText;
-
     @FXML
     private TextField textFieldEmail;
 

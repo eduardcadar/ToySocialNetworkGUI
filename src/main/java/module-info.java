@@ -8,11 +8,13 @@ module com.toysocialnetworkgui {
     requires java.sql;
 
     opens com.toysocialnetworkgui to javafx.fxml, javafx.base;
+    opens com.toysocialnetworkgui.controller to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.utils to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.service to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.domain to javafx.fxml, javafx.base;
     exports com.toysocialnetworkgui;
     exports com.toysocialnetworkgui.service;
+    exports com.toysocialnetworkgui.controller;
     exports com.toysocialnetworkgui.utils;
     exports com.toysocialnetworkgui.domain;
 

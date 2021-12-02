@@ -1,4 +1,4 @@
-package com.toysocialnetworkgui;
+package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;

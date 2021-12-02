@@ -8,10 +8,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.LoggedSceneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
-      <TableView fx:id="tableViewFriends" prefHeight="500.0" prefWidth="401.0">
+      <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0">
         <columns>
+            <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
           <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" text="First name" />
             <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" text="Last name" />
           <TableColumn fx:id="tableColumnDate" prefWidth="72.0" text="Friends from" />
@@ -20,13 +21,14 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <VBox prefHeight="500.0" prefWidth="500.0">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
             <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
             <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
             <Button fx:id="buttonUpdateUser" mnemonicParsing="false" onAction="#onUpdateButtonClick" text="Update user" />
             <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
+            <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Add friend" />
          </children>
-      </VBox>
+      </HBox>
    </children>
-</HBox>
+</VBox>
