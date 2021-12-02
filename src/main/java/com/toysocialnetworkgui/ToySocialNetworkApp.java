@@ -1,5 +1,7 @@
 package com.toysocialnetworkgui;
 
+import com.toysocialnetworkgui.controller.LoggedSceneController;
+import com.toysocialnetworkgui.controller.LoginSceneController;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.service.*;
@@ -10,7 +12,6 @@ import com.toysocialnetworkgui.validator.UserValidator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,8 +26,8 @@ public class ToySocialNetworkApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("loginScene.fxml"));
-        FXMLLoader fxmlLogged = new FXMLLoader(ToySocialNetworkApp.class.getResource("loggedScene.fxml"));
+        FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loginScene.fxml"));
+        FXMLLoader fxmlLogged = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loggedScene.fxml"));
         initialize();
 
         loginScene = new Scene(fxmlLogin.load(), 400, 400);

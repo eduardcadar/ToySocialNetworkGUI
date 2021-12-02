@@ -1,4 +1,4 @@
-package com.toysocialnetworkgui;
+package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 
 public class LoggedSceneController {
+    @FXML
+    Button buttonAddFriend = new Button();
     @FXML
     ComboBox<String> comboBoxMonth = new ComboBox<String>();
     @FXML
@@ -73,6 +75,8 @@ public class LoggedSceneController {
     protected void onSelectMonth() {
         String month = comboBoxMonth.getValue();
         int monthNr;
+        if (month == null)
+            month = "any month";
         switch (month) {
             case "january" -> monthNr = 1;
             case "february" -> monthNr = 2;
@@ -95,6 +99,10 @@ public class LoggedSceneController {
                     filtered(x -> x.getDate().getMonthValue() == monthNr));
     }
 
+    private void reloadFriends() {
+        onSelectMonth();
+    }
+
     private ObservableList<UserFriendDTO> getFriends() {
         return FXCollections.observableArrayList(service.getFriendshipsDTO(loggedUser.getEmail()));
     }
@@ -104,7 +112,7 @@ public class LoggedSceneController {
     }
 
     private void initializeFriendsList() {
-        tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -153,8 +161,22 @@ public class LoggedSceneController {
         stage.setTitle("Send message");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+    }
 
-        setLoggedUser(service.getUser(loggedUser.getEmail()));
+    @FXML
+    protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
+        Parent root = loader.load();
+        AddFriendController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
+        stage.setTitle("Add friend");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
+        reloadFriends();
     }
 
 }
