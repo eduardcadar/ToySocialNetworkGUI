@@ -4,12 +4,25 @@ import java.time.LocalDate;
 
 public class UserFriendDTO {
 
-    private String firstName, lastName;
-    private LocalDate date;
-    public  UserFriendDTO(String firstName, String lastName, LocalDate date){
+    private final String firstName, lastName, email;
+    private final LocalDate date;
+    public  UserFriendDTO(String firstName, String lastName, String email, LocalDate date){
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.date  = date;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String toString(){
