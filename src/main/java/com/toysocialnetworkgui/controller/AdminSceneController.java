@@ -75,9 +75,9 @@ public class AdminSceneController {
 
     @FXML
     protected void onAddUserButtonClick(ActionEvent event) throws IOException {
-        // open a new stage with a form to get input
+        // TODO
+        //  open a new stage with a form to get input
        try{
-           System.out.println("Passowrd =" + textFieldPassword.getText()+ textFieldPassword.getText().equals(""));
            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
            setUsersList(getUsers());
 
@@ -92,8 +92,6 @@ public class AdminSceneController {
     }
     @FXML
     protected void onRemoveUserButtonClick(ActionEvent event) throws IOException {
-        // open a stage with form for
-        System.out.println("Remove Clicked");
         service.removeUser(textFieldEmail.getText() );
         setUsersList(getUsers());
     }
