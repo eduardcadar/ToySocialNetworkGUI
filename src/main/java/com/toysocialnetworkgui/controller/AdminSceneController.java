@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.collections.FXCollections;
@@ -74,25 +75,23 @@ public class AdminSceneController {
 
     @FXML
     protected void onAddUserButtonClick(ActionEvent event) throws IOException {
-        // open a new stage with a form to get input
-        System.out.println("Add clicked");
-        try {
-            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
-        } catch (ValidatorException | RepoException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-            return;
-        }
-        setUsersList(getUsers());
+        // TODO
+        //  open a new stage with a form to get input
+       try {
+           service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+           setUsersList(getUsers());
+       }
+       catch (RepoException | ValidatorException | DbException e){
+           Alert alert = new Alert(Alert.AlertType.WARNING);
+           alert.setTitle("Error");
+           alert.setHeaderText(null);
+           alert.setContentText(e.getMessage());
+           alert.showAndWait();
+       }
     }
 
     @FXML
     protected void onRemoveUserButtonClick(ActionEvent event) throws IOException {
-        // open a stage with form for
-        System.out.println("Remove Clicked");
         service.removeUser(textFieldEmail.getText());
         setUsersList(getUsers());
     }
