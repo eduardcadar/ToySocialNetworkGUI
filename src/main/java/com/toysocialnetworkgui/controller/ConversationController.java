@@ -6,14 +6,15 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.MessageDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ConversationController {
@@ -40,6 +41,48 @@ public class ConversationController {
     TableColumn<MessageDTO, String> tableColumnMessage;
     @FXML
     TableColumn<MessageDTO, LocalDateTime> tableColumnDate;
+
+    @FXML
+    public void onReplyToSenderButtonClick() {
+        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
+            return;
+        String messageText = textFieldMessage.getText();
+        Message msgRepliedTo = service.getMessage(tableViewMessages.getSelectionModel().getSelectedItem().getID());
+        if (checkMessageSender(msgRepliedTo.getSender())) return;
+        service.save(loggedUser.getEmail(), List.of(msgRepliedTo.getSender()), messageText, msgRepliedTo.getID());
+        reloadMessages();
+        textFieldMessage.clear();
+    }
+
+    @FXML
+    public void onReplyToAllButtonClick() {
+        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
+            return;
+        String messageText = textFieldMessage.getText();
+        MessageDTO msgRepliedTo = tableViewMessages.getSelectionModel().getSelectedItem();
+        if (checkMessageSender(msgRepliedTo.getSender()))
+            return;
+        List<String> receivers = new ArrayList<>();
+        receivers.add(msgRepliedTo.getSender());
+        for (String receiver : msgRepliedTo.getReceivers())
+            if (!receiver.equals(loggedUser.getEmail()))
+                receivers.add(receiver);
+        service.save(loggedUser.getEmail(), receivers, messageText, msgRepliedTo.getID());
+        reloadMessages();
+        textFieldMessage.clear();
+    }
+
+    private boolean checkMessageSender(String sender) {
+        if (sender.equals(loggedUser.getEmail())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("You cannot reply to your message");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
 
     public void initialize(Service service, User user, User otherUser) {
         this.service = service;
