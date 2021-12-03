@@ -8,9 +8,9 @@ Technologies used
   
 Functionalities:
   - Add users and friendships
-  - Add PostreSQL database
+  - Add PostgreSQL database
   - Most sociable community
-  - Add friend request system ( pending, approved, reject) 
+  - Add friend request system (pending, approved, rejected) 
   - Add message system
 
 ### TODO 
