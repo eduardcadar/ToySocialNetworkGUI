@@ -21,14 +21,27 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <VBox>
          <children>
             <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
-            <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
+            <HBox>
+               <children>
+                  <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox>
+         <children>
             <Button fx:id="buttonUpdateUser" mnemonicParsing="false" onAction="#onUpdateButtonClick" text="Update user" />
-            <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
             <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Add friend" />
             <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" text="Remove friend" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
+            <Button fx:id="buttonShowConversation" mnemonicParsing="false" onAction="#onShowConversationButtonClick" text="Show conversation" />
          </children>
       </HBox>
    </children>

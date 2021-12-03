@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
+   <children>
+      <TableView fx:id="tableViewMessages" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="tableColumnID" prefWidth="75.0" text="ID" visible="false" />
+          <TableColumn fx:id="tableColumnSender" prefWidth="79.20001220703125" text="Sender" />
+            <TableColumn fx:id="tableColumnReceivers" prefWidth="128.0" text="Receivers" />
+            <TableColumn fx:id="tableColumnMessageRepliedTo" prefWidth="118.39996337890625" text="Reply to" />
+            <TableColumn fx:id="tableColumnMessage" prefWidth="216.800048828125" text="Message" />
+            <TableColumn fx:id="tableColumnDate" prefWidth="126.4000244140625" text="Sent on" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
