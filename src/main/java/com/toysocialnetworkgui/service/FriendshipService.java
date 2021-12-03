@@ -104,12 +104,7 @@ public class FriendshipService {
             }
         }
     }
-//         TODO
-//           - UI : - addFriendRequest()
-//                  - acceptFriendRequest()
-//                    - rejectFriendRequest()
-//                    - removeFriend()
-//
+
     public void rejectFriendship(String email1, String email2){
         FriendshipRequest request = requestRepository.getRequest(email1, email2);
         if( request == null){

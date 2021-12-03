@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.UserRepository;
+import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class UserService {
      * @param password - the new password of the user
      */
     public void save(String firstname, String lastname, String email, String password) {
+        if(firstname.equals("") || lastname.equals("") || email.equals("") || password.equals(""))
+            throw new ValidatorException("Field can't be empty");
         repo.save(new User(firstname, lastname, email, password));
     }
 
