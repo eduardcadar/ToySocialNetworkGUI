@@ -1,6 +1,6 @@
 # Toy-Social-Network
 
-Toy Social Newtork - University Project in collaboration with [Butacu Stefan](https://github.com/StefanButacu) 
+Toy Social Network - University Project in collaboration with [Butacu Stefan](https://github.com/StefanButacu) 
 Technologies used
   - JavaFx
   - SceneBuilder
