@@ -20,7 +20,7 @@
       </TableView>
       <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="buttonAddFriend" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="12.0" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Button" />
+            <Button fx:id="buttonAddFriend" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="12.0" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Add" />
          </children>
       </Pane>
    </children>

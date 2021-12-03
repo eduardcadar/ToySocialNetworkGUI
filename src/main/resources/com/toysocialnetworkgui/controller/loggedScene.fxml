@@ -28,6 +28,7 @@
             <Button fx:id="buttonUpdateUser" mnemonicParsing="false" onAction="#onUpdateButtonClick" text="Update user" />
             <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
             <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Add friend" />
+            <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" text="Remove friend" />
          </children>
       </HBox>
    </children>

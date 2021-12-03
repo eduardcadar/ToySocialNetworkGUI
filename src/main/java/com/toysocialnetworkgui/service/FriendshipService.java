@@ -44,7 +44,8 @@ public class FriendshipService {
      * @param email2 - String - the email of the other user
      */
     public void removeFriendship(String email1, String email2) {
-        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
+        if (requestRepository.getRequest(email1, email2) != null)
+            requestRepository.removeRequest(new FriendshipRequest(email1, email2));
         if (requestRepository.getRequest(email2, email1) != null)
             requestRepository.removeRequest(new FriendshipRequest(email2, email1));
         friendshipRepository.removeFriendship(new Friendship(email1, email2));

@@ -1,6 +1,8 @@
 package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
@@ -25,6 +27,8 @@ import java.util.List;
 public class LoggedSceneController {
     @FXML
     Button buttonAddFriend = new Button();
+    @FXML
+    Button buttonRemoveFriend = new Button();
     @FXML
     ComboBox<String> comboBoxMonth = new ComboBox<String>();
     @FXML
@@ -157,7 +161,7 @@ public class LoggedSceneController {
         controller.initialize(service, receivers, loggedUser);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.setTitle("Send message");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -171,7 +175,7 @@ public class LoggedSceneController {
         controller.initialize(service, loggedUser);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
         stage.setTitle("Add friend");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -179,4 +183,21 @@ public class LoggedSceneController {
         reloadFriends();
     }
 
+    @FXML
+    protected void onRemoveFriendButtonClick() {
+        UserFriendDTO friend = tableViewFriends.getSelectionModel().getSelectedItem();
+        if (friend == null)
+            return;
+        try {
+            service.removeFriendship(loggedUser.getEmail(), friend.getEmail());
+        } catch (RepoException | DbException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
+        reloadFriends();
+    }
 }
