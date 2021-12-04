@@ -77,10 +77,9 @@ public class AdminSceneController {
     protected void onAddUserButtonClick(ActionEvent event) throws IOException {
         // TODO
         //  open a new stage with a form to get input
-       try{
+       try {
            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
            setUsersList(getUsers());
-
        }
        catch (RepoException | ValidatorException | DbException e){
            Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -90,9 +89,10 @@ public class AdminSceneController {
            alert.showAndWait();
        }
     }
+
     @FXML
     protected void onRemoveUserButtonClick(ActionEvent event) throws IOException {
-        service.removeUser(textFieldEmail.getText() );
+        service.removeUser(textFieldEmail.getText());
         setUsersList(getUsers());
     }
 }
