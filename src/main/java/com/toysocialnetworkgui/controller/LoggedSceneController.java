@@ -15,8 +15,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +33,11 @@ public class LoggedSceneController {
     Button buttonAddFriend = new Button();
     @FXML
     Button buttonRemoveFriend = new Button();
+
+    @FXML
+    Button buttonFriendRequest = new Button();
+
+
     @FXML
     ComboBox<String> comboBoxMonth = new ComboBox<String>();
     @FXML
@@ -104,7 +113,7 @@ public class LoggedSceneController {
     }
 
     private void reloadFriends() {
-        onSelectMonth();
+        onSelectMonth(); // ??
     }
 
     private ObservableList<UserFriendDTO> getFriends() {
@@ -180,7 +189,6 @@ public class LoggedSceneController {
         stage.setScene(new Scene(root));
         stage.showAndWait();
 
-        reloadFriends();
     }
 
     @FXML
@@ -197,7 +205,46 @@ public class LoggedSceneController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
-
         reloadFriends();
+    }
+
+    /**
+     * Opens a new Stage to handle user interactions with friend requests
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    protected void onFriendRequestClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
+        Parent root = loader.load();
+        RequestsController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
+        stage.setTitle("Requests interface");
+        stage.setScene( new Scene(root));
+        stage.showAndWait();
+
+        // TODO
+        //  Refresh the friend list after requests menu ??
+        //  Rather notify this LoggedScene to update his friendListTable
+        //  at the signal made by onButtonClickAccept
+        reloadFriends();
+
+    }
+
+
+    /**
+     * Might delete later ?? doenst refresh when 2 instances work
+     * @param keyEvent
+     */
+    public void onRefreshFriends(KeyEvent keyEvent) {
+        System.out.println(keyEvent.getCode());
+        if(keyEvent.isAltDown()){
+            if(keyEvent.getCode().equals(KeyCode.R)) {
+                reloadFriends();
+            }
+        }
     }
 }

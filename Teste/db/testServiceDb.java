@@ -147,7 +147,7 @@ public class testServiceDb {
             fail();
         }
         catch (RepoException e){
-            assertEquals("There is already a request send by user", e.getMessage());
+            assertEquals("There is already a request sent by user", e.getMessage());
         }
 
         service.addFriendship(us2.getEmail(), us1.getEmail());

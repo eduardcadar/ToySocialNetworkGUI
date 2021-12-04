@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onRefreshFriends"  prefHeight="611.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
-      <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0">
+      <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="596.0">
         <columns>
             <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
           <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" text="First name" />
@@ -29,6 +29,7 @@
             <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
             <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" text="Add friend" />
             <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" text="Remove friend" />
+            <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests" />
          </children>
       </HBox>
    </children>

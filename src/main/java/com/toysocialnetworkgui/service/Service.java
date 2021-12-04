@@ -1,13 +1,13 @@
 package com.toysocialnetworkgui.service;
 
-import com.toysocialnetworkgui.domain.Friendship;
-import com.toysocialnetworkgui.domain.Message;
-import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.domain.*;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
+import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -82,7 +82,7 @@ public class Service {
      * @throws RepoException - if the friendship is already saved
      */
     public void addFriendship(String email1, String email2) {
-        friendshipService.addFriendship(email1, email2);
+        friendshipService.addFriendshipRequest(email1, email2);
     }
 
     /**
@@ -168,7 +168,7 @@ public class Service {
      * Accepts the friendship setting its status to approved and setting the date
      * @param email1 - String
      * @param email2 - String
-     *
+     * @throws RepoException - if something goes bad with the request :(
      */
     public void acceptFriendship(String email1, String email2)  {
         friendshipService.acceptFriendship(email1, email2);
@@ -254,6 +254,46 @@ public class Service {
     }
 
     /**
+     * Return a list of UserRequestDTPS where the sender was user with email
+     */
+    public List<UserRequestDTO> getUserSentRequests(String email) {
+        List<FriendshipRequest> friendshipRequests = friendshipService.getAllFriendshipRequests();
+        ArrayList<UserRequestDTO> sendRequestsDto = new ArrayList<>();
+        for(FriendshipRequest friendshipRequest: friendshipRequests){
+            String sender = friendshipRequest.getFirst();
+            String receiver = friendshipRequest.getSecond();
+            REQUESTSTATE state = friendshipRequest.getState();
+            LocalDate sendDate = friendshipRequest.getSendDate();
+            if (sender.equals(email)) {
+                User userReceiver = getUser(receiver);
+                UserRequestDTO dto = new UserRequestDTO(userReceiver.getFirstName(), userReceiver.getLastName(), state, sendDate,userReceiver.getEmail());
+                sendRequestsDto.add(dto);
+            }
+        }
+        return sendRequestsDto;
+
+    }
+    /**
+     * Return a list of UserRequest dtos where the receiver was user with email
+     */
+    public List<UserRequestDTO> getUserReceivedRequests(String email) {
+        List<FriendshipRequest> friendshipRequests = friendshipService.getAllFriendshipRequests();
+        ArrayList<UserRequestDTO> sendRequestsDto = new ArrayList<>();
+        for(FriendshipRequest friendshipRequest: friendshipRequests){
+            String sender = friendshipRequest.getFirst();
+            String receiver = friendshipRequest.getSecond();
+            REQUESTSTATE state = friendshipRequest.getState();
+            LocalDate sendDate = friendshipRequest.getSendDate();
+            if (receiver.equals(email)) {
+                User userSender = getUser(sender);
+                UserRequestDTO dto = new UserRequestDTO(userSender.getFirstName(), userSender.getLastName(), state, sendDate, userSender.getEmail());
+                sendRequestsDto.add(dto);
+            }
+        }
+        return sendRequestsDto;
+
+    }
+    /**
      * Returns a list with the messages received by a user from a specific user
      * @param receiver the email of the receiver
      * @param sender the email of the sender
@@ -334,8 +374,8 @@ public class Service {
 
     /**
      * Rejects the friendship between email1 si email2
-     * @param email1
-     * @param email2
+     * @param email1 - String
+     * @param email2 - String
      */
     public void rejectFriendship(String email1, String email2) {
         friendshipService.rejectFriendship(email1, email2);
