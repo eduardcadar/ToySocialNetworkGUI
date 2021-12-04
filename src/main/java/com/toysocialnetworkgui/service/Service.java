@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.utils.MessageDTO;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
@@ -213,8 +214,6 @@ public class Service {
 
 
     /**
-     *
-     *
      * @param email - String
      * @param month - int
      * @return - Stream of USerFriend DTOS
@@ -251,6 +250,41 @@ public class Service {
             users.add(userService.getUser(friendEmail));
         }
         return users;
+    }
+
+    public List<MessageDTO> getMessageDTOsReceivedBy(String receiver, String sender) {
+        List<MessageDTO> messages = new ArrayList<>();
+        List<Integer> messageIds = messageReceiverService.getMessageIdsReceivedBy(receiver);
+        messageIds.forEach(x -> {
+            Message msg = messageService.getMessage(x);
+            String textMsgRepliedTo;
+            if (msg.getIdMsgRepliedTo() != null) {
+                textMsgRepliedTo = messageService.getMessage(msg.getIdMsgRepliedTo()).getMessage();
+                if (textMsgRepliedTo.length() >= 20)
+                    textMsgRepliedTo = textMsgRepliedTo.substring(0, 20) + " ...";
+            } else
+                textMsgRepliedTo = ".";
+            MessageDTO msgDTO = new MessageDTO(msg.getSender(), msg.getMessage(), textMsgRepliedTo);
+            msgDTO.setID(x);
+            msgDTO.setReceivers(messageReceiverService.getMessageReceivers(x));
+            msgDTO.setDate(msg.getDate());
+            messages.add(msgDTO);
+        });
+        return messages.stream()
+                .filter(x -> x.getSender().compareTo(sender) == 0)
+                .sorted(Comparator.comparing(MessageDTO::getDate))
+                .toList();
+    }
+
+    public List<MessageDTO> getConversationDTOs(String email1, String email2) {
+        List<MessageDTO> messagesReceived1 = getMessageDTOsReceivedBy(email1, email2);
+        List<MessageDTO> messagesReceived2 = getMessageDTOsReceivedBy(email2, email1);
+        List<MessageDTO> conversation = new ArrayList<>();
+        conversation.addAll(messagesReceived1);
+        conversation.addAll(messagesReceived2);
+        return conversation.stream()
+                .sorted(Comparator.comparing(MessageDTO::getDate))
+                .toList();
     }
 
     /**
