@@ -21,6 +21,6 @@ public interface FriendshipRequestRepository {
 
     void update(FriendshipRequest request);
 
-    public List<String> getUserFriendRequests(String email);
+    public List<String> getPendingFriendRequestsReceived(String email);
 }
 

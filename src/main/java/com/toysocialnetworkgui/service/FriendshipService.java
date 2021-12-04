@@ -34,8 +34,8 @@ public class FriendshipService {
      * @param email1 - the email of the first user
      * @param email2 - the email of the second user
      */
-    public void addFriendship(String email1, String email2) {
-        requestRepository.addRequest(new FriendshipRequest(email1, email2));
+    public void addFriendshipRequest(String email1, String email2) {
+        requestRepository.addRequest(new FriendshipRequest(email1, email2, LocalDate.now()));
     }
 
     /**
@@ -151,6 +151,14 @@ public class FriendshipService {
      * @return
      */
     public List<String> getUserFriendRequests(String email) {
-        return requestRepository.getUserFriendRequests(email);
+        return requestRepository.getPendingFriendRequestsReceived(email);
     }
+
+    /**
+     * @return all the Requests saved in the repository
+     */
+    public List<FriendshipRequest> getAllFriendshipRequests() {
+        return requestRepository.getAll();
+    }
+
 }

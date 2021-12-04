@@ -53,7 +53,6 @@ public class LoginSceneController {
     }
 
     public void onAdminButtonClick(ActionEvent event) throws IOException {
-        System.out.println("Admin clicked");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("adminScene.fxml"));
         Parent root = loader.load();
         AdminSceneController controller = loader.getController();
