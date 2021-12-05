@@ -414,4 +414,23 @@ public class Service {
     public void rejectFriendship(String email1, String email2) {
         friendshipService.rejectFriendship(email1, email2);
     }
+
+    /**
+     * Cancel a pending requests between user with email1 and email2
+     * @param email1
+     * @param email2
+     * @throws RepoException - if there is no pending request between them
+     */
+    public void cancelPendingRequest(String email1, String email2) {
+        List<String> senders = friendshipService.getUserFriendRequests(email2);
+        boolean hasSent = false;
+        for(String sender: senders){
+            if(sender.equals(email1)){
+                hasSent = true;
+                friendshipService.removeRequest(email1, email2);
+            }
+        }
+        if(!hasSent)
+            throw new RepoException("There is no pending request available. You can't cancel it!");
+    }
 }

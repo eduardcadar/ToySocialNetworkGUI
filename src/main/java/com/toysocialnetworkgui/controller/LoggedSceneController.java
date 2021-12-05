@@ -38,8 +38,7 @@ public class LoggedSceneController {
     Button buttonFriendRequest = new Button();
     @FXML
     Button buttonAddFriend;
-    @FXML
-    Button buttonRemoveFriend;
+
     @FXML
     ComboBox<String> comboBoxMonth;
     @FXML
@@ -256,7 +255,8 @@ public class LoggedSceneController {
 
 
     /**
-     * Might delete later ?? doenst refresh when 2 instances work
+     * Press R to  refresh table
+     * Might delete later ?? doesn't refresh when 2 instances work
      * @param keyEvent
      */
     public void onRefreshFriends(KeyEvent keyEvent) {

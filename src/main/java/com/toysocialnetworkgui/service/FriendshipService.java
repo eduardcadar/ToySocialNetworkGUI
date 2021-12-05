@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FriendshipService {
-    FriendshipRepository friendshipRepository;
-    FriendshipRequestRepository requestRepository;
+    private FriendshipRepository friendshipRepository;
+    private FriendshipRequestRepository requestRepository;
     public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
@@ -39,15 +39,24 @@ public class FriendshipService {
     }
 
     /**
+     * Removes the request sent by email1 to email2
+     * @param email1
+     * @param email2
+     */
+    public void removeRequest(String email1, String email2){
+        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
+    }
+
+    /**
      * Removes a friendship and the request from the repositories
      * @param email1 - String - the email of a user
      * @param email2 - String - the email of the other user
      */
     public void removeFriendship(String email1, String email2) {
         if (requestRepository.getRequest(email1, email2) != null)
-            requestRepository.removeRequest(new FriendshipRequest(email1, email2));
+            removeRequest(email1,email2);
         if (requestRepository.getRequest(email2, email1) != null)
-            requestRepository.removeRequest(new FriendshipRequest(email2, email1));
+            removeRequest(email2, email1);
         friendshipRepository.removeFriendship(new Friendship(email1, email2));
     }
 

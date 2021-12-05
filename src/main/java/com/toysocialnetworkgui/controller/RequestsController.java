@@ -7,6 +7,7 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
+import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -113,36 +114,93 @@ public class RequestsController {
         return FXCollections.observableArrayList(service.getUserReceivedRequests(loggedUser.getEmail()));
     }
 
+    /**
+     * Reloads both tables  SentRequests and ReceivedRequests
+     *
+     */
+    // TODO
+    //  might reload only the affected table  deal with this later
+    public void reloadTables(){
+        setSentRequestsList(getSentRequests());
+        setReceivedRequestsList(getReceivedRequests());
+    }
     public void onButtonAcceptClick(ActionEvent event){
         UserRequestDTO requestDTO =  tableReceivedRequestsView.getSelectionModel().getSelectedItem();
-        try {
-            service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
-            setSentRequestsList(getSentRequests());
-            setReceivedRequestsList(getReceivedRequests());
-        }catch (RepoException e){
+        if(requestDTO != null){
+            try {
+                service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
+                reloadTables();
+            }catch (RepoException e){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+
+            }
+        }
+          else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
+            alert.setContentText("No request selected ");
+            alert.showAndWait();
+
+        }
+
+
+    }
+    public void onButtonRejectClick(ActionEvent event){
+        UserRequestDTO requestDTO =  tableReceivedRequestsView.getSelectionModel().getSelectedItem();
+        if(requestDTO != null) {
+            try {
+                service.rejectFriendship(requestDTO.getEmail(), loggedUser.getEmail());
+                setSentRequestsList(getSentRequests());
+                setReceivedRequestsList(getReceivedRequests());
+            } catch (RepoException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No request selected ");
             alert.showAndWait();
 
         }
 
     }
-    public void onButtonRejectClick(ActionEvent event){
-        UserRequestDTO requestDTO =  tableReceivedRequestsView.getSelectionModel().getSelectedItem();
-        try {
-            service.rejectFriendship(requestDTO.getEmail(), loggedUser.getEmail());
-            setSentRequestsList(getSentRequests());
-            setReceivedRequestsList(getReceivedRequests());
+    /**
+     *
+     */
+    public void onButtonCancelClick(ActionEvent event){
+        System.out.println("Cancel click");
+        UserRequestDTO dto = tableSentRequestsView.getSelectionModel().getSelectedItem();
+        if(dto != null) {
+            try {
+            service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
+            reloadTables();
+        }catch(RepoException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
         }
-        catch (RepoException e){
+        else{
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
+            alert.setContentText("No request selected ");
             alert.showAndWait();
         }
+
 
     }
 
