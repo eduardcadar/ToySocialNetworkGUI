@@ -1,25 +1,15 @@
 package com.toysocialnetworkgui.controller;
 
-import com.toysocialnetworkgui.domain.FriendshipRequest;
-import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.service.Service;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
-import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class RequestsController {
     private Service service;
@@ -39,9 +29,6 @@ public class RequestsController {
 
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnSentDate;
-
-
-
 
 
     @FXML
@@ -116,7 +103,6 @@ public class RequestsController {
 
     /**
      * Reloads both tables  SentRequests and ReceivedRequests
-     *
      */
     // TODO
     //  might reload only the affected table  deal with this later
@@ -124,35 +110,32 @@ public class RequestsController {
         setSentRequestsList(getSentRequests());
         setReceivedRequestsList(getReceivedRequests());
     }
-    public void onButtonAcceptClick(ActionEvent event){
-        UserRequestDTO requestDTO =  tableReceivedRequestsView.getSelectionModel().getSelectedItem();
-        if(requestDTO != null){
+
+    public void onButtonAcceptClick(){
+        UserRequestDTO requestDTO = tableReceivedRequestsView.getSelectionModel().getSelectedItem();
+        if (requestDTO != null) {
             try {
                 service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
                 reloadTables();
-            }catch (RepoException e){
+            } catch (RepoException e){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
-
             }
-        }
-          else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("No request selected ");
             alert.showAndWait();
-
         }
-
-
     }
-    public void onButtonRejectClick(ActionEvent event){
+
+    public void onButtonRejectClick(){
         UserRequestDTO requestDTO =  tableReceivedRequestsView.getSelectionModel().getSelectedItem();
-        if(requestDTO != null) {
+        if (requestDTO != null) {
             try {
                 service.rejectFriendship(requestDTO.getEmail(), loggedUser.getEmail());
                 setSentRequestsList(getSentRequests());
@@ -164,28 +147,23 @@ public class RequestsController {
                 alert.setContentText(e.getMessage());
                 alert.showAndWait();
             }
-        }
-        else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("No request selected ");
             alert.showAndWait();
-
         }
-
     }
-    /**
-     *
-     */
-    public void onButtonCancelClick(ActionEvent event){
+
+    public void onButtonCancelClick(){
         System.out.println("Cancel click");
         UserRequestDTO dto = tableSentRequestsView.getSelectionModel().getSelectedItem();
         if(dto != null) {
             try {
             service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
             reloadTables();
-        }catch(RepoException e) {
+        } catch(RepoException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Error");
                 alert.setHeaderText(null);
@@ -193,16 +171,12 @@ public class RequestsController {
                 alert.showAndWait();
             }
         }
-        else{
+        else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText("No request selected ");
             alert.showAndWait();
         }
-
-
     }
-
-
 }

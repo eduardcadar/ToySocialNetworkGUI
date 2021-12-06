@@ -27,7 +27,6 @@ public class UpdateUserController {
         } catch (DbException e) {
             System.out.println(e.getMessage());
         }
-
         ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
     }
 

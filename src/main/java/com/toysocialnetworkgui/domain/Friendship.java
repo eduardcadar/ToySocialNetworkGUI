@@ -1,12 +1,11 @@
 package com.toysocialnetworkgui.domain;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Friendship {
-    //a friendship contains as attributes the emails of the users
-    private String email1, email2;
+    // a friendship contains as attributes the emails of the users
+    private final String email1, email2;
 
     private LocalDate date;
     public Friendship(String e1, String e2) {
@@ -59,8 +58,6 @@ public class Friendship {
         Friendship that = (Friendship) o;
         return (Objects.equals(email1, that.email1) && Objects.equals(email2, that.email2));
     }
-
-
 
     /**
      * @return - return the date when the friend request was accepted

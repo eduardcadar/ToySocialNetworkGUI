@@ -1,8 +1,8 @@
 package com.toysocialnetworkgui.domain;
 
 public class MessageReceiver {
-    private int idMessage;
-    private String receiver;
+    private final int idMessage;
+    private final String receiver;
 
     public MessageReceiver(int idMessage, String receiver) {
         this.idMessage = idMessage;

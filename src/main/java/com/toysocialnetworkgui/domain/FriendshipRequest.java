@@ -1,16 +1,13 @@
 package com.toysocialnetworkgui.domain;
 
-import com.toysocialnetworkgui.controller.RequestsController;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class FriendshipRequest {
 
-    private String email1;
-    private String email2;
+    private final String email1, email2;
     private REQUESTSTATE state;
-    private LocalDate sendDate;
+    private final LocalDate sendDate;
 
     public  FriendshipRequest(String email1, String email2){
         this.email1 = email1;
@@ -18,31 +15,33 @@ public class FriendshipRequest {
         this.state = REQUESTSTATE.PENDING;
         this.sendDate = LocalDate.now();
     }
+
     public  FriendshipRequest(String email1, String email2, REQUESTSTATE state, LocalDate sendDate){
         this.email1 = email1;
         this.email2 = email2;
         this.state = state;
         this.sendDate = sendDate;
     }
+
     public  FriendshipRequest(User user1, User user2){
         this.email1 = user1.getEmail();
         this.email2 = user2.getEmail();
         this.state = REQUESTSTATE.PENDING;
         this.sendDate = LocalDate.now();
     }
+
     public  FriendshipRequest(String email1, String email2, REQUESTSTATE state){
         this.email1 = email1;
         this.email2 = email2;
         this.state = state;
         this.sendDate = LocalDate.now();
-
     }
+
     public  FriendshipRequest(User user1, User user2, REQUESTSTATE state){
         this.email1 = user1.getEmail();
         this.email2 = user2.getEmail();
         this.state = state;
         this.sendDate = LocalDate.now();
-
     }
 
     public FriendshipRequest(String email1, String email2, LocalDate sendDate) {
@@ -50,7 +49,6 @@ public class FriendshipRequest {
         this.email2 = email2;
         this.state = REQUESTSTATE.PENDING;
         this.sendDate = sendDate;
-
     }
 
     /**
@@ -59,7 +57,6 @@ public class FriendshipRequest {
      */
     public LocalDate getSendDate(){
         return sendDate;
-
     }
 
     /**
@@ -82,7 +79,7 @@ public class FriendshipRequest {
 
     /**
      * Sets the state of the request
-     * @param state
+     * @param state - the state of the friend request
      */
     public void setState(REQUESTSTATE state){
         this.state = state;

@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FriendshipService {
-    private FriendshipRepository friendshipRepository;
-    private FriendshipRequestRepository requestRepository;
+    private final FriendshipRepository friendshipRepository;
+    private final FriendshipRequestRepository requestRepository;
     public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
