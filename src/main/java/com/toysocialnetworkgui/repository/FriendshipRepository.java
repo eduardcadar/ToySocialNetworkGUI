@@ -6,19 +6,19 @@ import java.util.List;
 
 public interface FriendshipRepository {
 
-    public void addFriendship(Friendship f);
-    public void removeFriendship(Friendship f);
-    public int size();
-    public void clear();
-    public boolean isEmpty();
-    public List<Friendship> getAll();
+    void addFriendship(Friendship f);
+    void removeFriendship(Friendship f);
+    int size();
+    void clear();
+    boolean isEmpty();
+    List<Friendship> getAll();
 
-    public List<String> getUserFriends(String email);
+    List<String> getUserFriends(String email);
 
     List<String> getUserFriendsAll(String email);
 
-    public void removeUserFships(String email);
+    void removeUserFships(String email);
 
-    public Friendship getFriendship(String email1, String email2);
+    Friendship getFriendship(String email1, String email2);
 
 }

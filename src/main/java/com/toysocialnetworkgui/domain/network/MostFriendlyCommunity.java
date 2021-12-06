@@ -19,7 +19,7 @@ public class MostFriendlyCommunity {
     private final Map<String, Boolean> used;
     private final Map<String, UserNode> nodes;
 
-    public MostFriendlyCommunity(UserRepository uRepo, FriendshipRepository fRepo, Map<String, Integer> com, int nrCommunities) {
+    public MostFriendlyCommunity(UserRepository uRepo, FriendshipRepository fRepo) {
         this.uRepo = uRepo;
         this.fRepo = fRepo;
         usersMostFrCom = new ArrayList<>();
@@ -54,7 +54,7 @@ public class MostFriendlyCommunity {
     private void DFS(String e) {
         used.put(e, true);
         for (String em : fRepo.getUserFriends(uRepo.getUser(e).getEmail())) {
-            if (used.get(em) == false) {
+            if (!used.get(em)) {
                 nodes.put(em, new UserNode(uRepo.getUser(em), uRepo.getUser(e), nodes.get(e).steps + 1));
                 DFS(em);
             }

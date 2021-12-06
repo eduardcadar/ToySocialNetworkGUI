@@ -5,7 +5,8 @@ import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import java.util.*;
 
 public class User {
-    private String firstName, lastName, email, password;
+    private String firstName, lastName, password;
+    private final String email;
 
     /**
      * Creates an User object, with the attributes given as parameters

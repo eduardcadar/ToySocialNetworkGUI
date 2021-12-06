@@ -17,10 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,7 +141,7 @@ public class LoggedSceneController {
         controller.initialize(loggedUser);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner((Stage)((Node) event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Update user information");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -158,7 +156,7 @@ public class LoggedSceneController {
         User otherUser = service.getUser(tableViewFriends.
                 getSelectionModel().getSelectedItem().getEmail());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("conversation.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
         controller.initialize(service, loggedUser, otherUser);
@@ -207,7 +205,6 @@ public class LoggedSceneController {
         stage.setTitle("Add friend");
         stage.setScene(new Scene(root));
         stage.showAndWait();
-
     }
 
     @FXML
@@ -229,8 +226,8 @@ public class LoggedSceneController {
 
     /**
      * Opens a new Stage to handle user interactions with friend requests
-     * @param event
-     * @throws IOException
+     * @param event - the event that triggered the function
+     * @throws IOException - from load
      */
     @FXML
     protected void onFriendRequestClick(ActionEvent event) throws IOException {
@@ -240,7 +237,7 @@ public class LoggedSceneController {
         controller.initialize(service, loggedUser);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Requests interface");
         stage.setScene( new Scene(root));
         stage.showAndWait();
@@ -250,14 +247,12 @@ public class LoggedSceneController {
         //  Rather notify this LoggedScene to update his friendListTable
         //  at the signal made by onButtonClickAccept
         reloadFriends();
-
     }
-
 
     /**
      * Press R to  refresh table
      * Might delete later ?? doesn't refresh when 2 instances work
-     * @param keyEvent
+     * @param keyEvent - the event that triggered the function
      */
     public void onRefreshFriends(KeyEvent keyEvent) {
         System.out.println(keyEvent.getCode());

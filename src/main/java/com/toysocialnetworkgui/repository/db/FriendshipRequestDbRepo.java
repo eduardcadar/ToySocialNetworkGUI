@@ -1,7 +1,5 @@
 package com.toysocialnetworkgui.repository.db;
 
-import com.toysocialnetworkgui.controller.RequestsController;
-import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.FriendshipRequest;
 import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
@@ -13,10 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
-    private String url;
-    private String username;
-    private String password;
-    private String tableName;
+    private final String url, username, password, tableName;
 
     public FriendshipRequestDbRepo(String url, String username, String password, String tableName){
         this.url = url;
