@@ -75,8 +75,7 @@ public class AdminSceneController {
 
     @FXML
     protected void onAddUserButtonClick(ActionEvent event) throws IOException {
-        // TODO
-        //  open a new stage with a form to get input
+
        try {
            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
            setUsersList(getUsers());
