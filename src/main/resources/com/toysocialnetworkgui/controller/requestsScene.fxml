@@ -22,7 +22,7 @@
             </TableView>
             <AnchorPane prefHeight="176.0" prefWidth="430.0">
                <children>
-                  <Button fx:id="buttonCancelFriendRequest" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="80.0" mnemonicParsing="false" onAction="#onButtonCancelClick" prefHeight="30.0" prefWidth="113.0" text="Cancel" textAlignment="CENTER" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="159.0" />
+                  <Button fx:id="buttonCancelFriendRequest" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="80.0" mnemonicParsing="false" onAction="#onButtonCancelClick" prefHeight="30.0" prefWidth="113.0" style="-fx-background-color: F2A08E;" text="Cancel" textAlignment="CENTER" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="159.0" />
                </children>
             </AnchorPane>
          </children>
