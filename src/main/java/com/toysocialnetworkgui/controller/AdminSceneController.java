@@ -7,13 +7,9 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.TextField;
-
-import java.io.IOException;
 
 public class AdminSceneController {
 
@@ -75,6 +71,8 @@ public class AdminSceneController {
 
     @FXML
     protected void onAddUserButtonClick(ActionEvent event) throws IOException {
+        // TODO
+        //  open a new stage with a form to get input
 
        try {
            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
@@ -90,7 +88,7 @@ public class AdminSceneController {
     }
 
     @FXML
-    protected void onRemoveUserButtonClick(ActionEvent event) throws IOException {
+    protected void onRemoveUserButtonClick() {
         service.removeUser(textFieldEmail.getText());
         setUsersList(getUsers());
     }

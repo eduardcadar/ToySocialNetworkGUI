@@ -84,7 +84,7 @@ public class Message {
 
     /**
      * Sets the message id
-     * @param ID
+     * @param ID - the id of the message
      */
     public void setID(Integer ID) {
         this.ID = ID;
@@ -99,7 +99,7 @@ public class Message {
 
     /**
      * Sets the id of the message replied to
-     * @param idMsgRepliedTo
+     * @param idMsgRepliedTo - the id of the message replied to
      */
     public void setIdMsgRepliedTo(Integer idMsgRepliedTo) {
         this.idMsgRepliedTo = idMsgRepliedTo;

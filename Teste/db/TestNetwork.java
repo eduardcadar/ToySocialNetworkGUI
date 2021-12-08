@@ -62,7 +62,7 @@ public class TestNetwork {
     @Test
     public void testMostFriendlyCommunity() {
         ntw.reload();
-        MostFriendlyCommunity mfc = ntw.getmfrCom();
+        MostFriendlyCommunity mfc = ntw.getMfCom();
         assertEquals(3, mfc.getNrUsers());
         List<User> users = ntw.getUsersMostFrCom();
         assertEquals(3, users.size());

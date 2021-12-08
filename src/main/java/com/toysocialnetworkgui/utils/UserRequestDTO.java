@@ -8,11 +8,9 @@ import java.time.LocalDate;
  *
  */
 public class UserRequestDTO {
-    private String firstName;
-    private String lastName;
-    private REQUESTSTATE state;
-    private LocalDate sentDate;
-    private String email;
+    private final String firstName, lastName, email;
+    private final REQUESTSTATE state;
+    private final LocalDate sentDate;
 
     /**
      * Creates an object DTO to encapsulate the email of the user that received the request, the state and the date of sending
@@ -56,11 +54,11 @@ public class UserRequestDTO {
     public String getLastName(){
         return lastName;
     }
+
     /**
      * Gets the state of the request
      * @return String
      */
-
     public REQUESTSTATE getState(){
         return state;
     }
