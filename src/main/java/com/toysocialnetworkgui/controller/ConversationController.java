@@ -61,12 +61,31 @@ public class ConversationController {
             return;
         List<String> receivers = new ArrayList<>();
         receivers.add(msgRepliedTo.getSender());
-        for (String receiver : msgRepliedTo.getReceivers())
-            if (!receiver.equals(loggedUser.getEmail()))
-                receivers.add(receiver);
+        msgRepliedTo.getReceivers()
+                .forEach(receiver -> {
+                    if (!receiver.equals(loggedUser.getEmail()))
+                        receivers.add(receiver);
+                });
         service.save(loggedUser.getEmail(), receivers, messageText, msgRepliedTo.getID());
+        List<User> notFriends = new ArrayList<>();
+        List<User> friends = service.getUserFriends(loggedUser.getEmail());
+        receivers.forEach(receiverEmail -> {
+            User rec = service.getUser(receiverEmail);
+            if (!friends.contains(rec))
+                notFriends.add(rec);
+        });
         reloadMessages();
         textFieldMessage.clear();
+        if (!notFriends.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Not sent to all");
+            alert.setHeaderText(null);
+            String warningMessage = "You are not friends with the following users: ";
+            for (User u : notFriends)
+                warningMessage = warningMessage.concat("\n" + u);
+            alert.setContentText(warningMessage);
+            alert.showAndWait();
+        }
     }
 
     private boolean checkMessageSender(String sender) {
