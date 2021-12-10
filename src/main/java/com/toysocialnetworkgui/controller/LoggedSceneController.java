@@ -58,6 +58,7 @@ public class LoggedSceneController {
 
     private User loggedUser;
     private Service service;
+    private Stage window;
 
     public void setService(Service service) {
         this.service = service;
@@ -261,5 +262,9 @@ public class LoggedSceneController {
                 reloadFriends();
             }
         }
+    }
+
+    public void setStage(Stage window) {
+        this.window = window;
     }
 }
