@@ -1,0 +1,10 @@
+.root {
+    -fx-background-color:lightblue;
+}
+.button{
+    -fx-border-style: none;
+    -fx-padding: 15px 32px;
+    -fx-text-align: center;
+    -fx-font-size: 16px;
+    -fx-margin: 4px 2px;
+}
