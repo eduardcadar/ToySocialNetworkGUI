@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,6 +44,11 @@ public class LoggedSceneController {
     Button buttonUpdateUser;
     @FXML
     Button buttonSendMessage;
+
+    @FXML
+    Button buttonLogout;
+
+
     @FXML
     private Label labelLoggedUser;
     @FXML
@@ -207,7 +213,6 @@ public class LoggedSceneController {
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
-
     @FXML
     protected void onRemoveFriendButtonClick() {
         if (tableViewFriends.getSelectionModel().isEmpty())
@@ -266,5 +271,20 @@ public class LoggedSceneController {
 
     public void setStage(Stage window) {
         this.window = window;
+    }
+
+    @FXML
+    protected void onLogoutButtonClick(ActionEvent event) throws IOException {
+        showLoginScene();
+
+    }
+
+    private void showLoginScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScene.fxml"));
+        Parent root = loader.load();
+        LoginSceneController controller = loader.getController();
+        controller.setService(service);
+        controller.setStage(window);
+        window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
     }
 }

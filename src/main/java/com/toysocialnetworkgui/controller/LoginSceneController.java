@@ -61,8 +61,7 @@ public class LoginSceneController {
         // Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);
-
-        window.show();
+      //  window.show();
     }
 
     public void onAdminButtonClick(ActionEvent event) throws IOException {
