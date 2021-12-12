@@ -26,6 +26,6 @@
          <PasswordField fx:id="textFieldPassword" promptText="password" GridPane.rowIndex="1" />
       </children>
    </GridPane>
-   <Button id="button" layoutX="187.0" layoutY="216.0" onAction="#onLoginButtonClick" stylesheets="@../../../style/style.css" text="Login" />
+   <Button layoutX="187.0" layoutY="216.0" onAction="#onLoginButtonClick" stylesheets="@../../../style/style.css" text="Login" />
    <Button fx:id="buttonCreateAccount" mnemonicParsing="false" onAction="#onAdminButtonClick" text="Create account" />
 </VBox>

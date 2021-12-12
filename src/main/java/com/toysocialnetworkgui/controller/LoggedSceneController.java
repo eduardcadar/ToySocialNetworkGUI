@@ -22,10 +22,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LoggedSceneController {
     @FXML
@@ -62,6 +61,9 @@ public class LoggedSceneController {
     @FXML
     TableColumn<UserFriendDTO, Date> tableColumnDate;
 
+    @FXML
+    TextField textFieldSearchFriend;
+
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -70,6 +72,21 @@ public class LoggedSceneController {
         this.service = service;
     }
 
+    /**
+     * Filter the friends searching by name from textFieldSearchFriend
+     */
+    public void onSearchFriend(){
+        String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
+        if(input.equals(""))
+            setFriendsList(getFriends());
+        else
+            setFriendsList(getFriends().
+                    filtered(x -> {
+                        String fullName = x.getFirstName().toLowerCase(Locale.ROOT) +' ' + x.getLastName().toLowerCase(Locale.ROOT);
+                        return fullName.contains(input);
+                    } ));
+
+    }
     public void initialize(User user) {
         setLoggedUser(user);
         initializeFriendsList();
@@ -137,6 +154,8 @@ public class LoggedSceneController {
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         setFriendsList(getFriends());
+        textFieldSearchFriend.textProperty().addListener(ev-> onSearchFriend());
+
     }
 
     @FXML
