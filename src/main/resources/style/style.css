@@ -17,3 +17,7 @@
     -fx-border-radius: 10px;
     -fx-blend-mode: darken;
 }
+#magnifierBox{
+    -fx-background-image: url("../images/magnifier.png");
+}
+
