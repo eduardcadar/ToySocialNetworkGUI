@@ -6,14 +6,12 @@ import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
-    private String url;
-    private String username;
-    private String password;
-    private String tableName;
+    private final String url, username, password, tableName;
 
     public FriendshipRequestDbRepo(String url, String username, String password, String tableName){
         this.url = url;
@@ -28,9 +26,13 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
                 " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
                 " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
                 ")";
+        String updateTableAddSendDate = "ALTER TABLE " + tableName +
+                " ADD COLUMN IF NOT EXISTS sendDate varchar DEFAULT '0001-01-01' ";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeUpdate();
+            PreparedStatement updateTable = connection.prepareStatement(updateTableAddSendDate);
+            updateTable.executeUpdate();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -41,12 +43,13 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
         if(getRequest(request.getFirst(), request.getSecond()) != null){
             throw new RepoException("There is already a request sent by user");
         }
-        String sql = "INSERT INTO " + tableName + " (email1, email2, requeststate) values (?, ?, ?) ";
+        String sql = "INSERT INTO " + tableName + " (email1, email2, requeststate, sendDate) values (?, ?, ?,?) ";
         try(Connection connection = DriverManager.getConnection(url, username, password)){
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, request.getFirst());
             ps.setString(2, request.getSecond());
             ps.setString(3, request.getState().toString());
+            ps.setString(4, request.getSendDate().toString());
             ps.executeUpdate();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
@@ -78,7 +81,8 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
                 String requestEmail1 = resultSet.getString("email1");
                 String requestEmail2 = resultSet.getString("email2");
                 REQUESTSTATE requestState = REQUESTSTATE.valueOf(resultSet.getString("requeststate"));
-                friendshipRequests.add(new FriendshipRequest(requestEmail1,requestEmail2,requestState));
+                LocalDate sendDate = LocalDate.parse(resultSet.getString("sendDate"));
+                friendshipRequests.add(new FriendshipRequest(requestEmail1,requestEmail2,requestState,sendDate));
             }
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
@@ -97,7 +101,9 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
                 String requestEmail1 = resultSet.getString("email1");
                 String requestEmail2 = resultSet.getString("email2");
                 REQUESTSTATE requestState = REQUESTSTATE.valueOf(resultSet.getString("requeststate"));
-                return new FriendshipRequest(requestEmail1,requestEmail2,requestState);
+                LocalDate sendDate = LocalDate.parse(resultSet.getString("sendDate"));
+
+                return new FriendshipRequest(requestEmail1,requestEmail2,requestState, sendDate);
             }
             else
                 return null;
@@ -145,12 +151,12 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
     }
 
     /**
-     * Get a list of requests received by user with email equal with param email
+     * Get a list of pending requests received by user with email equal with param email
      * @param email - String
      * @return - List of strings
      */
     @Override
-    public List<String> getUserFriendRequests(String email) {
+    public List<String> getPendingFriendRequestsReceived(String email) {
         ArrayList<String> friends = new ArrayList<>();
         String sql = "SELECT * FROM " + tableName + " WHERE email2 = ? AND requeststate = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);

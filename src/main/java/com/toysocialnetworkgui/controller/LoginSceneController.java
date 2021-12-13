@@ -9,8 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,7 +36,11 @@ public class LoginSceneController {
     protected void onLoginButtonClick(ActionEvent event) throws IOException {
         User loggedUser = this.service.getUser(textFieldEmail.getText());
         if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
-            //login failed
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Wrong email or password");
+            alert.showAndWait();
             return;
         }
 
@@ -53,14 +57,13 @@ public class LoginSceneController {
     }
 
     public void onAdminButtonClick(ActionEvent event) throws IOException {
-        System.out.println("Admin clicked");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("adminScene.fxml"));
         Parent root = loader.load();
         AdminSceneController controller = loader.getController();
         controller.initialize(service);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Admin interface");
         stage.setScene( new Scene(root));
         stage.showAndWait();

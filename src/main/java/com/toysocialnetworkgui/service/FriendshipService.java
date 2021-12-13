@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FriendshipService {
-    FriendshipRepository friendshipRepository;
-    FriendshipRequestRepository requestRepository;
+    private final FriendshipRepository friendshipRepository;
+    private final FriendshipRequestRepository requestRepository;
     public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
@@ -34,8 +34,17 @@ public class FriendshipService {
      * @param email1 - the email of the first user
      * @param email2 - the email of the second user
      */
-    public void addFriendship(String email1, String email2) {
-        requestRepository.addRequest(new FriendshipRequest(email1, email2));
+    public void addFriendshipRequest(String email1, String email2) {
+        requestRepository.addRequest(new FriendshipRequest(email1, email2, LocalDate.now()));
+    }
+
+    /**
+     * Removes the request sent by email1 to email2
+     * @param email1
+     * @param email2
+     */
+    public void removeRequest(String email1, String email2){
+        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
     }
 
     /**
@@ -44,9 +53,10 @@ public class FriendshipService {
      * @param email2 - String - the email of the other user
      */
     public void removeFriendship(String email1, String email2) {
-        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
+        if (requestRepository.getRequest(email1, email2) != null)
+            removeRequest(email1,email2);
         if (requestRepository.getRequest(email2, email1) != null)
-            requestRepository.removeRequest(new FriendshipRequest(email2, email1));
+            removeRequest(email2, email1);
         friendshipRepository.removeFriendship(new Friendship(email1, email2));
     }
 
@@ -104,12 +114,7 @@ public class FriendshipService {
             }
         }
     }
-//         TODO
-//           - UI : - addFriendRequest()
-//                  - acceptFriendRequest()
-//                    - rejectFriendRequest()
-//                    - removeFriend()
-//
+
     public void rejectFriendship(String email1, String email2){
         FriendshipRequest request = requestRepository.getRequest(email1, email2);
         if( request == null){
@@ -155,6 +160,14 @@ public class FriendshipService {
      * @return
      */
     public List<String> getUserFriendRequests(String email) {
-        return requestRepository.getUserFriendRequests(email);
+        return requestRepository.getPendingFriendRequestsReceived(email);
     }
+
+    /**
+     * @return all the Requests saved in the repository
+     */
+    public List<FriendshipRequest> getAllFriendshipRequests() {
+        return requestRepository.getAll();
+    }
+
 }
