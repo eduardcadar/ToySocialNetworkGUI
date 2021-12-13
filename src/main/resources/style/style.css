@@ -1,0 +1,19 @@
+.root {
+    -fx-background-color:lightblue;
+}
+.button{
+    -fx-border-style: none;
+    -fx-padding: 15px 32px;
+    -fx-text-align: center;
+    -fx-font-size: 12px;
+    -fx-margin: 4px 2px;
+    -fx-alignment: center-left;
+    -fx-blend-mode: color-burn;
+    -fx-border-radius: 3px;
+}
+
+#buttonCreateAccount{
+    -fx-background-color: #045b8b;
+    -fx-border-radius: 10px;
+    -fx-blend-mode: darken;
+}

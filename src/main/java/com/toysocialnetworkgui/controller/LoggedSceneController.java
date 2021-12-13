@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,10 +22,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LoggedSceneController {
     @FXML
@@ -43,6 +43,11 @@ public class LoggedSceneController {
     Button buttonUpdateUser;
     @FXML
     Button buttonSendMessage;
+
+    @FXML
+    Button buttonLogout;
+
+
     @FXML
     private Label labelLoggedUser;
     @FXML
@@ -56,13 +61,32 @@ public class LoggedSceneController {
     @FXML
     TableColumn<UserFriendDTO, Date> tableColumnDate;
 
+    @FXML
+    TextField textFieldSearchFriend;
+
     private User loggedUser;
     private Service service;
+    private Stage window;
 
     public void setService(Service service) {
         this.service = service;
     }
 
+    /**
+     * Filter the friends searching by name from textFieldSearchFriend
+     */
+    public void onSearchFriend(){
+        String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
+        if(input.equals(""))
+            setFriendsList(getFriends());
+        else
+            setFriendsList(getFriends().
+                    filtered(x -> {
+                        String fullName = x.getFirstName().toLowerCase(Locale.ROOT) +' ' + x.getLastName().toLowerCase(Locale.ROOT);
+                        return fullName.contains(input);
+                    } ));
+
+    }
     public void initialize(User user) {
         setLoggedUser(user);
         initializeFriendsList();
@@ -130,6 +154,8 @@ public class LoggedSceneController {
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         setFriendsList(getFriends());
+        textFieldSearchFriend.textProperty().addListener(ev-> onSearchFriend());
+
     }
 
     @FXML
@@ -206,7 +232,6 @@ public class LoggedSceneController {
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
-
     @FXML
     protected void onRemoveFriendButtonClick() {
         if (tableViewFriends.getSelectionModel().isEmpty())
@@ -261,5 +286,24 @@ public class LoggedSceneController {
                 reloadFriends();
             }
         }
+    }
+
+    public void setStage(Stage window) {
+        this.window = window;
+    }
+
+    @FXML
+    protected void onLogoutButtonClick(ActionEvent event) throws IOException {
+        showLoginScene();
+
+    }
+
+    private void showLoginScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScene.fxml"));
+        Parent root = loader.load();
+        LoginSceneController controller = loader.getController();
+        controller.setService(service);
+        controller.setStage(window);
+        window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
     }
 }

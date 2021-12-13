@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.controller.LoginSceneController;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.service.*;
+import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.validator.FriendshipValidator;
 import com.toysocialnetworkgui.validator.MessageReceiverValidator;
 import com.toysocialnetworkgui.validator.MessageValidator;
@@ -19,26 +20,22 @@ import java.io.IOException;
 public class ToySocialNetworkApp extends Application {
 
     Scene loginScene;
-    Scene loggedScene;
     LoginSceneController loginSceneController;
-    LoggedSceneController loggedSceneController;
     Service service;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
         FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loginScene.fxml"));
-        FXMLLoader fxmlLogged = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loggedScene.fxml"));
 
         initialize();
 
-        loginScene = new Scene(fxmlLogin.load(), 400, 400);
-        loggedScene = new Scene(fxmlLogged.load(), 400, 400);
+        loginScene = new Scene(fxmlLogin.load(), CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT);
         loginSceneController = fxmlLogin.getController();
         loginSceneController.setService(service);
-        loggedSceneController = fxmlLogged.getController();
-        loggedSceneController.setService(service);
+        loginSceneController.setStage(primaryStage);
 
+        primaryStage.setResizable(false);
         primaryStage.setTitle("ToySocialNetwork");
         primaryStage.setScene(loginScene);
         primaryStage.show();
