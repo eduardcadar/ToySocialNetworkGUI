@@ -1,23 +1,26 @@
 .root {
-    -fx-background-color:lightblue;
+    -fx-background-color: #006466;
 }
 .button{
+    -fx-background-color: #00DDE0;
     -fx-border-style: none;
-    -fx-padding: 15px 32px;
     -fx-text-align: center;
     -fx-font-size: 12px;
-    -fx-margin: 4px 2px;
     -fx-alignment: center-left;
     -fx-blend-mode: color-burn;
     -fx-border-radius: 3px;
+
+}
+.text-field{
+
+    -fx-border-radius: 5px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 0px;
+    -fx-blend-mode: lighten ;
 }
 
-#buttonCreateAccount{
-    -fx-background-color: #045b8b;
-    -fx-border-radius: 10px;
-    -fx-blend-mode: darken;
-}
 #magnifierBox{
     -fx-background-image: url("../images/magnifier.png");
+    -fx-background-repeat: no-repeat;
 }
 

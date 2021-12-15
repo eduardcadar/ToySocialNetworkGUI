@@ -36,7 +36,7 @@ public class ToySocialNetworkApp extends Application {
         loginSceneController.setStage(primaryStage);
 
         primaryStage.setResizable(false);
-        primaryStage.setTitle("ToySocialNetwork");
+        primaryStage.setTitle("Big Blana Society");
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
