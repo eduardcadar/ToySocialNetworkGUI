@@ -1,13 +1,12 @@
 package com.toysocialnetworkgui;
 
-import com.toysocialnetworkgui.controller.LoggedSceneController;
 import com.toysocialnetworkgui.controller.LoginSceneController;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.service.*;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.validator.FriendshipValidator;
-import com.toysocialnetworkgui.validator.MessageReceiverValidator;
+import com.toysocialnetworkgui.validator.ConversationParticipantValidator;
 import com.toysocialnetworkgui.validator.MessageValidator;
 import com.toysocialnetworkgui.validator.UserValidator;
 import javafx.application.Application;
@@ -54,10 +53,11 @@ public class ToySocialNetworkApp extends Application {
         FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
         FriendshipRequestDbRepo friendshipRequestRepo = new FriendshipRequestDbRepo(url, username, password,"requests");
         FriendshipService fSrv = new FriendshipService(fRepo, friendshipRequestRepo);
+        ConversationDbRepo cRepo = new ConversationDbRepo(url, username, password, "conversations");
         MessageDbRepo mRepo = new MessageDbRepo(url, username, password, new MessageValidator(), "messages");
         MessageService mSrv = new MessageService(mRepo);
-        MessageReceiverDbRepo mrRepo = new MessageReceiverDbRepo(url, username, password, new MessageReceiverValidator(), "receivers");
-        MessageReceiverService mrSrv = new MessageReceiverService(mrRepo);
+        ConversationParticipantDbRepo crRepo = new ConversationParticipantDbRepo(url, username, password, new ConversationParticipantValidator(), "participants");
+        ConversationService mrSrv = new ConversationService(cRepo, crRepo);
         Network network = new Network(uRepo, fRepo);
         this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network);
     }
