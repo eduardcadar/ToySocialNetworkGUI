@@ -1,5 +1,6 @@
 package com.toysocialnetworkgui.controller;
 
+import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
@@ -22,9 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LoggedSceneController {
     @FXML
@@ -41,12 +40,12 @@ public class LoggedSceneController {
     ComboBox<String> comboBoxMonth;
     @FXML
     Button buttonUpdateUser;
-    @FXML
-    Button buttonSendMessage;
 
     @FXML
     Button buttonLogout;
 
+    @FXML
+    ListView<Conversation> listConversations;
 
     @FXML
     private Label labelLoggedUser;
@@ -87,11 +86,17 @@ public class LoggedSceneController {
                     } ));
 
     }
+
     public void initialize(User user) {
         setLoggedUser(user);
         initializeFriendsList();
+        reloadConversationsList();
         tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         comboBoxMonth.setItems(getMonths());
+    }
+
+    private void reloadConversationsList() {
+        listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
     }
 
     private void setLoggedUser(User user) {
@@ -177,46 +182,29 @@ public class LoggedSceneController {
 
     @FXML
     protected void onShowConversationButtonClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().isEmpty())
-            return;
-        User otherUser = service.getUser(tableViewFriends.
-                getSelectionModel().getSelectedItem().getEmail());
+        int idConversation;
+        if (!listConversations.getSelectionModel().isEmpty()) {
+            idConversation = listConversations.
+                    getSelectionModel().getSelectedItem().getID();
+        } else if (!tableViewFriends.getSelectionModel().isEmpty()) {
+            List<String> participants = new ArrayList<>();
+            participants.add(loggedUser.getEmail());
+            tableViewFriends.getSelectionModel().getSelectedItems()
+                    .forEach(p -> participants.add(p.getEmail()));
+            idConversation = service.getConversation(participants).getID();
+        } else return;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, otherUser);
+        controller.initialize(service, loggedUser, idConversation);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.setTitle("Conversation with " + otherUser);
+        stage.setTitle("Conversation");
         stage.setScene(new Scene(root));
         stage.showAndWait();
-    }
-
-    @FXML
-    protected void onSendMessageButtonClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No friends selected");
-            alert.setHeaderText(null);
-            alert.setContentText("Select at least one friend!");
-            alert.showAndWait();
-            return;
-        }
-        List<String> receivers = new ArrayList<>();
-        tableViewFriends.getSelectionModel().getSelectedItems()
-                .forEach(x -> receivers.add(x.getEmail()));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sendMessage.fxml"));
-        Parent root = loader.load();
-        SendMessageController controller = loader.getController();
-        controller.initialize(service, receivers, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.setTitle("Send message");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        reloadConversationsList();
     }
 
     @FXML
@@ -232,6 +220,7 @@ public class LoggedSceneController {
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
+
     @FXML
     protected void onRemoveFriendButtonClick() {
         if (tableViewFriends.getSelectionModel().isEmpty())
@@ -293,9 +282,8 @@ public class LoggedSceneController {
     }
 
     @FXML
-    protected void onLogoutButtonClick(ActionEvent event) throws IOException {
+    protected void onLogoutButtonClick() throws IOException {
         showLoginScene();
-
     }
 
     private void showLoginScene() throws IOException {

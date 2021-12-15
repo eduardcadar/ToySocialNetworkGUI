@@ -3,6 +3,8 @@ package com.toysocialnetworkgui.service;
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 
+import java.util.List;
+
 public class MessageService {
     MessageDbRepo repo;
 
@@ -12,22 +14,21 @@ public class MessageService {
 
     /**
      * Adds a message to the repository
+     * @param idConversation the id of the conversation where the message is sent
      * @param sender the email of the message sender
      * @param message the text of the message
+     * @return the saved message
      */
-    public Message save(String sender, String message) {
-        return repo.save(new Message(sender, message));
+    public Message save(int idConversation, String sender, String message) {
+        return repo.save(new Message(idConversation, sender, message));
     }
 
     /**
-     * Adds a reply message to the repository
-     * @param sender email of the message sender
-     * @param message text of the message
-     * @param idMsgRepliedTo id of the message replied to
-     * @return
+     * @param idConversation the id of the conversation
+     * @return list with a conversation's messages
      */
-    public Message save(String sender, String message, int idMsgRepliedTo) {
-        return repo.save(new Message(sender, message, idMsgRepliedTo));
+    public List<Message> getConversationMessages(int idConversation) {
+        return repo.getConversationMessages(idConversation);
     }
 
     /**

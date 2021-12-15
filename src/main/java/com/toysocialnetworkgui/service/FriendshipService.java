@@ -16,7 +16,6 @@ public class FriendshipService {
     public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
-
     }
 
     /**

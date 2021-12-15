@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -25,19 +26,11 @@
                   <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" prefHeight="26.0" prefWidth="98.0" text="Add friend" />
                   <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" prefHeight="26.0" prefWidth="100.0" text="Remove friend" />
                   <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests" />
-               </children>
-            </VBox>
-            <HBox prefHeight="25.0" prefWidth="235.0">
-               <children>
-                  <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
                   <Button fx:id="buttonShowConversation" mnemonicParsing="false" onAction="#onShowConversationButtonClick" text="Show conversation" />
                </children>
-            </HBox>
-            <HBox prefHeight="38.0" prefWidth="746.0">
-               <children>
-                  <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout" />
-               </children>
-            </HBox>
+            </VBox>
+            <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout" />
+            <ListView fx:id="listConversations" prefHeight="240.0" prefWidth="235.0" />
          </children>
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onRefreshFriends">

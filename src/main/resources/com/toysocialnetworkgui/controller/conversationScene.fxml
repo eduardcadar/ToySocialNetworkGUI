@@ -4,31 +4,23 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
    <children>
-      <TableView fx:id="tableViewMessages" prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="tableViewMessages" prefHeight="200.0" prefWidth="600.0">
         <columns>
           <TableColumn fx:id="tableColumnID" prefWidth="75.0" text="ID" visible="false" />
-          <TableColumn fx:id="tableColumnSender" prefWidth="79.20001220703125" text="Sender" />
-            <TableColumn fx:id="tableColumnReceivers" prefWidth="128.0" text="Receivers" />
-            <TableColumn fx:id="tableColumnMessageRepliedTo" prefWidth="118.39996337890625" text="Reply to" />
-            <TableColumn fx:id="tableColumnMessage" prefWidth="216.800048828125" text="Message" />
-            <TableColumn fx:id="tableColumnDate" prefWidth="126.4000244140625" text="Sent on" />
+          <TableColumn fx:id="tableColumnSender" prefWidth="136.00000607967377" text="Sender" />
+            <TableColumn fx:id="tableColumnMessage" prefWidth="367.20001220703125" text="Message" />
+            <TableColumn fx:id="tableColumnDate" prefWidth="120.79999389648435" text="Sent on" />
         </columns>
       </TableView>
-      <HBox>
+      <VBox>
          <children>
             <TextField fx:id="textFieldMessage" prefHeight="51.0" prefWidth="526.0" promptText="message" />
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Button fx:id="buttonReplyToSender" mnemonicParsing="false" onAction="#onReplyToSenderButtonClick" text="Reply to sender" />
-                  <Button fx:id="buttonReplyToAll" mnemonicParsing="false" onAction="#onReplyToAllButtonClick" text="Reply to all" />
-               </children>
-            </VBox>
+            <Button fx:id="buttonSendMessage" mnemonicParsing="false" onAction="#onSendMessageButtonClick" text="Send message" />
          </children>
-      </HBox>
+      </VBox>
    </children>
 </VBox>
