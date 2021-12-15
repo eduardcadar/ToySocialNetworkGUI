@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testFriendshipRepoDb {
+public class TestFriendshipRepoDb {
     private final String url = "jdbc:postgresql://localhost:5432/TestToySocialNetwork";
     private final String username = "postgres";
     private final String password = "postgres";

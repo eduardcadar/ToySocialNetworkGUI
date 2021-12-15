@@ -1,7 +1,7 @@
 package db;
 
+import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.Friendship;
-import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
@@ -9,7 +9,7 @@ import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.service.*;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.validator.FriendshipValidator;
-import com.toysocialnetworkgui.validator.MessageReceiverValidator;
+import com.toysocialnetworkgui.validator.ConversationParticipantValidator;
 import com.toysocialnetworkgui.validator.MessageValidator;
 import com.toysocialnetworkgui.validator.UserValidator;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testServiceDb {
+public class TestServiceDb {
     private final String url = "jdbc:postgresql://localhost:5432/TestToySocialNetwork";
     private final String username = "postgres";
     private final String password = "postgres";
@@ -34,10 +34,11 @@ public class testServiceDb {
     private final FriendshipRequestDbRepo requestsRepo = new FriendshipRequestDbRepo(url, username, password, "requests");
 
     private final FriendshipService fSrv = new FriendshipService(fRepo,requestsRepo);
+    private final ConversationDbRepo cRepo = new ConversationDbRepo(url, username, password, "conversations");
     private final MessageDbRepo mRepo = new MessageDbRepo(url, username, password, new MessageValidator(), "messages");
     private final MessageService mSrv = new MessageService(mRepo);
-    private final MessageReceiverDbRepo mrRepo = new MessageReceiverDbRepo(url, username, password, new MessageReceiverValidator(), "receivers");
-    private final MessageReceiverService mrSrv = new MessageReceiverService(mrRepo);
+    private final ConversationParticipantDbRepo crRepo = new ConversationParticipantDbRepo(url, username, password, new ConversationParticipantValidator(), "participants");
+    private final ConversationService mrSrv = new ConversationService(cRepo, crRepo);
     private final Friendship f1 = new Friendship(us2, us1);
     private final Friendship f2 = new Friendship(us3, us1);
     private final Friendship f3 = new Friendship(us2, us4);
@@ -45,7 +46,7 @@ public class testServiceDb {
     private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw);
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         service.addUser(us1.getFirstName(), us1.getLastName(), us1.getEmail(), us1.getPassword());
         service.addUser(us2.getFirstName(), us2.getLastName(), us2.getEmail(), us2.getPassword());
         service.addUser(us3.getFirstName(), us3.getLastName(), us3.getEmail(), us3.getPassword());
@@ -53,9 +54,10 @@ public class testServiceDb {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        mrRepo.clear();
+    public void tearDown() {
+        crRepo.clear();
         mRepo.clear();
+        cRepo.clear();
         fRepo.clear();
         uRepo.clear();
     }
@@ -137,7 +139,7 @@ public class testServiceDb {
     }
 
     @Test
-    public void testFriendRequest() throws Exception {
+    public void testFriendRequest() {
         service.addFriendship(us1.getEmail(), us2.getEmail());
         assertEquals(1, service.getUserFriendRequests(us2.getEmail()).size());
 
@@ -169,26 +171,38 @@ public class testServiceDb {
     }
 
     @Test
-    public void testMessages() {
+    void testConversations() {
         service.addFriendship(us1.getEmail(), us2.getEmail());
+        service.addFriendship(us1.getEmail(), us3.getEmail());
+        service.addFriendship(us1.getEmail(), us4.getEmail());
         service.acceptFriendship(us1.getEmail(), us2.getEmail());
+        service.acceptFriendship(us1.getEmail(), us3.getEmail());
+        service.acceptFriendship(us1.getEmail(), us4.getEmail());
 
+        Conversation c1 = service.getConversation(List.of(us1.getEmail(), us2.getEmail(), us3.getEmail()));
+        service.sendMessage(c1.getID(), us1.getEmail(), "mesaj1");
+        service.sendMessage(c1.getID(), us2.getEmail(), "mesaj2");
+        service.sendMessage(c1.getID(), us1.getEmail(), "mesaj3");
+        service.sendMessage(c1.getID(), us3.getEmail(), "mesaj4");
+        Conversation c2 = service.getConversation(List.of(us1.getEmail(), us2.getEmail(), us3.getEmail(), us4.getEmail()));
+        service.sendMessage(c2.getID(), us3.getEmail(), "mesaj21");
+        service.sendMessage(c2.getID(), us2.getEmail(), "mesaj22");
+        service.sendMessage(c2.getID(), us4.getEmail(), "mesaj23");
+        service.sendMessage(c2.getID(), us1.getEmail(), "mesaj24");
+        service.sendMessage(c2.getID(), us4.getEmail(), "mesaj25");
 
-        Message m1 = new Message(us1.getEmail(),"mesaj1");
-        Message m2 = new Message(us2.getEmail(),"mesaj2");
-        m1 = service.save(m1.getSender(), List.of(us2.getEmail(), us3.getEmail()), m1.getMessage());
-        m2 = service.save(m2.getSender(), List.of(us3.getEmail()), m2.getMessage());
-        Message r1 = new Message(us2.getEmail(), "reply", m1.getID());
-        r1 = service.save(r1.getSender(), List.of(us1.getEmail()), r1.getMessage(), r1.getIdMsgRepliedTo());
-        assertEquals(m1.getID(), service.getMessage(r1.getID()).getIdMsgRepliedTo());
-        List<Message> conv = service.getConversation(us1.getEmail(), us2.getEmail());
-        assertEquals(2, conv.size());
-        assertEquals(conv.get(0).getSender(), m1.getSender());
-        assertEquals(conv.get(1).getSender(), r1.getSender());
-        conv = service.getConversation(us2.getEmail(), us3.getEmail());
-        assertEquals(0, conv.size());
-        service.removeUser(us1.getEmail());
-        conv = service.getConversation(us1.getEmail(), us2.getEmail());
-        assertEquals(0, conv.size());
+        Conversation c = service.getConversation(c1.getID());
+        assertEquals(4, c.getMessages().size());
+        assertEquals("mesaj1", c.getMessages().get(0).getMessage());
+        assertEquals("mesaj2", c.getMessages().get(1).getMessage());
+        assertEquals("mesaj3", c.getMessages().get(2).getMessage());
+        assertEquals("mesaj4", c.getMessages().get(3).getMessage());
+        c = service.getConversation(c2.getID());
+        assertEquals(5, c.getMessages().size());
+        assertEquals("mesaj21", c.getMessages().get(0).getMessage());
+        assertEquals("mesaj22", c.getMessages().get(1).getMessage());
+        assertEquals("mesaj23", c.getMessages().get(2).getMessage());
+        assertEquals("mesaj24", c.getMessages().get(3).getMessage());
+        assertEquals("mesaj25", c.getMessages().get(4).getMessage());
     }
 }

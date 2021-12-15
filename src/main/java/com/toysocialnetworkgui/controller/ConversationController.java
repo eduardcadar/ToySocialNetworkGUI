@@ -3,7 +3,6 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
-import com.toysocialnetworkgui.utils.MessageDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,107 +15,49 @@ import java.util.List;
 
 public class ConversationController {
     private Service service;
-    private User loggedUser, otherUser;
+    private User loggedUser;
+    private int idConversation;
 
     @FXML
     TextField textFieldMessage;
     @FXML
-    Button buttonReplyToSender;
+    Button buttonSendMessage;
     @FXML
-    Button buttonReplyToAll;
+    TableView<Message> tableViewMessages;
     @FXML
-    TableView<MessageDTO> tableViewMessages;
+    TableColumn<Message, Integer> tableColumnID;
     @FXML
-    TableColumn<MessageDTO, Integer> tableColumnID;
+    TableColumn<Message, String> tableColumnSender;
     @FXML
-    TableColumn<MessageDTO, String> tableColumnSender;
+    TableColumn<Message, String> tableColumnMessage;
     @FXML
-    TableColumn<MessageDTO, List<String>> tableColumnReceivers;
-    @FXML
-    TableColumn<MessageDTO, String> tableColumnMessageRepliedTo;
-    @FXML
-    TableColumn<MessageDTO, String> tableColumnMessage;
-    @FXML
-    TableColumn<MessageDTO, LocalDateTime> tableColumnDate;
+    TableColumn<Message, LocalDateTime> tableColumnDate;
 
     @FXML
-    public void onReplyToSenderButtonClick() {
-        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
+    public void onSendMessageButtonClick() {
+        if (textFieldMessage.getLength() == 0)
             return;
         String messageText = textFieldMessage.getText();
-        Message msgRepliedTo = service.getMessage(tableViewMessages.getSelectionModel().getSelectedItem().getID());
-        if (checkMessageSender(msgRepliedTo.getSender())) return;
-        service.save(loggedUser.getEmail(), List.of(msgRepliedTo.getSender()), messageText, msgRepliedTo.getID());
+        service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
         reloadMessages();
         textFieldMessage.clear();
     }
 
-    @FXML
-    public void onReplyToAllButtonClick() {
-        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
-            return;
-        String messageText = textFieldMessage.getText();
-        MessageDTO msgRepliedTo = tableViewMessages.getSelectionModel().getSelectedItem();
-        if (checkMessageSender(msgRepliedTo.getSender()))
-            return;
-        List<String> receivers = new ArrayList<>();
-        receivers.add(msgRepliedTo.getSender());
-        msgRepliedTo.getReceivers()
-                .forEach(receiver -> {
-                    if (!receiver.equals(loggedUser.getEmail()))
-                        receivers.add(receiver);
-                });
-        service.save(loggedUser.getEmail(), receivers, messageText, msgRepliedTo.getID());
-        List<User> notFriends = new ArrayList<>();
-        List<User> friends = service.getUserFriends(loggedUser.getEmail());
-        receivers.forEach(receiverEmail -> {
-            User rec = service.getUser(receiverEmail);
-            if (!friends.contains(rec))
-                notFriends.add(rec);
-        });
-        reloadMessages();
-        textFieldMessage.clear();
-        if (!notFriends.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Not sent to all");
-            alert.setHeaderText(null);
-            String warningMessage = "You are not friends with the following users: ";
-            for (User u : notFriends)
-                warningMessage = warningMessage.concat("\n" + u);
-            alert.setContentText(warningMessage);
-            alert.showAndWait();
-        }
-    }
-
-    private boolean checkMessageSender(String sender) {
-        if (sender.equals(loggedUser.getEmail())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("You cannot reply to your message");
-            alert.showAndWait();
-            return true;
-        }
-        return false;
-    }
-
-    public void initialize(Service service, User user, User otherUser) {
+    public void initialize(Service service, User user, int idConversation) {
         this.service = service;
         this.loggedUser = user;
-        this.otherUser = otherUser;
+        this.idConversation = idConversation;
         initializeMessages();
     }
 
-    private ObservableList<MessageDTO> getMessages() {
+    private ObservableList<Message> getMessages() {
         return FXCollections.observableArrayList(service
-                .getConversationDTOs(loggedUser.getEmail(), otherUser.getEmail()));
+                .getConversation(idConversation).getMessages());
     }
 
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
-        tableColumnReceivers.setCellValueFactory(new PropertyValueFactory<>("receivers"));
-        tableColumnMessageRepliedTo.setCellValueFactory(new PropertyValueFactory<>("msgRepliedTo"));
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         reloadMessages();
