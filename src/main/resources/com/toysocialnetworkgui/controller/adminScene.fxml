@@ -18,7 +18,7 @@
                   <VBox prefHeight="70.0" prefWidth="82.0">
                      <children>
                         <Label text="First Name" />
-                        <TextField fx:id="textFieldFirstname" accessibleText="BLa" alignment="CENTER" prefHeight="26.0" prefWidth="150.0" promptText="John">
+                        <TextField fx:id="textFieldFirstname" focusTraversable="false" alignment="CENTER" prefHeight="26.0" prefWidth="150.0" promptText="John">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -32,7 +32,7 @@
                   <VBox prefHeight="78.0" prefWidth="108.0">
                      <children>
                         <Label text="Last Name" />
-                        <TextField fx:id="textFieldLastname" alignment="CENTER" promptText="Doe">
+                        <TextField fx:id="textFieldLastname" focusTraversable="false" alignment="CENTER" promptText="Doe">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -55,7 +55,7 @@
                   <VBox prefHeight="69.0" prefWidth="316.0">
                      <children>
                         <Label text="Email" />
-                        <TextField fx:id="textFieldEmail" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="290.0" promptText="johndoe@example.com">
+                        <TextField fx:id="textFieldEmail" focusTraversable="false"  alignment="TOP_LEFT" prefHeight="26.0" prefWidth="290.0" promptText="johndoe@example.com">
                            <VBox.margin>
                               <Insets right="5.0" top="5.0" />
                            </VBox.margin>
@@ -69,7 +69,7 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Password" />
-                        <PasswordField fx:id="textFieldPassword" alignment="CENTER" promptText="********">
+                        <PasswordField fx:id="textFieldPassword" focusTraversable="false"  alignment="CENTER" promptText="********">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -83,7 +83,7 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Confirm Password" />
-                        <PasswordField fx:id="textFieldPasswordConfirmation" alignment="CENTER" prefHeight="12.0" prefWidth="512.0" promptText="********">
+                        <PasswordField fx:id="textFieldPasswordConfirmation" focusTraversable="false" alignment="CENTER" prefHeight="12.0" prefWidth="512.0" promptText="********">
                            <VBox.margin>
                               <Insets right="5.0" top="5.0" />
                            </VBox.margin>
@@ -97,13 +97,13 @@
             </HBox>
             <HBox prefHeight="62.0" prefWidth="316.0">
                <children>
-                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" text="Cancel">
+                  <Button fx:id="buttonCancel" mnemonicParsing="false" focusTraversable="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" text="Cancel">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
                   <VBox prefHeight="62.0" prefWidth="109.0" />
-                  <Button fx:id="buttonSubmit" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit">
+                  <Button fx:id="buttonSubmit" mnemonicParsing="false" focusTraversable="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>

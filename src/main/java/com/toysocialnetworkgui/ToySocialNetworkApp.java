@@ -12,6 +12,7 @@ import com.toysocialnetworkgui.validator.UserValidator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -37,6 +38,8 @@ public class ToySocialNetworkApp extends Application {
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Big Blana Society");
+        primaryStage.getIcons().add(new Image("images/logo.png"));
+
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
