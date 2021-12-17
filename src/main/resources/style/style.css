@@ -1,8 +1,19 @@
 .root {
-    -fx-background-color: #006466;
+    -fx-background-color: #5E60CE;
 }
-.button{
-    -fx-background-color: #00DDE0;
+.buttonLogin{
+    -fx-background-color: #56CFE1;
+    -fx-border-style: none;
+    -fx-text-align: center;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-blend-mode: color-burn;
+    -fx-border-radius: 3px;
+    -fx-min-width: 150px;
+
+}
+.buttonCreate{
+    -fx-background-color: #56CFE1;
     -fx-border-style: none;
     -fx-text-align: center;
     -fx-font-size: 12px;
@@ -12,15 +23,51 @@
 
 }
 .text-field{
-
     -fx-border-radius: 5px;
     -fx-border-color: #FFFFFF;
     -fx-border-width: 0px;
-    -fx-blend-mode: lighten ;
+    -fx-blend-mode: lighten;
 }
 
+#button{
+    -fx-border-color: none;
+    -fx-background-radius: 15px 15px 15px 15px;
+}
+#button:hover{
+    -fx-border-color: #5E60CE;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px 15px 15px 15px;
+}
 #magnifierBox{
     -fx-background-image: url("../images/magnifier.png");
     -fx-background-repeat: no-repeat;
 }
 
+#textFieldLogin{
+    -fx-border-color: none;
+    -fx-background-radius: 10px 10px 10px 10px;
+    -fx-padding: 0px 10px 5px 10px;
+}
+.buttonSearch{
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-radius: 0px;
+    -fx-background-image: url("../images/magnifier.png");
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-repeat: no-repeat;
+
+}
+.buttonSearch:focused {
+    -fx-border-color: transparent, black;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid;
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.buttonSearch:pressed {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}

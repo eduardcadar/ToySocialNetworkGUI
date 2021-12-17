@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
+<HBox stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
       <VBox prefHeight="507.0" prefWidth="235.0">
          <children>
@@ -38,11 +38,16 @@
             <HBox>
                <children>
                   <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
-                  <TextField fx:id="textFieldSearchFriend" onAction="#onSearchFriend" promptText="Search">
-                     <HBox.margin>
-                        <Insets left="25.0" right="5.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="textFieldSearchFriend"  onAction="#clearSearchFriendSelection" promptText="Search">
+                           <HBox.margin>
+                              <Insets left="25.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">

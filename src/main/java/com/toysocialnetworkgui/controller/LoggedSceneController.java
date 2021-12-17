@@ -48,6 +48,9 @@ public class LoggedSceneController {
     ListView<Conversation> listConversations;
 
     @FXML
+    Button buttonSearch;
+
+    @FXML
     private Label labelLoggedUser;
     @FXML
     TableView<UserFriendDTO> tableViewFriends;
@@ -74,7 +77,7 @@ public class LoggedSceneController {
     /**
      * Filter the friends searching by name from textFieldSearchFriend
      */
-    public void onSearchFriend(){
+    public void onButtonSearchFriend(){
         String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
         if(input.equals(""))
             setFriendsList(getFriends());
@@ -87,6 +90,15 @@ public class LoggedSceneController {
 
     }
 
+    /**
+     * Show all friends if the textField for searching is empty
+     */
+    public void clearSearchFriendSelection(){
+        String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
+        if(input.equals(""))
+            setFriendsList(getFriends());
+
+    }
     public void initialize(User user) {
         setLoggedUser(user);
         initializeFriendsList();
@@ -159,7 +171,6 @@ public class LoggedSceneController {
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         setFriendsList(getFriends());
-        textFieldSearchFriend.textProperty().addListener(ev-> onSearchFriend());
 
     }
 
