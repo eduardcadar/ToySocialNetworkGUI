@@ -16,6 +16,8 @@
     -fx-min-height: 25px;
     -fx-min-width: 75px;
     -fx-max-width: 150px;
+    -fx-cursor: hand;
+
 
 }
 .button:hover{
@@ -45,10 +47,6 @@
     -fx-background-color: black;
     -fx-text-fill: white;
 }
-#imageMine{
-    -fx-background-color: red;
-    -fx-border-width: 10px;
-    -fx-border-radius: 10px;
-    -fx-border-color: green;
-    -fx-padding: 10px 10px 10px 10px;
+.image-view{
+    -fx-cursor: hand;
 }

@@ -172,6 +172,7 @@ public class LoggedSceneController {
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         setFriendsList(getFriends());
 
+        textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
     }
 
     @FXML

@@ -26,6 +26,7 @@
     -fx-alignment: center;
     -fx-blend-mode: color-burn;
     -fx-border-radius: 3px;
+    -fx-cursor: hand;
 
 }
 #button:hover{
