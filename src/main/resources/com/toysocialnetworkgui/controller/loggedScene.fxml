@@ -101,9 +101,9 @@
             <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
               <columns>
                   <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" text="First name" />
-                  <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" text="Last name" />
-                <TableColumn fx:id="tableColumnDate" prefWidth="72.0" text="Friends from" />
+                <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
+                  <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
+                <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

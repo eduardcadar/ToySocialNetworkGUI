@@ -277,7 +277,7 @@ public class RequestsController {
     public void handleClickEvent(MouseEvent mouseEvent) {
         if(tableReceivedRequestsView.getSelectionModel() != null) {
             if(tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
-     //           System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
+                System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
                 if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
                     onButtonAcceptClick();
                 } else if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 5) {
