@@ -37,9 +37,13 @@
     -fx-background-image: url("../images/magnifier.png");
     -fx-background-repeat: no-repeat;
 }
-
 #textFieldLogin{
     -fx-border-color: none;
     -fx-background-radius: 10px 10px 10px 10px;
     -fx-padding: 0px 10px 5px 10px;
+}
+#buttonCreateAccount{
+    -fx-background-color: #045b8b;
+    -fx-border-radius: 10px;
+    -fx-blend-mode: darken;
 }
