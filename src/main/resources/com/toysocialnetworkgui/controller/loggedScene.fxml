@@ -8,10 +8,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
+<HBox stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
       <VBox prefHeight="507.0" prefWidth="235.0">
          <children>
@@ -22,14 +24,60 @@
             </VBox>
             <VBox>
                <children>
-                  <Button fx:id="buttonUpdateUser" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Update user" />
-                  <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" prefHeight="26.0" prefWidth="98.0" text="Add friend" />
-                  <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" prefHeight="26.0" prefWidth="100.0" text="Remove friend" />
-                  <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests" />
-                  <Button fx:id="buttonShowConversation" mnemonicParsing="false" onAction="#onShowConversationButtonClick" text="Show conversation" />
+                  <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Update user">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" prefHeight="26.0" prefWidth="98.0" text="Add friend">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" prefHeight="26.0" prefWidth="100.0" text="Remove friend">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/friends.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="buttonShowConversation" mnemonicParsing="false" onAction="#onShowConversationButtonClick" text="Show conversation">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/message.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
             </VBox>
-            <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout" />
+            <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout">
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/logout.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
             <ListView fx:id="listConversations" prefHeight="240.0" prefWidth="235.0" />
          </children>
       </VBox>
@@ -38,19 +86,24 @@
             <HBox>
                <children>
                   <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
-                  <TextField fx:id="textFieldSearchFriend" onAction="#onSearchFriend" promptText="Search">
-                     <HBox.margin>
-                        <Insets left="25.0" right="5.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="textFieldSearchFriend" onAction="#clearSearchFriendSelection" promptText="Search">
+                           <HBox.margin>
+                              <Insets left="25.0" right="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
               <columns>
                   <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" text="First name" />
-                  <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" text="Last name" />
-                <TableColumn fx:id="tableColumnDate" prefWidth="72.0" text="Friends from" />
+                <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
+                  <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
+                <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

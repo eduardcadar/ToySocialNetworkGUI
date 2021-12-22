@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.AdminSceneController">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" stylesheets="@../../../style/styleCreateAcc.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.AdminSceneController">
    <children>
-      <VBox fillWidth="false" layoutX="137.0" layoutY="101.0" prefHeight="298.0" prefWidth="326.0">
+      <VBox fillWidth="false" layoutX="137.0" layoutY="101.0" prefHeight="298.0" prefWidth="330.0">
          <children>
-            <HBox prefHeight="66.0" prefWidth="391.0">
+            <HBox prefHeight="66.0" prefWidth="330.0">
                <children>
-                  <VBox prefHeight="70.0" prefWidth="82.0">
+                  <VBox prefHeight="70.0" prefWidth="330.0">
                      <children>
                         <Label text="First Name" />
-                        <TextField fx:id="textFieldFirstname" accessibleText="BLa" alignment="CENTER" prefHeight="26.0" prefWidth="150.0" promptText="John">
+                        <TextField id="textField" fx:id="textFieldFirstname" alignment="CENTER" focusTraversable="false" prefHeight="26.0" prefWidth="150.0" promptText="John" styleClass="smallTextField">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -28,18 +28,17 @@
                         <Insets left="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox prefHeight="70.0" prefWidth="121.0" spacing="10.0" />
-                  <VBox prefHeight="78.0" prefWidth="108.0">
+                  <VBox prefHeight="78.0" prefWidth="330.0">
                      <children>
                         <Label text="Last Name" />
-                        <TextField fx:id="textFieldLastname" alignment="CENTER" promptText="Doe">
+                        <TextField id="textField" fx:id="textFieldLastname" alignment="CENTER" focusTraversable="false" promptText="Doe" styleClass="smallTextField">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
                         </TextField>
                      </children>
                      <HBox.margin>
-                        <Insets right="5.0" />
+                        <Insets left="120.0" />
                      </HBox.margin>
                   </VBox>
                </children>
@@ -47,29 +46,35 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox>
+            <HBox prefWidth="330.0">
                <VBox.margin>
-                  <Insets left="5.0" />
+                  <Insets />
                </VBox.margin>
                <children>
-                  <VBox prefHeight="69.0" prefWidth="316.0">
+                  <VBox prefHeight="69.0" prefWidth="330.0">
                      <children>
                         <Label text="Email" />
-                        <TextField fx:id="textFieldEmail" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="290.0" promptText="johndoe@example.com">
+                        <TextField id="textField" fx:id="textFieldEmail" alignment="TOP_LEFT" focusTraversable="false" prefHeight="26.0" prefWidth="330.0" promptText="johndoe@example.com" styleClass="emailTextField">
                            <VBox.margin>
-                              <Insets right="5.0" top="5.0" />
+                              <Insets top="5.0" />
                            </VBox.margin>
                         </TextField>
                      </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>
-            <HBox prefHeight="62.0" prefWidth="316.0">
+            <HBox prefHeight="62.0" prefWidth="330.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label text="Password" />
-                        <PasswordField fx:id="textFieldPassword" alignment="CENTER" promptText="********">
+                        <Label text="Password">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></Label>
+                        <PasswordField id="textField" fx:id="textFieldPassword" alignment="CENTER" focusTraversable="false" promptText="********" styleClass="smallTextField">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -79,36 +84,37 @@
                         <Insets left="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox prefHeight="89.0" prefWidth="111.0" />
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Confirm Password" />
-                        <PasswordField fx:id="textFieldPasswordConfirmation" alignment="CENTER" prefHeight="12.0" prefWidth="512.0" promptText="********">
+                        <PasswordField id="textField" fx:id="textFieldPasswordConfirmation" alignment="CENTER" focusTraversable="false" prefHeight="12.0" prefWidth="512.0" promptText="********" styleClass="smallTextField">
                            <VBox.margin>
-                              <Insets right="5.0" top="5.0" />
+                              <Insets top="5.0" />
                            </VBox.margin>
                         </PasswordField>
                      </children>
                      <HBox.margin>
-                        <Insets right="5.0" />
+                        <Insets left="120.0" />
                      </HBox.margin>
                   </VBox>
                </children>
             </HBox>
-            <HBox prefHeight="62.0" prefWidth="316.0">
+            <HBox prefHeight="62.0" prefWidth="330.0">
                <children>
-                  <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" text="Cancel">
+                  <Button id="button" fx:id="buttonCancel" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" stylesheets="@../../../style/styleCreateAcc.css" text="Cancel">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <VBox prefHeight="62.0" prefWidth="109.0" />
-                  <Button fx:id="buttonSubmit" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit">
+                  <Button id="button" fx:id="buttonSubmit" focusTraversable="false" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit">
                      <HBox.margin>
-                        <Insets right="5.0" />
+                        <Insets left="120.0" />
                      </HBox.margin>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

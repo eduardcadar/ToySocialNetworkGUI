@@ -4,12 +4,21 @@ import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
+
+import java.util.Objects;
 
 public class RequestsController {
     private Service service;
@@ -30,6 +39,10 @@ public class RequestsController {
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnSentDate;
 
+    @FXML
+    private TableColumn<UserRequestDTO, ImageView> tableSentColumnCancel;
+
+
 
     @FXML
     private TableView<UserRequestDTO> tableReceivedRequestsView;
@@ -45,6 +58,12 @@ public class RequestsController {
 
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnSentDate;
+
+
+    @FXML
+    private TableColumn<UserRequestDTO, ImageView> tableAcceptRequest;
+    @FXML
+    private TableColumn<UserRequestDTO, ImageView> tableRejectRequest;
 
 
     @FXML
@@ -74,12 +93,106 @@ public class RequestsController {
         tableSentColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableSentColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
         tableSentColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
+        tableSentColumnCancel.setStyle("-fx-alignment: CENTER");
+        tableSentColumnCancel.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+            @Override
+            public void addListener(ChangeListener<? super ImageView> listener) {
+
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super ImageView> listener) {
+
+            }
+            @Override
+            public ImageView getValue() {
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                imageView.setImage(new Image("images/reject.png"));
+                return imageView;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+
+            }
+        });
+
         setSentRequestsList(getSentRequests());
 
         tableReceivedColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableReceivedColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableReceivedColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
         tableReceivedColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
+        tableAcceptRequest.setStyle("-fx-alignment: CENTER");
+
+        tableAcceptRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+            @Override
+            public void addListener(ChangeListener<? super ImageView> listener) {
+
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super ImageView> listener) {
+
+            }
+            @Override
+            public ImageView getValue() {
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                imageView.setImage(new Image("images/accept.png"));
+                return imageView;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+
+            }
+        });
+        // TODO
+        //  - EXTRACT THIS SET STYLE INTO CSS FILE
+        tableRejectRequest.setStyle("-fx-alignment: CENTER");
+        tableRejectRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+            @Override
+            public void addListener(ChangeListener<? super ImageView> listener) {
+
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super ImageView> listener) {
+
+            }
+            @Override
+            public ImageView getValue() {
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                imageView.setImage(new Image("images/reject.png"));
+                return imageView;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+
+            }
+        });
 
         setReceivedRequestsList(getReceivedRequests());
 
@@ -177,6 +290,29 @@ public class RequestsController {
             alert.setHeaderText(null);
             alert.setContentText("No request selected ");
             alert.showAndWait();
+        }
+    }
+
+    public void handleReceivedClickEvent(MouseEvent mouseEvent) {
+        if(tableReceivedRequestsView.getSelectionModel() != null) {
+            if(tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
+                System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
+                if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
+                    onButtonAcceptClick();
+                } else if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 5) {
+                    onButtonRejectClick();
+                }
+            }
+        }
+    }
+    public void handleSentClickEvent(MouseEvent mouseEvent) {
+        if (tableSentRequestsView.getSelectionModel() != null) {
+            if (tableSentRequestsView.getSelectionModel().getSelectedCells().size() > 0) {
+                System.out.println("Clicked on " + (tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
+                if ((tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
+                    onButtonCancelClick();
+                }
+            }
         }
     }
 }

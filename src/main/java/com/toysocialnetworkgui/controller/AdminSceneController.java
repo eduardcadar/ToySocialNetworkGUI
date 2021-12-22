@@ -16,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 
 import java.io.IOException;
 
@@ -33,17 +35,19 @@ public class AdminSceneController {
 
 
     @FXML
-    private TextField textFieldFirstname;
+    public TextField textFieldFirstname;
     @FXML
-    private TextField textFieldLastname;
+    public TextField textFieldLastname;
     @FXML
-    private TextField textFieldEmail;
+    public TextField textFieldEmail;
 
     @FXML
-    private PasswordField textFieldPassword;
+    public PasswordField textFieldPassword;
 
     @FXML
-    private PasswordField textFieldPasswordConfirmation;
+    public PasswordField textFieldPasswordConfirmation;
+
+    ValidationSupport validationSupport;
 
 
     public void setStage(Stage window){
@@ -55,6 +59,15 @@ public class AdminSceneController {
         this.window = window;
         initializeUsersList();
      //   tableViewUsers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        // TODO
+        //  Maybe remove this if it doesnt look nice
+        //  Need to ADD this as VM argument --add-opens=javafx.graphics/javafx.scene=org.controlsfx.controls
+        validationSupport = new ValidationSupport();
+        validationSupport.registerValidator(textFieldFirstname, Validator.createEmptyValidator("Field is required"));
+        validationSupport.registerValidator(textFieldLastname, Validator.createEmptyValidator("Field is required"));
+        validationSupport.registerValidator(textFieldEmail, Validator.createEmptyValidator("Field is required"));
+        validationSupport.registerValidator(textFieldPassword, Validator.createEmptyValidator("Field is required"));
+        validationSupport.registerValidator(textFieldPasswordConfirmation, Validator.createEmptyValidator("Field is required"));
 
     }
 

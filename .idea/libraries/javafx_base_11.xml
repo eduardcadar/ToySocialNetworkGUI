@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="javafx-base-11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/cssfx/javafx-base-11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="jar://$PROJECT_DIR$/src/cssfx/javafx-base-11.jar!/" recursive="false" />
+  </library>
+</component>
