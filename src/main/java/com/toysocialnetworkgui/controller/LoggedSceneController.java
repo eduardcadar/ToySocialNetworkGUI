@@ -91,10 +91,7 @@ public class LoggedSceneController {
             setFriendsList(getFriends());
         else
             setFriendsList(getFriends().
-                    filtered(x -> {
-                        String fullName = x.getFirstName().toLowerCase(Locale.ROOT) +' ' + x.getLastName().toLowerCase(Locale.ROOT);
-                        return fullName.contains(input);
-                    } ));
+                    filtered(x -> x.getFirstName().startsWith(input) || x.getLastName().startsWith(input)));
 
     }
 
