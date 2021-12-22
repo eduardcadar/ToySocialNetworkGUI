@@ -28,7 +28,7 @@ import java.util.*;
 public class LoggedSceneController {
     @FXML
     Button buttonShowConversation;
-  
+
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
@@ -61,11 +61,19 @@ public class LoggedSceneController {
     TableColumn<UserFriendDTO, Date> tableColumnDate;
 
     @FXML
+    Button previousPage;
+    @FXML
+    Button nextPage;
+
+    @FXML
     TextField textFieldSearchFriend;
 
     private User loggedUser;
     private Service service;
     private Stage window;
+    private int pageNumber;
+    private int pageSize;
+    private int lastPage;
 
     public void setService(Service service) {
         this.service = service;
@@ -88,6 +96,8 @@ public class LoggedSceneController {
     }
 
     public void initialize(User user) {
+        pageNumber = 1;
+        pageSize = 2;
         setLoggedUser(user);
         initializeFriendsList();
         reloadConversationsList();
@@ -146,7 +156,7 @@ public class LoggedSceneController {
 
     private ObservableList<UserFriendDTO> getFriends() {
         return FXCollections.observableArrayList(service
-                .getFriendshipsDTO(loggedUser.getEmail()));
+                .getFriendshipsDTOPage(loggedUser.getEmail(), pageNumber, pageSize));
     }
 
     private void setFriendsList(ObservableList<UserFriendDTO> friends) {
@@ -160,7 +170,24 @@ public class LoggedSceneController {
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         setFriendsList(getFriends());
         textFieldSearchFriend.textProperty().addListener(ev-> onSearchFriend());
+    }
 
+    @FXML
+    protected void onPreviousPageButtonClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadFriends();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        // TODO - find the value for last page in a more efficient way
+        lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
+        if (pageNumber == lastPage)
+            return;
+        pageNumber++;
+        reloadFriends();
     }
 
     @FXML
