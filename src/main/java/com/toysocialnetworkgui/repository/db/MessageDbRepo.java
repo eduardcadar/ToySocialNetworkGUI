@@ -109,6 +109,28 @@ public class MessageDbRepo {
         return messages;
     }
 
+    public List<Message> getConversationMessagesPage(int idConversation, int firstrow, int rowcount) {
+        List<Message> messages = new ArrayList<>();
+        String sql = "SELECT * FROM " + messagesTable + " WHERE idconversation = ?" +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idConversation);
+            ps.setInt(2, firstrow);
+            ps.setInt(3, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                Message message = new Message(res.getInt("idconversation"), res.getString("sender"), res.getString("messagetext"));
+                message.setDate(LocalDateTime.parse(res.getString("sentdate")));
+                message.setID(res.getInt("id"));
+                messages.add(message);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return messages;
+    }
+
     /**
      * @return int - the number of messages saved in the database
      */

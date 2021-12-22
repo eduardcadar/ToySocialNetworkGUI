@@ -109,6 +109,13 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Previous page" />
+                  <VBox prefHeight="100.0" prefWidth="383.0" />
+                  <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Next page" />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

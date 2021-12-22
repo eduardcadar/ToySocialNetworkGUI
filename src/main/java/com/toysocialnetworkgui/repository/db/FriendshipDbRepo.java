@@ -93,9 +93,6 @@ public class FriendshipDbRepo implements FriendshipRepository {
         }
     }
 
-
-
-
     /**
      * Removes a friendship from the database
      * @param f - the friendship to be removed
@@ -178,28 +175,37 @@ public class FriendshipDbRepo implements FriendshipRepository {
         }
     }
 
-    /**
-     * @param email - String the email of the user
-     * @return a list with the emails of a user's friends
-     */
-    @Override
-    public List<String> getUserFriends(String email) {
+    public List<String> getUserFriendsPage(String email, int firstrow, int rowcount) {
         List<String> friends = new ArrayList<>();
-        for (Friendship f : getAll()) {
-            if (f.getFirst().equals(email))
-                friends.add(f.getSecond());
-            else if (f.getSecond().equals(email))
-                friends.add(f.getFirst());
+        String sql = "SELECT * FROM " + fshipsTable + " WHERE email1 = ? OR email2 = ?" +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ps.setInt(3, firstrow);
+            ps.setInt(4, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                String email1 = res.getString("email1");
+                String email2 = res.getString("email2");
+                if (email1.equals(email))
+                    friends.add(email2);
+                else
+                    friends.add(email1);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
         }
         return friends;
     }
 
     /**
      * @param email - String the email of the user
-     * @return a list with the emails of a user's friends + friends requested
+     * @return a list with the emails of a user's friends
      */
     @Override
-    public List<String> getUserFriendsAll(String email) {
+    public List<String> getUserFriends(String email) {
         List<String> friends = new ArrayList<>();
         for (Friendship f : getAll()) {
             if (f.getFirst().equals(email))
