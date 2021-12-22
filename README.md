@@ -1,5 +1,5 @@
 # Toy-Social-Network
-
+Add VM options and paste this --add-opens=javafx.graphics/javafx.scene=org.controlsfx.controls
 Toy Social Network - University Project in collaboration with [Butacu Stefan](https://github.com/StefanButacu) 
 Technologies used
   - JavaFx
