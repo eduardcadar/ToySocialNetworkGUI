@@ -15,10 +15,16 @@ public class UserValidator implements Validator<User> {
      * @throws ValidatorException - if firstname/lastname are empty fields or the email is not valid
      */
     public void validate(User user) throws ValidatorException {
-        if (!namePattern.matcher(user.getLastName()).matches()) throw new ValidatorException("Invalid last name");
-        if (!namePattern.matcher(user.getFirstName()).matches()) throw new ValidatorException("Invalid first name");
-        if (!emailPattern.matcher(user.getEmail()).matches()) throw new ValidatorException("Invalid email");
+        String errorMsg = "";
+        if (!namePattern.matcher(user.getLastName()).matches())
+            errorMsg += "Invalid last name\n";
+        if (!namePattern.matcher(user.getFirstName()).matches())
+            errorMsg += "Invalid first name\n";
+        if (!emailPattern.matcher(user.getEmail()).matches())
+            errorMsg += "Invalid email\n";
         if (user.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(""))))
-            throw new ValidatorException("Invalid password");
+            errorMsg += "Invalid password\n";
+        if(!errorMsg.isEmpty())
+            throw new ValidatorException(errorMsg);
     }
 }
