@@ -185,6 +185,7 @@ public class LoggedSceneController {
         textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
     }
 
+
     @FXML
     protected void onPreviousPageButtonClick() {
         if (pageNumber == 1)
