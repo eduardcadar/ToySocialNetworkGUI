@@ -2,18 +2,20 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-public class ConversationController {
+public class ConversationController implements Observer {
     private Service service;
     private User loggedUser;
     private int idConversation;
@@ -33,21 +35,21 @@ public class ConversationController {
     @FXML
     TableColumn<Message, LocalDateTime> tableColumnDate;
 
+    public void initialize(Service service, User user, int idConversation) {
+        this.service = service;
+        this.loggedUser = user;
+        this.idConversation = idConversation;
+        initializeMessages();
+        service.getMessageRepo().addObserver(this);
+    }
+
     @FXML
     public void onSendMessageButtonClick() {
         if (textFieldMessage.getLength() == 0)
             return;
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
-        reloadMessages();
         textFieldMessage.clear();
-    }
-
-    public void initialize(Service service, User user, int idConversation) {
-        this.service = service;
-        this.loggedUser = user;
-        this.idConversation = idConversation;
-        initializeMessages();
     }
 
     private ObservableList<Message> getMessages() {
@@ -65,5 +67,10 @@ public class ConversationController {
 
     private void reloadMessages() {
         tableViewMessages.setItems(getMessages());
+    }
+
+    @Override
+    public void update(Object obj) {
+        reloadMessages();
     }
 }

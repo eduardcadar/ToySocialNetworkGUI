@@ -3,6 +3,8 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

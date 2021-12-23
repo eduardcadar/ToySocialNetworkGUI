@@ -9,6 +9,8 @@ import java.util.List;
 public class UserService {
     UserRepository repo;
 
+    public UserRepository getRepo() { return repo; }
+
     public UserService(UserRepository repo) {
         this.repo = repo;
     }
@@ -26,6 +28,7 @@ public class UserService {
         if(password.length() <= 5)
             throw new ValidatorException("The password must contain at least 6 characters");
         repo.save(new User(firstname, lastname, email, password));
+
     }
 
     /**

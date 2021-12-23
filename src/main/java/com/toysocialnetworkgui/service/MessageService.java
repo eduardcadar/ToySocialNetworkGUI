@@ -6,7 +6,9 @@ import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 import java.util.List;
 
 public class MessageService {
-    MessageDbRepo repo;
+    private final MessageDbRepo repo;
+
+    public MessageDbRepo getRepo() { return repo; }
 
     public MessageService(MessageDbRepo repo) {
         this.repo = repo;
