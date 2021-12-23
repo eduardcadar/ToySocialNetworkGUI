@@ -41,6 +41,10 @@ public class RequestsController implements Observer {
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnSentDate;
 
+    @FXML
+    private TableColumn<UserRequestDTO, ImageView> tableSentColumnCancel;
+
+
 
     @FXML
     private TableView<UserRequestDTO> tableReceivedRequestsView;
@@ -91,33 +95,45 @@ public class RequestsController implements Observer {
         tableSentColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableSentColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
         tableSentColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
+        tableSentColumnCancel.setStyle("-fx-alignment: CENTER");
+        tableSentColumnCancel.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+            @Override
+            public void addListener(ChangeListener<? super ImageView> listener) {
+
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super ImageView> listener) {
+
+            }
+            @Override
+            public ImageView getValue() {
+                ImageView imageView = new ImageView();
+                imageView.setFitHeight(30);
+                imageView.setFitWidth(30);
+                imageView.setImage(new Image("images/reject.png"));
+                return imageView;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+
+            }
+        });
+
         setSentRequestsList(getSentRequests());
 
         tableReceivedColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableReceivedColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableReceivedColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
         tableReceivedColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
-//        tableAcceptRequest.setCellFactory(new Callback<TableColumn<UserRequestDTO, Image>, TableCell<UserRequestDTO, Image>>() {
-//            @Override
-//            public TableCell<UserRequestDTO, Image> call(TableColumn<UserRequestDTO, Image> param) {
-//                //Set up the ImageView
-//                final ImageView imageview = new ImageView();
-//                imageview.setFitHeight(50);
-//                imageview.setFitWidth(50);
-//
-//                //Set up the Table
-//                TableCell<UserRequestDTO, Image> cell = new TableCell<UserRequestDTO, Image>() {
-//                    public void updateItem(UserRequestDTO item, boolean empty) {
-//                        if (item != null) {
-//                            imageview.setImage(new Image("accepfsat.png"));
-//                        }
-//                    }
-//                };
-//                // Attach the imageview to the cell
-//                cell.setGraphic(imageview);
-//                return cell;
-//            }
-//        });
+        tableAcceptRequest.setStyle("-fx-alignment: CENTER");
+
         tableAcceptRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {
@@ -147,6 +163,9 @@ public class RequestsController implements Observer {
 
             }
         });
+        // TODO
+        //  - EXTRACT THIS SET STYLE INTO CSS FILE
+        tableRejectRequest.setStyle("-fx-alignment: CENTER");
         tableRejectRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {
@@ -272,7 +291,7 @@ public class RequestsController implements Observer {
         }
     }
 
-    public void handleClickEvent(MouseEvent mouseEvent) {
+    public void handleReceivedClickEvent(MouseEvent mouseEvent) {
         if(tableReceivedRequestsView.getSelectionModel() != null) {
             if(tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
                 System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
@@ -284,7 +303,18 @@ public class RequestsController implements Observer {
             }
         }
     }
-
+    
+    public void handleSentClickEvent(MouseEvent mouseEvent) {
+        if (tableSentRequestsView.getSelectionModel() != null) {
+            if (tableSentRequestsView.getSelectionModel().getSelectedCells().size() > 0) {
+                System.out.println("Clicked on " + (tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
+                if ((tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
+                    onButtonCancelClick();
+                }
+            }
+        }
+    }
+  
     @Override
     public void update(Object obj) {
         if (obj instanceof FriendshipRequestDbRepo) reloadTables();
