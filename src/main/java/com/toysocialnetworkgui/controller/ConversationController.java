@@ -6,18 +6,25 @@ import com.toysocialnetworkgui.service.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConversationController {
     private Service service;
     private User loggedUser;
     private int idConversation;
+    private int pageNumber;
+    private int pageSize;
 
+    @FXML
+    Button buttonPreviousPage;
+    @FXML
+    Button buttonNextPage;
     @FXML
     TextField textFieldMessage;
     @FXML
@@ -34,16 +41,39 @@ public class ConversationController {
     TableColumn<Message, LocalDateTime> tableColumnDate;
 
     @FXML
-    public void onSendMessageButtonClick() {
+    protected void onPreviousPageButtonClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        if (pageNumber == getLastPageNumber())
+            return;
+        pageNumber++;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onSendMessageButtonClick() {
         if (textFieldMessage.getLength() == 0)
             return;
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
+        pageNumber = getLastPageNumber();
         reloadMessages();
         textFieldMessage.clear();
     }
 
+    private int getLastPageNumber() {
+        return ((service.getConversation(idConversation).getMessages().size() - 1) / pageSize) + 1;
+    }
+
     public void initialize(Service service, User user, int idConversation) {
+        pageNumber = 1;
+        pageSize = 3;
         this.service = service;
         this.loggedUser = user;
         this.idConversation = idConversation;
@@ -52,7 +82,7 @@ public class ConversationController {
 
     private ObservableList<Message> getMessages() {
         return FXCollections.observableArrayList(service
-                .getConversation(idConversation).getMessages());
+                .getConversationPage(idConversation, pageNumber, pageSize).getMessages());
     }
 
     private void initializeMessages() {
