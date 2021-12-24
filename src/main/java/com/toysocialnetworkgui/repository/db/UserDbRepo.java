@@ -29,8 +29,8 @@ public class UserDbRepo implements UserRepository {
         String updateTable = "ALTER TABLE " + usersTable +
                 " ADD COLUMN IF NOT EXISTS password varchar DEFAULT '000000'";
 
-        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
+             PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeUpdate();
             PreparedStatement updateStatement = connection.prepareStatement(updateTable);
             updateStatement.executeUpdate();

@@ -65,9 +65,10 @@ public class Event {
         this.end = end;
     }
 
-    public Event(String name, String description, LocalDateTime start, LocalDateTime end) {
+    public Event(String name, String description,String location, LocalDateTime start, LocalDateTime end) {
         this.name = name;
         this.description = description;
+        this.location = location;
         this.start = start;
         this.end = end;
     }
