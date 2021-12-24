@@ -2,7 +2,11 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.*;
 import com.toysocialnetworkgui.domain.network.Network;
+import com.toysocialnetworkgui.repository.FriendshipRepository;
+import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.UserRepository;
+import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
@@ -390,4 +394,11 @@ public class Service {
         if(!hasSent)
             throw new RepoException("There is no pending request available. You can't cancel it!");
     }
+
+    public ConversationDbRepo getConversationRepo() { return conversationService.getConvRepo(); }
+    public ConversationParticipantDbRepo getConversationParticipantsRepo() { return conversationService.getParticipantsRepo(); }
+    public UserRepository getUserRepo() { return userService.getRepo(); }
+    public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
+    public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
+    public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
 }

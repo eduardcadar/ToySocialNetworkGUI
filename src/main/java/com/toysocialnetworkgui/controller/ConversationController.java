@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
 
-public class ConversationController {
+public class ConversationController implements Observer {
     private Service service;
     private User loggedUser;
     private int idConversation;
@@ -40,6 +41,16 @@ public class ConversationController {
     @FXML
     TableColumn<Message, LocalDateTime> tableColumnDate;
 
+    public void initialize(Service service, User user, int idConversation) {
+        pageNumber = 1;
+        pageSize = 3;
+        this.service = service;
+        this.loggedUser = user;
+        this.idConversation = idConversation;
+        initializeMessages();
+        service.getMessageRepo().addObserver(this);
+    }
+
     @FXML
     protected void onPreviousPageButtonClick() {
         if (pageNumber == 1)
@@ -62,24 +73,15 @@ public class ConversationController {
             return;
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
+        textFieldMessage.clear();
         pageNumber = getLastPageNumber();
         reloadMessages();
-        textFieldMessage.clear();
     }
 
     private int getLastPageNumber() {
         return ((service.getConversation(idConversation).getMessages().size() - 1) / pageSize) + 1;
     }
-
-    public void initialize(Service service, User user, int idConversation) {
-        pageNumber = 1;
-        pageSize = 3;
-        this.service = service;
-        this.loggedUser = user;
-        this.idConversation = idConversation;
-        initializeMessages();
-    }
-
+  
     private ObservableList<Message> getMessages() {
         return FXCollections.observableArrayList(service
                 .getConversationPage(idConversation, pageNumber, pageSize).getMessages());
@@ -95,5 +97,10 @@ public class ConversationController {
 
     private void reloadMessages() {
         tableViewMessages.setItems(getMessages());
+    }
+
+    @Override
+    public void update(Object obj) {
+        reloadMessages();
     }
 }

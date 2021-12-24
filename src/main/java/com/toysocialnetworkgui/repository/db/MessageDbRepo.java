@@ -1,6 +1,7 @@
 package com.toysocialnetworkgui.repository.db;
 
 import com.toysocialnetworkgui.domain.Message;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.MessageValidator;
 import com.toysocialnetworkgui.validator.Validator;
 
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageDbRepo {
+public class MessageDbRepo extends Observable {
     private final String url, username, password, messagesTable;
     private final Validator<Message> validator;
 
@@ -54,6 +55,7 @@ public class MessageDbRepo {
             ps.setString(3, message.getMessage());
             ps.setString(4, String.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
+            super.notifyObservers();
             ResultSet res = ps.getGeneratedKeys();
             if (res.next())
                 message.setID(res.getInt(1));
@@ -156,6 +158,7 @@ public class MessageDbRepo {
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

@@ -8,8 +8,11 @@ import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import java.util.*;
 
 public class ConversationService {
-    ConversationParticipantDbRepo participantsRepo;
-    ConversationDbRepo conversationRepo;
+    private final ConversationDbRepo conversationRepo;
+    private final ConversationParticipantDbRepo participantsRepo;
+
+    public ConversationDbRepo getConvRepo() { return conversationRepo; }
+    public ConversationParticipantDbRepo getParticipantsRepo() { return participantsRepo; }
 
     public ConversationService(ConversationDbRepo conversationRepo, ConversationParticipantDbRepo participantsRepo) {
         this.conversationRepo = conversationRepo;
