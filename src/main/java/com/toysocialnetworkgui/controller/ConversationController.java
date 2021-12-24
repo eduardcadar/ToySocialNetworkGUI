@@ -19,7 +19,13 @@ public class ConversationController implements Observer {
     private Service service;
     private User loggedUser;
     private int idConversation;
+    private int pageNumber;
+    private int pageSize;
 
+    @FXML
+    Button buttonPreviousPage;
+    @FXML
+    Button buttonNextPage;
     @FXML
     TextField textFieldMessage;
     @FXML
@@ -36,6 +42,8 @@ public class ConversationController implements Observer {
     TableColumn<Message, LocalDateTime> tableColumnDate;
 
     public void initialize(Service service, User user, int idConversation) {
+        pageNumber = 1;
+        pageSize = 3;
         this.service = service;
         this.loggedUser = user;
         this.idConversation = idConversation;
@@ -44,17 +52,39 @@ public class ConversationController implements Observer {
     }
 
     @FXML
-    public void onSendMessageButtonClick() {
+    protected void onPreviousPageButtonClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        if (pageNumber == getLastPageNumber())
+            return;
+        pageNumber++;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onSendMessageButtonClick() {
         if (textFieldMessage.getLength() == 0)
             return;
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
         textFieldMessage.clear();
+        pageNumber = getLastPageNumber();
+        reloadMessages();
     }
 
+    private int getLastPageNumber() {
+        return ((service.getConversation(idConversation).getMessages().size() - 1) / pageSize) + 1;
+    }
+  
     private ObservableList<Message> getMessages() {
         return FXCollections.observableArrayList(service
-                .getConversation(idConversation).getMessages());
+                .getConversationPage(idConversation, pageNumber, pageSize).getMessages());
     }
 
     private void initializeMessages() {

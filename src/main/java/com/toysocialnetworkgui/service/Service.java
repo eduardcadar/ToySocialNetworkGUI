@@ -216,12 +216,30 @@ public class Service {
         return userFriendDTOS;
     }
 
+    public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
+        List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
+        List<String> friendsEmail = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
+        for (String friendEmail : friendsEmail){
+            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
+            User friend;
+            if (email.equals(friendship.getFirst())) {
+                friend = userService.getUser(friendship.getSecond());
+            }
+            else {
+                friend = userService.getUser(friendship.getFirst());
+            }
+            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
+            userFriendDTOS.add(userFriendDTO);
+        }
+        return userFriendDTOS;
+    }
+
     /**
      * @param email - String the email of the user
      * @return the users that are not friends with the given user
      */
     public List<User> getNotFriends(String email) {
-        List<String> friends = friendshipService.getUserFriendsAll(email);
+        List<String> friends = friendshipService.getUserFriends(email);
         List<User> notFriends = new ArrayList<>();
         for (User u : userService.getUsers())
             if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
@@ -320,6 +338,12 @@ public class Service {
     public Conversation getConversation(int idConversation) {
         Conversation conversation = conversationService.getConversation(idConversation);
         conversation.setMessages(messageService.getConversationMessages(idConversation));
+        return conversation;
+    }
+
+    public Conversation getConversationPage(int idConversation, int pageNumber, int pageSize) {
+        Conversation conversation = conversationService.getConversation(idConversation);
+        conversation.setMessages(messageService.getConversationMessagesPage(idConversation, (pageNumber - 1) * pageSize, pageSize));
         return conversation;
     }
 

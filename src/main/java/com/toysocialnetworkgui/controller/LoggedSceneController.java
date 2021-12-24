@@ -29,7 +29,7 @@ import java.util.*;
 public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
-  
+
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
@@ -65,11 +65,19 @@ public class LoggedSceneController implements Observer {
     TableColumn<UserFriendDTO, Date> tableColumnDate;
 
     @FXML
+    Button previousPage;
+    @FXML
+    Button nextPage;
+
+    @FXML
     TextField textFieldSearchFriend;
 
     private User loggedUser;
     private Service service;
     private Stage window;
+    private int pageNumber;
+    private int pageSize;
+    private int lastPage;
 
     public void initialize(User user) {
         setLoggedUser(user);
@@ -94,10 +102,7 @@ public class LoggedSceneController implements Observer {
             setFriendsList(getFriends());
         else
             setFriendsList(getFriends().
-                    filtered(x -> {
-                        String fullName = x.getFirstName().toLowerCase(Locale.ROOT) +' ' + x.getLastName().toLowerCase(Locale.ROOT);
-                        return fullName.contains(input);
-                    }));
+                    filtered(x -> x.getFirstName().startsWith(input) || x.getLastName().startsWith(input)));
     }
 
     /**
@@ -107,6 +112,16 @@ public class LoggedSceneController implements Observer {
         String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
         if (input.equals(""))
             setFriendsList(getFriends());
+    }
+  
+    public void initialize(User user) {
+        pageNumber = 1;
+        pageSize = 2;
+        setLoggedUser(user);
+        initializeFriendsList();
+        reloadConversationsList();
+        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        comboBoxMonth.setItems(getMonths());
     }
 
     private void reloadConversationsList() {
@@ -160,7 +175,7 @@ public class LoggedSceneController implements Observer {
 
     private ObservableList<UserFriendDTO> getFriends() {
         return FXCollections.observableArrayList(service
-                .getFriendshipsDTO(loggedUser.getEmail()));
+                .getFriendshipsDTOPage(loggedUser.getEmail(), pageNumber, pageSize));
     }
 
     private void setFriendsList(ObservableList<UserFriendDTO> friends) {
@@ -175,6 +190,25 @@ public class LoggedSceneController implements Observer {
         setFriendsList(getFriends());
 
         textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
+    }
+
+
+    @FXML
+    protected void onPreviousPageButtonClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadFriends();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        // TODO - find the value for last page in a more efficient way
+        lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
+        if (pageNumber == lastPage)
+            return;
+        pageNumber++;
+        reloadFriends();
     }
 
     @FXML

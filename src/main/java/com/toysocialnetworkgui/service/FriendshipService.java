@@ -150,12 +150,8 @@ public class FriendshipService {
         return friendshipRepository.getUserFriends(email);
     }
 
-    /**
-     * @param email - String the email of the user
-     * @return list with the emails of a user's friends + friends requested
-     */
-    public List<String> getUserFriendsAll(String email) {
-        return friendshipRepository.getUserFriendsAll(email);
+    public List<String> getUserFriendsPage(String email, int firstrow, int rowcount) {
+        return friendshipRepository.getUserFriendsPage(email, firstrow, rowcount);
     }
 
     /**

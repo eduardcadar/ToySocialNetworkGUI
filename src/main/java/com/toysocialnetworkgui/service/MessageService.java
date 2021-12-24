@@ -33,6 +33,10 @@ public class MessageService {
         return repo.getConversationMessages(idConversation);
     }
 
+    public List<Message> getConversationMessagesPage(int idConversation, int firstrow, int rowcount) {
+        return repo.getConversationMessagesPage(idConversation, firstrow, rowcount);
+    }
+
     /**
      * @param id int id of the message
      * @return the message with the id given, null if no message has id
