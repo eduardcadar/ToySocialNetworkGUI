@@ -2,7 +2,11 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.*;
 import com.toysocialnetworkgui.domain.network.Network;
+import com.toysocialnetworkgui.repository.FriendshipRepository;
+import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.UserRepository;
+import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
@@ -212,12 +216,30 @@ public class Service {
         return userFriendDTOS;
     }
 
+    public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
+        List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
+        List<String> friendsEmail = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
+        for (String friendEmail : friendsEmail){
+            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
+            User friend;
+            if (email.equals(friendship.getFirst())) {
+                friend = userService.getUser(friendship.getSecond());
+            }
+            else {
+                friend = userService.getUser(friendship.getFirst());
+            }
+            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
+            userFriendDTOS.add(userFriendDTO);
+        }
+        return userFriendDTOS;
+    }
+
     /**
      * @param email - String the email of the user
      * @return the users that are not friends with the given user
      */
     public List<User> getNotFriends(String email) {
-        List<String> friends = friendshipService.getUserFriendsAll(email);
+        List<String> friends = friendshipService.getUserFriends(email);
         List<User> notFriends = new ArrayList<>();
         for (User u : userService.getUsers())
             if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
@@ -319,6 +341,12 @@ public class Service {
         return conversation;
     }
 
+    public Conversation getConversationPage(int idConversation, int pageNumber, int pageSize) {
+        Conversation conversation = conversationService.getConversation(idConversation);
+        conversation.setMessages(messageService.getConversationMessagesPage(idConversation, (pageNumber - 1) * pageSize, pageSize));
+        return conversation;
+    }
+
     /**
      * Sends a message to a conversation
      * @param idConversation the id of the conversation where the message is sent
@@ -366,4 +394,11 @@ public class Service {
         if(!hasSent)
             throw new RepoException("There is no pending request available. You can't cancel it!");
     }
+
+    public ConversationDbRepo getConversationRepo() { return conversationService.getConvRepo(); }
+    public ConversationParticipantDbRepo getConversationParticipantsRepo() { return conversationService.getParticipantsRepo(); }
+    public UserRepository getUserRepo() { return userService.getRepo(); }
+    public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
+    public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
+    public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
 }

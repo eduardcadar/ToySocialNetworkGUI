@@ -3,7 +3,8 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
-import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.*;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
@@ -25,10 +26,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
-public class LoggedSceneController {
+public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
-  
+
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
@@ -64,11 +65,29 @@ public class LoggedSceneController {
     TableColumn<UserFriendDTO, Date> tableColumnDate;
 
     @FXML
+    Button previousPage;
+    @FXML
+    Button nextPage;
+
+    @FXML
     TextField textFieldSearchFriend;
 
     private User loggedUser;
     private Service service;
     private Stage window;
+    private int pageNumber;
+    private int pageSize;
+    private int lastPage;
+
+    public void initialize(User user) {
+        setLoggedUser(user);
+        initializeFriendsList();
+        reloadConversationsList();
+        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        comboBoxMonth.setItems(getMonths());
+        service.getFriendshipRepo().addObserver(this);
+        service.getConversationParticipantsRepo().addObserver(this);
+    }
 
     public void setService(Service service) {
         this.service = service;
@@ -83,11 +102,7 @@ public class LoggedSceneController {
             setFriendsList(getFriends());
         else
             setFriendsList(getFriends().
-                    filtered(x -> {
-                        String fullName = x.getFirstName().toLowerCase(Locale.ROOT) +' ' + x.getLastName().toLowerCase(Locale.ROOT);
-                        return fullName.contains(input);
-                    } ));
-
+                    filtered(x -> x.getFirstName().startsWith(input) || x.getLastName().startsWith(input)));
     }
 
     /**
@@ -95,11 +110,13 @@ public class LoggedSceneController {
      */
     public void clearSearchFriendSelection(){
         String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
-        if(input.equals(""))
+        if (input.equals(""))
             setFriendsList(getFriends());
-
     }
+  
     public void initialize(User user) {
+        pageNumber = 1;
+        pageSize = 2;
         setLoggedUser(user);
         initializeFriendsList();
         reloadConversationsList();
@@ -158,7 +175,7 @@ public class LoggedSceneController {
 
     private ObservableList<UserFriendDTO> getFriends() {
         return FXCollections.observableArrayList(service
-                .getFriendshipsDTO(loggedUser.getEmail()));
+                .getFriendshipsDTOPage(loggedUser.getEmail(), pageNumber, pageSize));
     }
 
     private void setFriendsList(ObservableList<UserFriendDTO> friends) {
@@ -173,6 +190,25 @@ public class LoggedSceneController {
         setFriendsList(getFriends());
 
         textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
+    }
+
+
+    @FXML
+    protected void onPreviousPageButtonClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadFriends();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        // TODO - find the value for last page in a more efficient way
+        lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
+        if (pageNumber == lastPage)
+            return;
+        pageNumber++;
+        reloadFriends();
     }
 
     @FXML
@@ -216,7 +252,7 @@ public class LoggedSceneController {
         stage.setTitle("Conversation");
         stage.setScene(new Scene(root));
         stage.showAndWait();
-        reloadConversationsList();
+//        reloadConversationsList();
     }
 
     @FXML
@@ -247,7 +283,6 @@ public class LoggedSceneController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
-        reloadFriends();
     }
 
     /**
@@ -267,12 +302,6 @@ public class LoggedSceneController {
         stage.setTitle("Requests interface");
         stage.setScene( new Scene(root));
         stage.showAndWait();
-
-        // TODO
-        //  Refresh the friend list after requests menu ??
-        //  Rather notify this LoggedScene to update his friendListTable
-        //  at the signal made by onButtonClickAccept
-        reloadFriends();
     }
 
     /**
@@ -305,5 +334,11 @@ public class LoggedSceneController {
         controller.setService(service);
         controller.setStage(window);
         window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
+    }
+
+    @Override
+    public void update(Object obj) {
+        if (obj instanceof FriendshipDbRepo) reloadFriends();
+        if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
     }
 }

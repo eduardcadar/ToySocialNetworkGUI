@@ -3,13 +3,14 @@ package com.toysocialnetworkgui.repository.db;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDbRepo implements UserRepository {
+public class UserDbRepo extends Observable implements UserRepository {
     private final String url, username, password, usersTable;
     private final Validator<User> validator;
 
@@ -37,7 +38,6 @@ public class UserDbRepo implements UserRepository {
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
-
     }
 
     /**
@@ -57,6 +57,7 @@ public class UserDbRepo implements UserRepository {
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getPassword());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -97,6 +98,7 @@ public class UserDbRepo implements UserRepository {
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -129,6 +131,7 @@ public class UserDbRepo implements UserRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -181,6 +184,7 @@ public class UserDbRepo implements UserRepository {
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getEmail());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
