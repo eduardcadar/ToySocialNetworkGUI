@@ -43,7 +43,10 @@ public class TestServiceDb {
     private final Friendship f2 = new Friendship(us3, us1);
     private final Friendship f3 = new Friendship(us2, us4);
     private final Network ntw = new Network(uRepo, fRepo);
-    private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw);
+
+    private final EventDbRepo eventDbRepo = new EventDbRepo(url, username, password, "events");
+    private final EventService eventService = new EventService(eventDbRepo);
+    private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw,eventService );
 
     @BeforeEach
     public void setUp() {

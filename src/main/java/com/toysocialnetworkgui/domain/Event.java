@@ -1,6 +1,7 @@
 package com.toysocialnetworkgui.domain;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Class that manages an event. I think it should be a subject where users are observers to this object.
@@ -11,17 +12,47 @@ import java.time.LocalDateTime;
  * User2 logs at 14:30 -> no nothing, he is already notified
  * User3 logs at 15:10 -> notify all
  * Users have to implement the observer interface
- * Events has: - A name, a description, LocalDateTime start, LocalDateTime end, Participants(Observers)
+ * Events has: - A name, a description, LocalDate start, LocalDate end, Participants(Observers)
  *  - TODO
  *      - Do something with image, in bd store the path to the image to event
  */
 public class Event {
         private String name;
         private String description;
-        private LocalDateTime start;
-        private LocalDateTime end;
+        private LocalDate start;
+        private LocalDate end;
         private String location;
-        // gen?
+        private String category;
+
+        public Event(String name, String location, String category, String description, LocalDate start, LocalDate end) {
+        this.name = name;
+        this.description = description;
+        this.start = start;
+        this.end = end;
+        this.location = location;
+        this.category = category;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
+
+
+
 
     @Override
     public String toString() {
@@ -49,27 +80,20 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDateTime getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 
-    public Event(String name, String description,String location, LocalDateTime start, LocalDateTime end) {
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.start = start;
-        this.end = end;
-    }
 }

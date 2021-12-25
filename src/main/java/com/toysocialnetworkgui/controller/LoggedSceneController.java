@@ -72,6 +72,10 @@ public class LoggedSceneController implements Observer {
     @FXML
     TextField textFieldSearchFriend;
 
+    @FXML
+    Button buttonEvents;
+
+
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -79,7 +83,11 @@ public class LoggedSceneController implements Observer {
     private int pageSize;
     private int lastPage;
 
-    public void initialize(User user) {
+    public void initialize(Service service, User user, Stage window) {
+        this.service = service;
+        this.window = window;
+        pageNumber = 1;
+        pageSize = 2;
         setLoggedUser(user);
         initializeFriendsList();
         reloadConversationsList();
@@ -87,10 +95,6 @@ public class LoggedSceneController implements Observer {
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
         service.getConversationParticipantsRepo().addObserver(this);
-    }
-
-    public void setService(Service service) {
-        this.service = service;
     }
 
     /**
@@ -113,17 +117,6 @@ public class LoggedSceneController implements Observer {
         if (input.equals(""))
             setFriendsList(getFriends());
     }
-  
-    public void initialize(User user) {
-        pageNumber = 1;
-        pageSize = 2;
-        setLoggedUser(user);
-        initializeFriendsList();
-        reloadConversationsList();
-        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        comboBoxMonth.setItems(getMonths());
-    }
-
     private void reloadConversationsList() {
         listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
     }
@@ -270,6 +263,18 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
+    protected void onEventsClick(ActionEvent event) throws IOException {
+        System.out.println("events");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent root = loader.load();
+        EventsController controller = loader.getController();
+        controller.initialize(service, loggedUser, window);
+        window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
+        window.show();
+
+    }
+
+    @FXML
     protected void onRemoveFriendButtonClick() {
         if (tableViewFriends.getSelectionModel().isEmpty())
             return;
@@ -318,9 +323,6 @@ public class LoggedSceneController implements Observer {
         }
     }
 
-    public void setStage(Stage window) {
-        this.window = window;
-    }
 
     @FXML
     protected void onLogoutButtonClick() throws IOException {

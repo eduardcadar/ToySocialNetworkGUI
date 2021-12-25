@@ -2,8 +2,6 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.*;
 import com.toysocialnetworkgui.domain.network.Network;
-import com.toysocialnetworkgui.repository.FriendshipRepository;
-import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
@@ -13,10 +11,8 @@ import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class Service {
     private final UserService userService;
@@ -24,13 +20,15 @@ public class Service {
     private final MessageService messageService;
     private final ConversationService conversationService;
     private final Network network;
+    private final EventService eventService;
 
-    public Service(UserService userService, FriendshipService friendshipService, MessageService messageService, ConversationService conversationService, Network network) {
+    public Service(UserService userService, FriendshipService friendshipService, MessageService messageService, ConversationService conversationService, Network network, EventService eventService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
         this.messageService = messageService;
         this.conversationService = conversationService;
         this.network = network;
+        this.eventService = eventService;
     }
 
     /**
@@ -401,4 +399,28 @@ public class Service {
     public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
     public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
     public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
+
+    public void addEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+        eventService.saveEvent(name,location,description,startDate,endDate);
+    }
+
+    public void removeEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+        eventService.removeEvent(name,location,description,startDate,endDate);
+    }
+
+    public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+        eventService.updateEvent(name,location,description,startDate,endDate);
+    }
+
+    public void subscribeToEvent(String userEmail, String eventName){
+        // if user does not exist ->
+        // if event does not exits ->
+        // add Subscription
+
+    }
+    public void unsubscribeFromEvent(String user, String eventName){
+
+
+    }
+
 }

@@ -52,17 +52,24 @@ public class ToySocialNetworkApp extends Application {
         String url = "jdbc:postgresql://localhost:5432/ToySocialNetwork";
         String username = "postgres";
         String password = "postgres";
+        // USER
         UserDbRepo uRepo = new UserDbRepo(url, username, password, new UserValidator(), "users");
         UserService uSrv = new UserService(uRepo);
+        // FRIENDSHIP
         FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
         FriendshipRequestDbRepo friendshipRequestRepo = new FriendshipRequestDbRepo(url, username, password,"requests");
         FriendshipService fSrv = new FriendshipService(fRepo, friendshipRequestRepo);
+        // CONVERSATION
         ConversationDbRepo cRepo = new ConversationDbRepo(url, username, password, "conversations");
         MessageDbRepo mRepo = new MessageDbRepo(url, username, password, new MessageValidator(), "messages");
         MessageService mSrv = new MessageService(mRepo);
         ConversationParticipantDbRepo crRepo = new ConversationParticipantDbRepo(url, username, password, new ConversationParticipantValidator(), "participants");
         ConversationService mrSrv = new ConversationService(cRepo, crRepo);
         Network network = new Network(uRepo, fRepo);
-        this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network);
+
+        /// EVENTS
+        EventDbRepo eventRepo = new EventDbRepo(url, username, password, "events");
+        EventService eventService = new EventService(eventRepo);
+        this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network,eventService );
     }
 }
