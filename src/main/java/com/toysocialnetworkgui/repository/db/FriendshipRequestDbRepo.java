@@ -4,13 +4,14 @@ import com.toysocialnetworkgui.domain.FriendshipRequest;
 import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.observer.Observable;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
+public class FriendshipRequestDbRepo extends Observable implements FriendshipRequestRepository {
     private final String url, username, password, tableName;
 
     public FriendshipRequestDbRepo(String url, String username, String password, String tableName){
@@ -51,6 +52,7 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
             ps.setString(3, request.getState().toString());
             ps.setString(4, request.getSendDate().toString());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -62,6 +64,7 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -124,6 +127,7 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
             ps.setString(1, friendshipRequest.getFirst());
             ps.setString(2, friendshipRequest.getSecond());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -145,6 +149,7 @@ public class FriendshipRequestDbRepo implements FriendshipRequestRepository {
             ps.setString(2, request.getFirst());
             ps.setString(3, request.getSecond());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

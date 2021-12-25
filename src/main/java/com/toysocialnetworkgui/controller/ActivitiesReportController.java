@@ -104,7 +104,7 @@ public class ActivitiesReportController {
             contentStream.newLineAtOffset(0, -15);
         }
 
-        contentStream.newLineAtOffset(0, -15);
+        contentStream.newLineAtOffset(0, -30);
         contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
         contentStream.showText("MESSAGES RECEIVED");
         contentStream.newLineAtOffset(0, -30);

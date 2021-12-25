@@ -5,28 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cssdialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_base_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_controls_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_graphics_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/postgresql-42.3.1.jar" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/observer/Observable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/observer/Observer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ActivitiesReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ActivitiesReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/AddFriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/AddFriendController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ConversationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ConversationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/RequestsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/RequestsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/FriendshipRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/FriendshipRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/ConversationParticipantDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/ConversationParticipantDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipRequestDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipRequestDbRepo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/MessageDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/MessageDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/UserDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/UserDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/ConversationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/ConversationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/FriendshipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/FriendshipService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/MessageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/conversationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/conversationScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

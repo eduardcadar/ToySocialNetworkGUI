@@ -1,13 +1,14 @@
 package com.toysocialnetworkgui.repository.db;
 
 import com.toysocialnetworkgui.domain.ConversationParticipant;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversationParticipantDbRepo {
+public class ConversationParticipantDbRepo extends Observable {
     private final String url, username, password, participantsTable;
     private final Validator<ConversationParticipant> validator;
 
@@ -45,6 +46,7 @@ public class ConversationParticipantDbRepo {
             ps.setInt(1, conversationParticipant.getIdConversation());
             ps.setString(2, conversationParticipant.getParticipant());
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -75,6 +77,7 @@ public class ConversationParticipantDbRepo {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            super.notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

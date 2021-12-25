@@ -6,17 +6,22 @@ import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.repository.FriendshipRepository;
 import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
+import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class FriendshipService {
-    private final FriendshipRepository friendshipRepository;
-    private final FriendshipRequestRepository requestRepository;
-    public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
+    private final FriendshipDbRepo friendshipRepository;
+    private final FriendshipRequestDbRepo requestRepository;
+    public FriendshipService(FriendshipDbRepo friendshipRepository, FriendshipRequestDbRepo requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
     }
+
+    public FriendshipDbRepo getFriendshipRepository() { return friendshipRepository; }
+    public FriendshipRequestDbRepo getRequestRepository() { return requestRepository; }
 
     /**
      * @param email1 - String the email of the first user
@@ -145,12 +150,8 @@ public class FriendshipService {
         return friendshipRepository.getUserFriends(email);
     }
 
-    /**
-     * @param email - String the email of the user
-     * @return list with the emails of a user's friends + friends requested
-     */
-    public List<String> getUserFriendsAll(String email) {
-        return friendshipRepository.getUserFriendsAll(email);
+    public List<String> getUserFriendsPage(String email, int firstrow, int rowcount) {
+        return friendshipRepository.getUserFriendsPage(email, firstrow, rowcount);
     }
 
     /**

@@ -2,6 +2,8 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import javafx.beans.InvalidationListener;
@@ -20,7 +22,7 @@ import javafx.util.Callback;
 
 import java.util.Objects;
 
-public class RequestsController {
+public class RequestsController implements Observer {
     private Service service;
     private User loggedUser;
 
@@ -81,7 +83,7 @@ public class RequestsController {
         initializeRequestsList();
         tableSentRequestsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableReceivedRequestsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
+        service.getRequestRepo().addObserver(this);
     }
 
     /**
@@ -215,7 +217,7 @@ public class RequestsController {
     }
 
     /**
-     * Reloads both tables  SentRequests and ReceivedRequests
+     * Reloads both tables SentRequests and ReceivedRequests
      */
     // TODO
     //  might reload only the affected table  deal with this later
@@ -229,7 +231,6 @@ public class RequestsController {
         if (requestDTO != null) {
             try {
                 service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
-                reloadTables();
             } catch (RepoException e){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Error");
@@ -251,8 +252,6 @@ public class RequestsController {
         if (requestDTO != null) {
             try {
                 service.rejectFriendship(requestDTO.getEmail(), loggedUser.getEmail());
-                setSentRequestsList(getSentRequests());
-                setReceivedRequestsList(getReceivedRequests());
             } catch (RepoException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Error");
@@ -275,7 +274,6 @@ public class RequestsController {
         if(dto != null) {
             try {
             service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
-            reloadTables();
         } catch(RepoException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Error");
@@ -305,6 +303,7 @@ public class RequestsController {
             }
         }
     }
+    
     public void handleSentClickEvent(MouseEvent mouseEvent) {
         if (tableSentRequestsView.getSelectionModel() != null) {
             if (tableSentRequestsView.getSelectionModel().getSelectedCells().size() > 0) {
@@ -314,5 +313,10 @@ public class RequestsController {
                 }
             }
         }
+    }
+  
+    @Override
+    public void update(Object obj) {
+        if (obj instanceof FriendshipRequestDbRepo) reloadTables();
     }
 }

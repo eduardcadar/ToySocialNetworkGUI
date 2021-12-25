@@ -6,7 +6,9 @@ import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 import java.util.List;
 
 public class MessageService {
-    MessageDbRepo repo;
+    private final MessageDbRepo repo;
+
+    public MessageDbRepo getRepo() { return repo; }
 
     public MessageService(MessageDbRepo repo) {
         this.repo = repo;
@@ -29,6 +31,10 @@ public class MessageService {
      */
     public List<Message> getConversationMessages(int idConversation) {
         return repo.getConversationMessages(idConversation);
+    }
+
+    public List<Message> getConversationMessagesPage(int idConversation, int firstrow, int rowcount) {
+        return repo.getConversationMessagesPage(idConversation, firstrow, rowcount);
     }
 
     /**
