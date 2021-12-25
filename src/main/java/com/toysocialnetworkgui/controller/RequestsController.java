@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class RequestsController implements Observer {
@@ -94,7 +95,7 @@ public class RequestsController implements Observer {
         tableSentColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableSentColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableSentColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
-        tableSentColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
+        tableSentColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         tableSentColumnCancel.setStyle("-fx-alignment: CENTER");
         tableSentColumnCancel.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
@@ -131,7 +132,7 @@ public class RequestsController implements Observer {
         tableReceivedColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableReceivedColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableReceivedColumnState.setCellValueFactory(new PropertyValueFactory<>("state"));
-        tableReceivedColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().toString()));
+        tableReceivedColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         tableAcceptRequest.setStyle("-fx-alignment: CENTER");
 
         tableAcceptRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
