@@ -9,6 +9,7 @@ import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.EventDbRepo;
 import com.toysocialnetworkgui.repository.db.UserDbRepo;
+import com.toysocialnetworkgui.service.EventService;
 import com.toysocialnetworkgui.validator.ConversationParticipantValidator;
 import com.toysocialnetworkgui.validator.UserValidator;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,15 +34,16 @@ public class TestEventsRepoDb {
     EventDbRepo eventRepo = new EventDbRepo(url, username, password, "events");
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
         userRepo.save(new User("adi", "popa", "a@a.a"));
         userRepo.save(new User("alex", "popescu", "b@b.b"));
         userRepo.save(new User("ana", "cozma", "c@c.c"));
         userRepo.save(new User("miruna", "lazar", "d@d.d"));
 
 
-        eventRepo.save(new Event("Ziua izabelei", "mergem ","Zi de nastere","Constanta", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 15)));
-        eventRepo.save(new Event("Antold", "Clujao ","Festival","MD cu apa", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 25)));
+        eventRepo.save(new Event(1, "Ziua izabelei", "Izabela", "Acasa", "Zi de nastere ","cel mai mare PArty", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 15)));
+        eventRepo.save(new Event(2, "Antold", "BOC ","CLuj napoca", "Festival","MD cu apa", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 25)));
+
 
     }
 
@@ -51,12 +54,12 @@ public class TestEventsRepoDb {
         assertEquals(0, eventRepo.size());
     }
     @Test
-    void testSave(){
-        eventRepo.save(new Event("ev1", "loc1", "meetup", "desc1", startDate, endDate));
+    void testSave() throws SQLException {
+        eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate));
         assertEquals(3, eventRepo.size());
         try{
-            eventRepo.save(new Event("ev1", "loc1", "meetup", "desc1", startDate, endDate));
-            assertTrue(false);
+            eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate));
+            fail();
         }
         catch (RepoException e){
             assertTrue(true);
@@ -64,27 +67,39 @@ public class TestEventsRepoDb {
     }
 
     @Test
-    void testGetEvent(){
+    void testGetEvent() throws SQLException {
+        assertNull(eventRepo.getEvent("basl"));
+        assertEquals(eventRepo.getEvent("Antold").getName(), "Antold");
+    }
+
+    @Test
+    void testRemove() throws SQLException {
+        eventRepo.remove("Antold");
+        assertEquals(eventRepo.getAll().size(),1 );
 
     }
 
     @Test
-    void testRemove(){
-
-
+    void testUpdate() throws SQLException {
+//        eventRepo.update(new Event(2, "Untold", "X","CLuj napoca", "Festival","MD cu apa", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 25)));
+//        assertEquals(eventRepo.getEvent("Untold").getName(), "Untold");
+//        assertEquals(eventRepo.getEvent("Untold").getOrganizer(), "X");
     }
 
     @Test
-    void testUpdate(){
-
+    void testGetAll() throws SQLException {
+        List<Event> events = eventRepo.getAll();
+        assertEquals(events.size(), 2);
+        assertEquals(events.get(0).getName(), "Ziua izabelei");
+        assertEquals(events.get(1).getName(), "Antold");
 
     }
-
 
     @AfterEach
     void tearDown() {
         eventRepo.clear();
         userRepo.clear();
     }
+
 
 }

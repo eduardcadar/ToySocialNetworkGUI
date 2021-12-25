@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.EventRepository;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class EventService {
 
     public void remove(){}
 
-    public List<Event> getAllEvents(){
+    public List<Event> getAllEvents() {
         return eventRepo.getAll();
     }
 
@@ -38,7 +39,8 @@ public class EventService {
         return null;
     }
 
-    public void saveEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+    public void saveEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate) {
+        eventRepo.save(new Event(name,creator,location,category, description, startDate, endDate));
     }
 
 

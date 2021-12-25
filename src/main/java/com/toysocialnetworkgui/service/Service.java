@@ -9,6 +9,7 @@ import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -400,10 +401,30 @@ public class Service {
     public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
     public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
 
-    public void addEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
-        eventService.saveEvent(name,location,description,startDate,endDate);
+    /**
+     * Adds a new event into Social Network
+     * @param name - String
+     * @param location - String
+     * @param description - String
+     * @param startDate - LocalDate
+     * @param endDate -LocalDate
+     */
+    public void addEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate){
+        eventService.saveEvent(name,creator,location,category, description, startDate, endDate);
     }
 
+    public List<Event> getAllEvents(){
+        return eventService.getAllEvents();
+
+    }
+    /**
+     * Removes the event
+     * @param name - String
+     * @param location - String
+     * @param description - String
+     * @param startDate - LocalDate
+     * @param endDate - LocalDate
+     */
     public void removeEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
         eventService.removeEvent(name,location,description,startDate,endDate);
     }

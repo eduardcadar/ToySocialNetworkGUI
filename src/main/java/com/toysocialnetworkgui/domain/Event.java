@@ -1,7 +1,7 @@
 package com.toysocialnetworkgui.domain;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Class that manages an event. I think it should be a subject where users are observers to this object.
@@ -17,14 +17,47 @@ import java.time.LocalDate;
  *      - Do something with image, in bd store the path to the image to event
  */
 public class Event {
-        private String name;
-        private String description;
-        private LocalDate start;
-        private LocalDate end;
-        private String location;
-        private String category;
 
-        public Event(String name, String location, String category, String description, LocalDate start, LocalDate end) {
+
+    private Integer id;
+    private String name;
+    private String description;
+    private LocalDate start;
+    private LocalDate end;
+    private String location;
+    private String category;
+    private String organizer;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    public Event(String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end) {
+        this.organizer = organizer;
+        this.name = name;
+        this.description = description;
+        this.start = start;
+        this.end = end;
+        this.location = location;
+        this.category = category;
+    }
+
+
+    public Event(Integer id, String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end) {
+        this.id = id;
+        this.organizer = organizer;
         this.name = name;
         this.description = description;
         this.start = start;
@@ -50,9 +83,23 @@ public class Event {
     }
 
 
+    /**
+     * Two events are the same if they have the same name. Sorry for this eduard :(
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(name, event.name);
+        }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, start, end, location, category);
+    }
 
     @Override
     public String toString() {

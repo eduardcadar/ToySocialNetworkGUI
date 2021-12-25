@@ -1,17 +1,20 @@
 package com.toysocialnetworkgui.controller;
 
+import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.UserFriendDTO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,11 +45,40 @@ public class EventsController {
     @FXML
     protected DatePicker datePickerEventEnd;
 
+    @FXML
+    protected TableView<Event> tableViewEvents;
+    @FXML
+    protected TableColumn<Event, String> columnOrganizer;
+    @FXML
+    protected TableColumn<Event, String> columnName;
+    @FXML
+    protected TableColumn<Event, String> columnLocation;
+    @FXML
+    protected TableColumn<Event, String> columnDescription;
+
 
     public void initialize(Service service, User loggedUser, Stage window) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
+        initTable();
+
+    }
+
+    private void initTable() {
+        columnOrganizer.setCellValueFactory(new PropertyValueFactory<>("organizer"));
+        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        setEventList(getEvents());
+
+    }
+    private ObservableList<Event> getEvents() {
+        return FXCollections.observableArrayList(service
+                .getAllEvents());
+    }
+    private void setEventList(ObservableList<Event> events) {
+        tableViewEvents.setItems(events);
     }
 
     @FXML
@@ -68,7 +100,12 @@ public class EventsController {
         String description = textFieldEventDescription.getText();
         LocalDate startDate = datePickerEventStart.getValue();
         LocalDate endDate = datePickerEventEnd.getValue();
-        service.addEvent(name, location, description, startDate, endDate);
-        onCancelEventClick(event);
+        String creator = loggedUser.getEmail();
+        String category = "test category";
+        service.addEvent(name,creator,location,category, description, startDate, endDate);
+        // TODO
+        //  - do some notify observer here?
+        setEventList(getEvents());
+
     }
 }
