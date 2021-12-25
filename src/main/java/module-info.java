@@ -6,6 +6,7 @@ module com.toysocialnetworkgui {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires org.apache.pdfbox;
 
     opens com.toysocialnetworkgui to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.controller to javafx.fxml, javafx.base;

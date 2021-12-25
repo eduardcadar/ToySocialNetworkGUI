@@ -11,6 +11,6 @@ public class CONSTANTS {
     public static final int LOGIN_SCREEN_WIDTH = 400;
     public static final int LOGIN_SCREEN_HEIGHT = 250;
 
-    private static final String DATETIME_PATTERN = "dd-MM-yyyy HH:mm";
+    public static final String DATETIME_PATTERN = "dd-MM-yyyy HH:mm";
 
 }

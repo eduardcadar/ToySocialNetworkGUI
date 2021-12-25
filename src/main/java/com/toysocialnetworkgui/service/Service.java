@@ -8,15 +8,12 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
+import com.toysocialnetworkgui.utils.UserMessageDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.util.*;
 
 public class Service {
     private final UserService userService;
@@ -130,7 +127,7 @@ public class Service {
      * @return saved users - List[User]
      */
     public List<User> getUsers() {
-        return userService.getUsers();
+        return userService.getAllUsers();
     }
 
     /**
@@ -241,7 +238,7 @@ public class Service {
     public List<User> getNotFriends(String email) {
         List<String> friends = friendshipService.getUserFriends(email);
         List<User> notFriends = new ArrayList<>();
-        for (User u : userService.getUsers())
+        for (User u : userService.getAllUsers())
             if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
                 notFriends.add(u);
         return notFriends;
@@ -393,6 +390,48 @@ public class Service {
         }
         if(!hasSent)
             throw new RepoException("There is no pending request available. You can't cancel it!");
+    }
+
+    /**
+     * Returns a list with UserMessageDTOs from a conversation's messages
+     * @param emails the emails of the participants of the conversation
+     * @return list of UserMessageDTO
+     */
+    public List<UserMessageDTO> getConversationUserMessageDTOs(List<String> emails) {
+        List<UserMessageDTO> messageDTOs = new ArrayList<>();
+        Map<String, User> usersMap = new HashMap<>();
+        emails.forEach(e -> usersMap.put(e, userService.getUser(e)));
+
+        int convID = conversationService.getConversation(emails).getID();
+        List<Message> messages = messageService.getConversationMessages(convID);
+        messages.forEach(m ->
+                messageDTOs.add(new UserMessageDTO(usersMap.get(m.getSender()), m.getMessage(), m.getDate())));
+
+        return messageDTOs;
+    }
+
+    /**
+     * Returns a list with UserMessageDTOs for all messages received by a user
+     * @param email the email of the user
+     * @return list of UserMessageDTO
+     */
+    public List<UserMessageDTO> getUserMessageDTOs(String email) {
+        List<UserMessageDTO> messageDTOs = new ArrayList<>();
+        List<Integer> conversations = conversationService.getUserConversations(email);
+        List<Message> messages = messageService.getAllMessages()
+                .stream()
+                .filter(m -> conversations.contains(m.getIdConversation()))
+                .filter(m -> !m.getSender().equals(email))
+                .toList();
+
+        List<User> users = userService.getAllUsers();
+        Map<String, User> usersMap = new HashMap<>();
+        users.forEach(u -> usersMap.put(u.getEmail(), u));
+
+        messages.forEach(m ->
+                messageDTOs.add(new UserMessageDTO(usersMap.get(m.getSender()), m.getMessage(), m.getDate())));
+
+        return messageDTOs;
     }
 
     public ConversationDbRepo getConversationRepo() { return conversationService.getConvRepo(); }

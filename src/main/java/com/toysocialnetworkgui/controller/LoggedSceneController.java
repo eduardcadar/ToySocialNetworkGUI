@@ -36,6 +36,10 @@ public class LoggedSceneController implements Observer {
     Button buttonFriendRequest = new Button();
     @FXML
     Button buttonAddFriend;
+    @FXML
+    Button buttonFriendReport;
+    @FXML
+    Button buttonActivitiesReport;
 
     @FXML
     ComboBox<String> comboBoxMonth;
@@ -77,9 +81,10 @@ public class LoggedSceneController implements Observer {
     private Stage window;
     private int pageNumber;
     private int pageSize;
-    private int lastPage;
 
     public void initialize(User user) {
+        pageNumber = 1;
+        pageSize = 2;
         setLoggedUser(user);
         initializeFriendsList();
         reloadConversationsList();
@@ -113,16 +118,6 @@ public class LoggedSceneController implements Observer {
         if (input.equals(""))
             setFriendsList(getFriends());
     }
-  
-    public void initialize(User user) {
-        pageNumber = 1;
-        pageSize = 2;
-        setLoggedUser(user);
-        initializeFriendsList();
-        reloadConversationsList();
-        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        comboBoxMonth.setItems(getMonths());
-    }
 
     private void reloadConversationsList() {
         listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
@@ -139,6 +134,45 @@ public class LoggedSceneController implements Observer {
                 "january", "february", "march", "april",
                 "may", "june", "july", "august",
                 "september", "october", "november", "december"));
+    }
+
+    @FXML
+    protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
+        Parent root = loader.load();
+
+        ActivitiesReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        Stage stage = new Stage();
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.setTitle("Activity report");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    @FXML
+    protected void onButtonFriendReportClick(ActionEvent event) throws IOException {
+        if (tableViewFriends.getSelectionModel().getSelectedItems().size() != 1) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Select one friend!");
+            alert.showAndWait();
+            return;
+        }
+        String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
+        Parent root = loader.load();
+
+        FriendReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, service.getUser(userEmail));
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.setTitle("Friend report");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
@@ -204,7 +238,7 @@ public class LoggedSceneController implements Observer {
     @FXML
     protected void onNextPageButtonClick() {
         // TODO - find the value for last page in a more efficient way
-        lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
+        int lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
         if (pageNumber == lastPage)
             return;
         pageNumber++;
