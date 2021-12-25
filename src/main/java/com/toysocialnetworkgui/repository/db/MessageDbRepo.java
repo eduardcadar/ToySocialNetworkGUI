@@ -138,4 +138,27 @@ public class MessageDbRepo {
             throw new DbException(throwables.getMessage());
         }
     }
+
+    /**
+     * Returns all messages saved
+     * @return list of Message
+     */
+    public List<Message> getAll() {
+        List<Message> messages = new ArrayList<>();
+        String sql = "SELECT * FROM " + messagesTable;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                Message message = new Message(res.getInt("idconversation"),
+                        res.getString("sender"), res.getString("messagetext"));
+                message.setDate(LocalDateTime.parse(res.getString("sentdate")));
+                message.setID(res.getInt("id"));
+                messages.add(message);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return messages;
+    }
 }

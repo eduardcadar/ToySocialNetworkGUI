@@ -35,6 +35,10 @@ public class LoggedSceneController {
     Button buttonFriendRequest = new Button();
     @FXML
     Button buttonAddFriend;
+    @FXML
+    Button buttonFriendReport;
+    @FXML
+    Button buttonActivitiesReport;
 
     @FXML
     ComboBox<String> comboBoxMonth;
@@ -122,6 +126,45 @@ public class LoggedSceneController {
                 "january", "february", "march", "april",
                 "may", "june", "july", "august",
                 "september", "october", "november", "december"));
+    }
+
+    @FXML
+    protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
+        Parent root = loader.load();
+
+        ActivitiesReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        Stage stage = new Stage();
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.setTitle("Activity report");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    @FXML
+    protected void onButtonFriendReportClick(ActionEvent event) throws IOException {
+        if (tableViewFriends.getSelectionModel().getSelectedItems().size() != 1) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Select one friend!");
+            alert.showAndWait();
+            return;
+        }
+        String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
+        Parent root = loader.load();
+
+        FriendReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, service.getUser(userEmail));
+        Stage stage = new Stage();
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.setTitle("Friend report");
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML

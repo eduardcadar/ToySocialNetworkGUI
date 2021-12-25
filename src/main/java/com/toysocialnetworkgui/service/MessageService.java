@@ -38,4 +38,12 @@ public class MessageService {
     public Message getMessage(int id) {
         return repo.getMessage(id);
     }
+
+    /**
+     * Returns all messages saved
+     * @return list of Message
+     */
+    public List<Message> getAllMessages() {
+        return repo.getAll();
+    }
 }

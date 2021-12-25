@@ -59,7 +59,7 @@ public class UserService {
     /**
      * @return all the users saved in the repository
      */
-    public List<User> getUsers() {
+    public List<User> getAllUsers() {
         return repo.getAll();
     }
 
