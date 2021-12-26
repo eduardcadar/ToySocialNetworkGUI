@@ -81,10 +81,14 @@ public class LoggedSceneController implements Observer {
     private Stage window;
     private int pageNumber;
     private int pageSize;
+    private String currentSearchPattern;
+    private int currentMonthFilter;
 
     public void initialize(User user) {
         pageNumber = 1;
         pageSize = 2;
+        currentSearchPattern = "";
+        currentMonthFilter = 0;
         setLoggedUser(user);
         initializeFriendsList();
         reloadConversationsList();
@@ -101,19 +105,16 @@ public class LoggedSceneController implements Observer {
     /**
      * Filter the friends searching by name from textFieldSearchFriend
      */
-    public void onButtonSearchFriend(){
-        String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
-        if(input.equals(""))
-            setFriendsList(getFriends());
-        else
-            setFriendsList(getFriends().
-                    filtered(x -> x.getFirstName().startsWith(input) || x.getLastName().startsWith(input)));
+    public void onButtonSearchFriend() {
+        pageNumber = 1;
+        currentSearchPattern = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
+        setFriendsList(getFriends());
     }
 
     /**
      * Show all friends if the textField for searching is empty
      */
-    public void clearSearchFriendSelection(){
+    public void clearSearchFriendSelection() {
         String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
         if (input.equals(""))
             setFriendsList(getFriends());
@@ -177,39 +178,36 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onSelectMonth() {
+        pageNumber = 1;
         String month = comboBoxMonth.getValue();
-        int monthNr;
         if (month == null)
             month = "any month";
         switch (month) {
-            case "january" -> monthNr = 1;
-            case "february" -> monthNr = 2;
-            case "march" -> monthNr = 3;
-            case "april" -> monthNr = 4;
-            case "may" -> monthNr = 5;
-            case "june" -> monthNr = 6;
-            case "july" -> monthNr = 7;
-            case "august" -> monthNr = 8;
-            case "september" -> monthNr = 9;
-            case "october" -> monthNr = 10;
-            case "november" -> monthNr = 11;
-            case "december" -> monthNr = 12;
-            default -> monthNr = 0;
+            case "january" -> currentMonthFilter = 1;
+            case "february" -> currentMonthFilter = 2;
+            case "march" -> currentMonthFilter = 3;
+            case "april" -> currentMonthFilter = 4;
+            case "may" -> currentMonthFilter = 5;
+            case "june" -> currentMonthFilter = 6;
+            case "july" -> currentMonthFilter = 7;
+            case "august" -> currentMonthFilter = 8;
+            case "september" -> currentMonthFilter = 9;
+            case "october" -> currentMonthFilter = 10;
+            case "november" -> currentMonthFilter = 11;
+            case "december" -> currentMonthFilter = 12;
+            default -> currentMonthFilter = 0;
         }
-        if (monthNr == 0)
-            setFriendsList(getFriends());
-        else
-            setFriendsList(getFriends().
-                    filtered(x -> x.getDate().getMonthValue() == monthNr));
+        setFriendsList(FXCollections.observableArrayList(service
+                .getFriendshipsDTOMonthFilteredPage(loggedUser.getEmail(), pageNumber, pageSize, currentSearchPattern, currentMonthFilter)));
     }
 
     private void reloadFriends() {
-        onSelectMonth(); // ??
+        setFriendsList(getFriends());
     }
 
     private ObservableList<UserFriendDTO> getFriends() {
         return FXCollections.observableArrayList(service
-                .getFriendshipsDTOPage(loggedUser.getEmail(), pageNumber, pageSize));
+                .getFriendshipsDTOMonthFilteredPage(loggedUser.getEmail(), pageNumber, pageSize, currentSearchPattern, currentMonthFilter));
     }
 
     private void setFriendsList(ObservableList<UserFriendDTO> friends) {
@@ -226,7 +224,6 @@ public class LoggedSceneController implements Observer {
         textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
     }
 
-
     @FXML
     protected void onPreviousPageButtonClick() {
         if (pageNumber == 1)
@@ -237,8 +234,8 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onNextPageButtonClick() {
-        // TODO - find the value for last page in a more efficient way
-        int lastPage = ((service.getUserFriends(loggedUser.getEmail()).size() - 1) / pageSize) + 1;
+        int lastPage = ((service
+                .getUserFriendsMonthFilteredSize(loggedUser.getEmail(), currentSearchPattern, currentMonthFilter) - 1) / pageSize) + 1;
         if (pageNumber == lastPage)
             return;
         pageNumber++;

@@ -16,14 +16,16 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
     private final String username;
     private final String password;
     private final String fshipsTable;
+    private final String usersTable;
     private final Validator<Friendship> val;
 
-    public FriendshipDbRepo(String url, String username, String password, Validator<Friendship> val, String fshipsTable) {
+    public FriendshipDbRepo(String url, String username, String password, Validator<Friendship> val, String fshipsTable, String usersTable) {
         this.url = url;
         this.username = username;
         this.password = password;
         this.val = val;
         this.fshipsTable = fshipsTable;
+        this.usersTable = usersTable;
 
         String sql = "CREATE TABLE IF NOT EXISTS " + fshipsTable +
                 "(email1 varchar," +
@@ -126,9 +128,75 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet res = ps.executeQuery();
-            if (res.next()) {
+            if (res.next())
                 return res.getInt("size");
-            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
+    }
+
+    public int getUserFriendsSize(String email) {
+        String sql = "SELECT COUNT(*) AS size FROM " + fshipsTable +
+                "WHERE email1 = ? OR email2 = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
+    }
+
+    public int getUserFriendsFilteredSize(String email, String pattern) {
+        String sql = "SELECT COUNT(*) AS size FROM " +
+                " (SELECT email1, email2 FROM " + fshipsTable +
+                " WHERE email1 = ? OR email2 = ?) fr" +
+                " INNER JOIN " + usersTable +
+                " ON ((email = email1 AND email1 <> ?) OR (email = email2 AND email2 <> ?))" +
+                " WHERE LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ps.setString(3, email);
+            ps.setString(4, email);
+            ps.setString(5, pattern + "%");
+            ps.setString(6, pattern + "%");
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
+    }
+
+    public int getUserFriendsMonthFilteredSize(String email, String pattern, int month) {
+        String monthStr = String.valueOf(month);
+        if (month < 10) monthStr = "0" + monthStr;
+        String sql = "SELECT COUNT(*) AS size FROM " +
+                " (SELECT email1, email2 FROM " + fshipsTable +
+                " WHERE (email1 = ? OR email2 = ?) AND date LIKE ?) fr" +
+                " INNER JOIN " + usersTable +
+                " ON ((email = email1 AND email1 <> ?) OR (email = email2 AND email2 <> ?))" +
+                " WHERE LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ps.setString(3, "%-" + monthStr + "-%");
+            ps.setString(4, email);
+            ps.setString(5, email);
+            ps.setString(6, pattern + "%");
+            ps.setString(7, pattern + "%");
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -189,6 +257,77 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
             ps.setString(2, email);
             ps.setInt(3, firstrow);
             ps.setInt(4, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                String email1 = res.getString("email1");
+                String email2 = res.getString("email2");
+                if (email1.equals(email))
+                    friends.add(email2);
+                else
+                    friends.add(email1);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return friends;
+    }
+
+    public List<String> getUserFriendsFilteredPage(String email, int firstrow, int rowcount, String pattern) {
+        List<String> friends = new ArrayList<>();
+        String sql = "SELECT email1, email2 FROM " +
+                " (SELECT email1, email2 FROM " + fshipsTable +
+                " WHERE email1 = ? OR email2 = ?) fr" +
+                " INNER JOIN " + usersTable +
+                " ON ((email = email1 AND email1 <> ?) OR (email = email2 AND email2 <> ?))" +
+                " WHERE LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ?" +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ps.setString(3, email);
+            ps.setString(4, email);
+            ps.setString(5, pattern + "%");
+            ps.setString(6, pattern + "%");
+            ps.setInt(7, firstrow);
+            ps.setInt(8, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                String email1 = res.getString("email1");
+                String email2 = res.getString("email2");
+                if (email1.equals(email))
+                    friends.add(email2);
+                else
+                    friends.add(email1);
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return friends;
+    }
+
+    public List<String> getUserFriendsMonthFilteredPage(String email, int firstrow, int rowcount, String pattern, int month) {
+        List<String> friends = new ArrayList<>();
+        String monthStr = String.valueOf(month);
+        if (month < 10) monthStr = "0" + monthStr;
+        String sql = "SELECT email1, email2 FROM " +
+                " (SELECT email1, email2 FROM " + fshipsTable +
+                " WHERE (email1 = ? OR email2 = ?) AND date LIKE ?) fr" +
+                " INNER JOIN " + usersTable +
+                " ON ((email = email1 AND email1 <> ?) OR (email = email2 AND email2 <> ?))" +
+                " WHERE LOWER(firstname) LIKE ? OR LOWER(lastname) LIKE ?" +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
+            ps.setString(3, "%-" + monthStr + "-%");
+            ps.setString(4, email);
+            ps.setString(5, email);
+            ps.setString(6, pattern + "%");
+            ps.setString(7, pattern + "%");
+            ps.setInt(8, firstrow);
+            ps.setInt(9, rowcount);
             ResultSet res = ps.executeQuery();
             while (res.next()) {
                 String email1 = res.getString("email1");
