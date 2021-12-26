@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface EventRepository {
     void save(Event e) throws RepoException;
-    Event getEvent(String name) throws RepoException;
+    Event getEvent(Integer id) ;
+    Event getEvent(String name) ;
     void remove(String name) throws RepoException;
     int size();
     void clear();

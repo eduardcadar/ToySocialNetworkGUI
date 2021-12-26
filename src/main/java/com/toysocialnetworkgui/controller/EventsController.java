@@ -2,6 +2,8 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
@@ -20,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class EventsController {
     private Service service;
@@ -56,13 +59,22 @@ public class EventsController {
     @FXML
     protected TableColumn<Event, String> columnDescription;
 
+    @FXML
+    protected ListView<Event> listEventsSubscribed;
+
+    @FXML
+    protected Button buttonSubscribeEvent;
 
     public void initialize(Service service, User loggedUser, Stage window) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
         initTable();
+        initList();
+    }
 
+    private void initList() {
+        listEventsSubscribed.getItems().setAll(service.getEventsForUser(loggedUser.getEmail()));
     }
 
     private void initTable() {
@@ -106,6 +118,32 @@ public class EventsController {
         // TODO
         //  - do some notify observer here?
         setEventList(getEvents());
+
+    }
+@FXML
+    protected void onSubscribeClick(ActionEvent actionEvent){
+        Event event = tableViewEvents.getSelectionModel().getSelectedItem();
+        try{
+            if(event != null){
+                service.subscribeUserToEvent(event.getId(), loggedUser.getEmail());
+                initList();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select an event");
+                alert.showAndWait();
+
+            }
+        }catch (RepoException | DbException e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+
+
+        }
 
     }
 }

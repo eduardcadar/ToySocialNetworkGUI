@@ -27,7 +27,8 @@ public class EventDbRepo implements EventRepository {
                 " category varchar NOT NULL, " +
                 " location varchar NOT NULL, " +
                 " date_start varchar NOT NULL, " +
-                " date_end varchar NOT NULL " +
+                " date_end varchar NOT NULL, " +
+                " PRIMARY KEY(id)" +
                 ")";
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -69,7 +70,35 @@ public class EventDbRepo implements EventRepository {
     }
 
     @Override
-    public Event getEvent(String name) throws RepoException {
+    public Event getEvent(Integer id) {
+        String sql = "SELECT * FROM " + eventTable + " WHERE id = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
+            if (!resultSet.next())
+                return null;
+            String creator = resultSet.getString("creator");
+            String nameEv = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            String location = resultSet.getString("location");
+            String category = resultSet.getString("category");
+            LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return new Event(id, nameEv, creator, location, category, description, startDate, endDate);
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Gets an event by its name, (for testing purposes);
+     * @param name
+     * @return
+     */
+    @Override
+    public Event getEvent(String name) {
         String sql = "SELECT * FROM " + eventTable + " WHERE name = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -91,7 +120,6 @@ public class EventDbRepo implements EventRepository {
         }
 
     }
-
     @Override
     public void remove(String name) throws RepoException {
         // TODO

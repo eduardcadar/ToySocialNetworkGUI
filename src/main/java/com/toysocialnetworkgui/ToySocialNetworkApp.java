@@ -68,7 +68,8 @@ public class ToySocialNetworkApp extends Application {
 
         /// EVENTS
         EventDbRepo eventRepo = new EventDbRepo(url, username, password, "events");
-        EventService eventService = new EventService(eventRepo);
+        EventsSubscriptionDbRepo eventsSubscriptionRepo = new EventsSubscriptionDbRepo(url,username,password, "events_subscription");
+        EventService eventService = new EventService(eventRepo,eventsSubscriptionRepo);
         this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network,eventService );
     }
 }

@@ -3,19 +3,23 @@ package com.toysocialnetworkgui.service;
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.EventRepository;
+import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventService {
 
     private EventRepository eventRepo;
 
+    private EventsSubscriptionDbRepo eventsSubscriptionRepo;
     public EventRepository getEventRepo() { return eventRepo; }
 
-    public EventService(EventRepository repo) {
+    public EventService(EventRepository repo, EventsSubscriptionDbRepo eventsSubscriptionDbRepo) {
         this.eventRepo = repo;
+        this.eventsSubscriptionRepo = eventsSubscriptionDbRepo;
     }
 
 
@@ -30,8 +34,13 @@ public class EventService {
     }
 
     public List<Event> getEventsForUser(String userEmail) {
-        //  " SELECT * FROM USERS_EVENTS WHERE userId = @userEmail";
-        return null;
+        List<Integer> eventsId = eventsSubscriptionRepo.getEventsForUser(userEmail);
+        List<Event> events = new ArrayList<>();
+        eventsId.forEach(id -> {
+            Event event = getEvent(id);
+            events.add(event);
+        });
+        return events;
     }
 
     public List<User> getUsersForEvent(Event ev){
@@ -45,5 +54,24 @@ public class EventService {
 
 
     public void removeEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+    }
+
+    /**
+     * Adds a new subscriber to the event
+     * @param eventId - Integer, ID of an existing event
+     * @param userEmail - String, email of an existing user
+     */
+    public void subscribeUserToEvent(Integer eventId, String userEmail){
+            eventsSubscriptionRepo.addSubscriber(eventId, userEmail);
+    }
+
+    /**
+     * Gets an event from repo
+     * @param id - integer
+     * @return Returns the event with id same as parameter id; NULL if it doesn't exists
+     *
+     */
+    public Event getEvent(Integer id) {
+        return eventRepo.getEvent(id);
     }
 }

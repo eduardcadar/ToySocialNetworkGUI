@@ -5,52 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/pg_catalog.0S1ZNQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/public.abK9xQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/postgres.edMnLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ActivitiesReportChooseDateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/ActivitiesReportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/FriendReportChooseDateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/FriendReportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/UserMessageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/activitiesReport.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/activitiesReportChooseDate.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/friendReport.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/friendReportChooseDate.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cssdialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_base_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_controls_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/javafx_graphics_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Teste/db/TestFriendshipRepoDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestFriendshipRepoDb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Teste/db/TestNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/postgresql-42.3.1.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/ToySocialNetworkApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/ToySocialNetworkApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipDbRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/MessageDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/MessageDbRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/FriendshipService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/FriendshipService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,9 +50,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="FxmlFile" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -151,11 +116,11 @@
       <recent name="com.toysocialnetworkgui.utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Facultate\Anul2Sem1\Metode avansate de programare\Laborator\GitToySocialNetworkGUI\ToySocialNetworkGUI\src\main\java\com\toysocialnetworkgui\repository\db" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\lib" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main\resources\com\toysocialnetworkgui\controller" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main" />
-      <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main\java" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.toysocialnetworkgui" />
@@ -176,28 +141,73 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestConversation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestConversation&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="TestFriendshipRequest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestFriendshipRequest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'ToySocialNetworkGUI.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests *" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="All in ToySocialNetworkGUI.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ToySocialNetworkGUI.test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestServiceDb (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="TEST_OBJECT" value="uniqueId" />
-      <uniqueIds>
-        <uniqueId value="[engine:junit-jupiter]/[class:db.TestServiceDb]" />
-      </uniqueIds>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -220,52 +230,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestServiceDb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestServiceDb.testConversations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="METHOD_NAME" value="testConversations" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.ToySocialNetworkApp" />
-      <item itemvalue="JUnit.TestServiceDb" />
-      <item itemvalue="JUnit.TestServiceDb.testConversations" />
-      <item itemvalue="JUnit.TestServiceDb (1)" />
       <item itemvalue="JUnit.TestServiceDb (2)" />
       <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
+      <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
+      <item itemvalue="Gradle.TestConversation" />
+      <item itemvalue="Gradle.TestFriendshipRequest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
+        <item itemvalue="Gradle.TestFriendshipRequest" />
+        <item itemvalue="Gradle.TestConversation" />
+        <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
         <item itemvalue="JUnit.TestServiceDb (2)" />
-        <item itemvalue="JUnit.TestServiceDb (1)" />
-        <item itemvalue="JUnit.TestServiceDb" />
-        <item itemvalue="JUnit.TestServiceDb.testConversations" />
       </list>
     </recent_temporary>
   </component>

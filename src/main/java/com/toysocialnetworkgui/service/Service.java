@@ -498,15 +498,22 @@ public class Service {
         eventService.updateEvent(name,location,description,startDate,endDate);
     }
 
-    public void subscribeToEvent(String userEmail, String eventName){
+    public void subscribeUserToEvent(Integer eventId, String userEmail){
         // if user does not exist ->
         // if event does not exits ->
         // add Subscription
+       Event ev =  eventService.getEvent(eventId);
+       User u = userService.getUser(userEmail);
+       if(ev != null && u != null)
+            eventService.subscribeUserToEvent(eventId, userEmail);
+
 
     }
-    public void unsubscribeFromEvent(String user, String eventName){
+    public void unsubscribeUserFromEvent(Integer eventId, String userEmail){
 
 
     }
-
+    public List<Event> getEventsForUser(String userEmail) {
+        return eventService.getEventsForUser(userEmail);
+    }
 }
