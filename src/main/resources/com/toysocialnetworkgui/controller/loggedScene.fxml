@@ -74,6 +74,8 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
+                  <Button fx:id="buttonActivitiesReport" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" text="Activities report" />
+                  <Button fx:id="buttonFriendReport" mnemonicParsing="false" onAction="#onButtonFriendReportClick" text="Friend messages report" />
                </children>
             </VBox>
             <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout">

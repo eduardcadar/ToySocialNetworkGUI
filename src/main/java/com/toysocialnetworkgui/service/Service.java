@@ -6,14 +6,14 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
+import com.toysocialnetworkgui.utils.UserMessageDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class Service {
     private final UserService userService;
@@ -129,7 +129,7 @@ public class Service {
      * @return saved users - List[User]
      */
     public List<User> getUsers() {
-        return userService.getUsers();
+        return userService.getAllUsers();
     }
 
     /**
@@ -217,20 +217,43 @@ public class Service {
 
     public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
         List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
-        List<String> friendsEmail = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
-        for (String friendEmail : friendsEmail){
+        List<String> friendsEmails = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
+        for (String friendEmail : friendsEmails){
             Friendship friendship = friendshipService.getFriendship(email, friendEmail);
             User friend;
-            if (email.equals(friendship.getFirst())) {
+            if (email.equals(friendship.getFirst()))
                 friend = userService.getUser(friendship.getSecond());
-            }
-            else {
+            else
                 friend = userService.getUser(friendship.getFirst());
-            }
             UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
             userFriendDTOS.add(userFriendDTO);
         }
         return userFriendDTOS;
+    }
+
+    public List<UserFriendDTO> getFriendshipsDTOMonthFilteredPage(String email, int pageNumber, int pageSize, String pattern, int month) {
+        List<UserFriendDTO> userFriendDTOS = new ArrayList<>();
+        List<String> friendsEmails;
+        if (month == 0)
+            friendsEmails = friendshipService.getUserFriendsFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern);
+        else
+            friendsEmails = friendshipService.getUserFriendsMonthFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern, month);
+        for (String friendEmail : friendsEmails) {
+            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
+            User friend;
+            if (email.equals(friendship.getFirst()))
+                friend = userService.getUser(friendship.getSecond());
+            else
+                friend = userService.getUser(friendship.getFirst());
+            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
+            userFriendDTOS.add(userFriendDTO);
+        }
+        return userFriendDTOS;
+    }
+
+    public int getUserFriendsMonthFilteredSize(String email, String pattern, int month) {
+        if (month == 0) return friendshipService.getUserFriendsFilteredSize(email, pattern);
+        return friendshipService.getUserFriendsMonthFilteredSize(email, pattern, month);
     }
 
     /**
@@ -240,7 +263,7 @@ public class Service {
     public List<User> getNotFriends(String email) {
         List<String> friends = friendshipService.getUserFriends(email);
         List<User> notFriends = new ArrayList<>();
-        for (User u : userService.getUsers())
+        for (User u : userService.getAllUsers())
             if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
                 notFriends.add(u);
         return notFriends;
@@ -392,6 +415,48 @@ public class Service {
         }
         if(!hasSent)
             throw new RepoException("There is no pending request available. You can't cancel it!");
+    }
+
+    /**
+     * Returns a list with UserMessageDTOs from a conversation's messages
+     * @param emails the emails of the participants of the conversation
+     * @return list of UserMessageDTO
+     */
+    public List<UserMessageDTO> getConversationUserMessageDTOs(List<String> emails) {
+        List<UserMessageDTO> messageDTOs = new ArrayList<>();
+        Map<String, User> usersMap = new HashMap<>();
+        emails.forEach(e -> usersMap.put(e, userService.getUser(e)));
+
+        int convID = conversationService.getConversation(emails).getID();
+        List<Message> messages = messageService.getConversationMessages(convID);
+        messages.forEach(m ->
+                messageDTOs.add(new UserMessageDTO(usersMap.get(m.getSender()), m.getMessage(), m.getDate())));
+
+        return messageDTOs;
+    }
+
+    /**
+     * Returns a list with UserMessageDTOs for all messages received by a user
+     * @param email the email of the user
+     * @return list of UserMessageDTO
+     */
+    public List<UserMessageDTO> getUserMessageDTOs(String email) {
+        List<UserMessageDTO> messageDTOs = new ArrayList<>();
+        List<Integer> conversations = conversationService.getUserConversations(email);
+        List<Message> messages = messageService.getAllMessages()
+                .stream()
+                .filter(m -> conversations.contains(m.getIdConversation()))
+                .filter(m -> !m.getSender().equals(email))
+                .toList();
+
+        List<User> users = userService.getAllUsers();
+        Map<String, User> usersMap = new HashMap<>();
+        users.forEach(u -> usersMap.put(u.getEmail(), u));
+
+        messages.forEach(m ->
+                messageDTOs.add(new UserMessageDTO(usersMap.get(m.getSender()), m.getMessage(), m.getDate())));
+
+        return messageDTOs;
     }
 
     public ConversationDbRepo getConversationRepo() { return conversationService.getConvRepo(); }

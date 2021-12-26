@@ -30,7 +30,7 @@ public class TestServiceDb {
     private final User us2 = new User("alex", "popescu", "popescu.alex@gmail.com");
     private final User us3 = new User("maria", "lazar", "l.maria@gmail.com");
     private final User us4 = new User("gabriel", "andrei", "a.gabi@gmail.com");
-    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
+    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships", "users");
     private final FriendshipRequestDbRepo requestsRepo = new FriendshipRequestDbRepo(url, username, password, "requests");
 
     private final FriendshipService fSrv = new FriendshipService(fRepo,requestsRepo);

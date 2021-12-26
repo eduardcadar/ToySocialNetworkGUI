@@ -55,8 +55,7 @@ public class ToySocialNetworkApp extends Application {
         // USER
         UserDbRepo uRepo = new UserDbRepo(url, username, password, new UserValidator(), "users");
         UserService uSrv = new UserService(uRepo);
-        // FRIENDSHIP
-        FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
+        FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships", "users");
         FriendshipRequestDbRepo friendshipRequestRepo = new FriendshipRequestDbRepo(url, username, password,"requests");
         FriendshipService fSrv = new FriendshipService(fRepo, friendshipRequestRepo);
         // CONVERSATION

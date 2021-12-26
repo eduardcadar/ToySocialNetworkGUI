@@ -25,7 +25,7 @@ public class TestFriendshipRepoDb {
     private final User us2 = new User("alex", "popescu", "popescu.alex@gmail.com");
     private final User us3 = new User("maria", "lazar", "l.maria@gmail.com");
     private final User us4 = new User("gabriel", "andrei", "a.gabi@gmail.com");
-    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
+    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships", "users");
     private final Friendship f1 = new Friendship(us1, us2, LocalDate.now());
     private final Friendship f2 = new Friendship(us1, us3, LocalDate.now());
     private final Friendship f3 = new Friendship(us2, us4, LocalDate.now());
