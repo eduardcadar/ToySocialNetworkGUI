@@ -215,20 +215,43 @@ public class Service {
 
     public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
         List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
-        List<String> friendsEmail = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
-        for (String friendEmail : friendsEmail){
+        List<String> friendsEmails = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
+        for (String friendEmail : friendsEmails){
             Friendship friendship = friendshipService.getFriendship(email, friendEmail);
             User friend;
-            if (email.equals(friendship.getFirst())) {
+            if (email.equals(friendship.getFirst()))
                 friend = userService.getUser(friendship.getSecond());
-            }
-            else {
+            else
                 friend = userService.getUser(friendship.getFirst());
-            }
             UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
             userFriendDTOS.add(userFriendDTO);
         }
         return userFriendDTOS;
+    }
+
+    public List<UserFriendDTO> getFriendshipsDTOMonthFilteredPage(String email, int pageNumber, int pageSize, String pattern, int month) {
+        List<UserFriendDTO> userFriendDTOS = new ArrayList<>();
+        List<String> friendsEmails;
+        if (month == 0)
+            friendsEmails = friendshipService.getUserFriendsFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern);
+        else
+            friendsEmails = friendshipService.getUserFriendsMonthFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern, month);
+        for (String friendEmail : friendsEmails) {
+            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
+            User friend;
+            if (email.equals(friendship.getFirst()))
+                friend = userService.getUser(friendship.getSecond());
+            else
+                friend = userService.getUser(friendship.getFirst());
+            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
+            userFriendDTOS.add(userFriendDTO);
+        }
+        return userFriendDTOS;
+    }
+
+    public int getUserFriendsMonthFilteredSize(String email, String pattern, int month) {
+        if (month == 0) return friendshipService.getUserFriendsFilteredSize(email, pattern);
+        return friendshipService.getUserFriendsMonthFilteredSize(email, pattern, month);
     }
 
     /**

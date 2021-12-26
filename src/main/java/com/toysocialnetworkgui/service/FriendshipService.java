@@ -154,6 +154,14 @@ public class FriendshipService {
         return friendshipRepository.getUserFriendsPage(email, firstrow, rowcount);
     }
 
+    public List<String> getUserFriendsFilteredPage(String email, int firstrow, int rowcount, String pattern) {
+        return friendshipRepository.getUserFriendsFilteredPage(email, firstrow, rowcount, pattern);
+    }
+
+    public List<String> getUserFriendsMonthFilteredPage(String email, int firstrow, int rowcount, String pattern, int month) {
+        return friendshipRepository.getUserFriendsMonthFilteredPage(email, firstrow, rowcount, pattern, month);
+    }
+
     /**
      * Returns a list of emails with the request status is pending for user with email
      * @param email
@@ -170,4 +178,11 @@ public class FriendshipService {
         return requestRepository.getAll();
     }
 
+    public int getUserFriendsFilteredSize(String email, String pattern) {
+        return friendshipRepository.getUserFriendsFilteredSize(email, pattern);
+    }
+
+    public int getUserFriendsMonthFilteredSize(String email, String pattern, int month) {
+        return friendshipRepository.getUserFriendsMonthFilteredSize(email, pattern, month);
+    }
 }
