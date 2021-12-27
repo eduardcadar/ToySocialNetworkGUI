@@ -20,6 +20,7 @@
             <VBox>
                <children>
                   <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
+                  <ImageView fx:id="imageViewNotification" fitHeight="51.0" fitWidth="68.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
             <VBox>

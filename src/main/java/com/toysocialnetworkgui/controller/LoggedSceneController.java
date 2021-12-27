@@ -18,8 +18,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -79,6 +82,8 @@ public class LoggedSceneController implements Observer {
     @FXML
     Button buttonEvents;
 
+    @FXML
+    ImageView imageViewNotification = new ImageView();
 
     private User loggedUser;
     private Service service;
@@ -103,6 +108,14 @@ public class LoggedSceneController implements Observer {
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
         service.getConversationParticipantsRepo().addObserver(this);
+        int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
+        if(numberOfNotification != 0){
+            imageViewNotification.setImage(new Image("images/active_notification.png"));
+        }
+        else{
+            imageViewNotification.setImage(new Image("images/no_notification.png"));
+
+        }
     }
 
     /**
@@ -382,5 +395,15 @@ public class LoggedSceneController implements Observer {
     public void update(Object obj) {
         if (obj instanceof FriendshipDbRepo) reloadFriends();
         if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
+    }
+
+    /**
+     * Changes the image for the notification to the no_notification. Customize it late
+     * + Show the events in a drop box maybe?
+     * @param ev
+     */
+    @FXML
+    public void clearNotificationImage(MouseEvent ev){
+        imageViewNotification.setImage(new Image("images/no_notification.png"));
     }
 }
