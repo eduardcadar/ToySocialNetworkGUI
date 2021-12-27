@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/validator/EventValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventsSubscriptionDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventsSubscriptionDbRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +45,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -293,7 +292,7 @@
       <workItem from="1640446733493" duration="9148000" />
       <workItem from="1640507107216" duration="7032000" />
       <workItem from="1640516721203" duration="1991000" />
-      <workItem from="1640596818512" duration="521000" />
+      <workItem from="1640596818512" duration="2938000" />
     </task>
     <servers />
   </component>
@@ -317,6 +316,6 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ToySocialNetworkGUI$All_in_ToySocialNetworkGUI_test.ic" NAME="All in ToySocialNetworkGUI.test Coverage Results" MODIFIED="1639585346379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ToySocialNetworkGUI$All_in_ToySocialNetworkGUI_test.ic" NAME="All in ToySocialNetworkGUI.test Coverage Results" MODIFIED="1640601345565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -73,6 +74,36 @@ public class EventsController {
         this.window = window;
         initTable();
         initList();
+
+        Callback<DatePicker, DateCell> dontLetUserPickEarlyDate =dontLetUserPickEarlyDate();
+
+        datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyDate);
+    }
+
+    /**
+     * Callback to not let user enter: i) end date before a start date
+     *                                 ii) end date if you haven't picked a start date
+     * @return - callback function
+     */
+    Callback<DatePicker, DateCell> dontLetUserPickEarlyDate(){
+        return new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        LocalDate startDate = datePickerEventStart.getValue();
+                        if(startDate != null)
+                            setDisable(empty || item.compareTo(startDate) < 0);
+                        else{
+                            setDisable(true);
+                        }
+                    }
+
+                };
+            }
+        };
     }
 
     private void initList() {

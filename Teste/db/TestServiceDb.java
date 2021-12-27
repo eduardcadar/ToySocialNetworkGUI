@@ -209,4 +209,10 @@ public class TestServiceDb {
         assertEquals("mesaj24", c.getMessages().get(3).getMessage());
         assertEquals("mesaj25", c.getMessages().get(4).getMessage());
     }
+
+    @Test
+    void testEvents(){
+
+
+    }
 }

@@ -4,6 +4,9 @@ package com.toysocialnetworkgui.repository.db;
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.repository.EventRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.validator.EventValidator;
+import com.toysocialnetworkgui.validator.Validator;
+import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ import java.util.List;
 
 public class EventDbRepo implements EventRepository {
     private final String url, username, password, eventTable;
+    private final Validator<Event> validator = new EventValidator();
 
     public EventDbRepo(String url, String username, String password, String eventTable){
         this.url = url;
@@ -45,7 +49,7 @@ public class EventDbRepo implements EventRepository {
      */
     public void save(Event event) {
         // TODO
-        //  - validate event
+        validator.validate(event);
         //  - check for duplicates ?
         if(getEvent(event.getName()) != null){
             throw new RepoException("There is another event with the same name. Check it out if you want to participate there!");
