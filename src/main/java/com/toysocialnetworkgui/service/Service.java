@@ -510,7 +510,7 @@ public class Service {
 
     }
     public void unsubscribeUserFromEvent(Integer eventId, String userEmail){
-
+        eventService.unsubscribeUserFromEvent(eventId,userEmail);
 
     }
     public List<Event> getEventsForUser(String userEmail) {

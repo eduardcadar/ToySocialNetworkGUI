@@ -71,7 +71,7 @@ public class EventsSubscriptionDbRepo {
     }
 
     public void removeSubscriber(Integer evId, String userEmail){
-        String sql = "DELETE FROM " + tableName + " WHERE event_id = ? AND user_email = ?) ";
+        String sql = "DELETE FROM " + tableName + " WHERE event_id = ? AND user_email = ?";
         try(Connection connection = DriverManager.getConnection(url, username, password)){
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, evId);

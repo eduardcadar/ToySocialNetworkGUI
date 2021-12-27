@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6fec7f3f-7808-4398-829b-727592b8ea9a/storage_v2/_src_/database/ToySocialNetwork.Y3Ht_g/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/ToySocialNetworkApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/ToySocialNetworkApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/EventsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/EventRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventDbRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventsSubscriptionDbRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/EventsSubscriptionDbRepo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/EventService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/eventsScene.fxml" afterDir="false" />
@@ -232,11 +227,11 @@
     </configuration>
     <list>
       <item itemvalue="Application.ToySocialNetworkApp" />
-      <item itemvalue="JUnit.TestServiceDb (2)" />
-      <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
       <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
       <item itemvalue="Gradle.TestConversation" />
       <item itemvalue="Gradle.TestFriendshipRequest" />
+      <item itemvalue="JUnit.TestServiceDb (2)" />
+      <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
     </list>
     <recent_temporary>
       <list>
@@ -298,6 +293,7 @@
       <workItem from="1640446733493" duration="9148000" />
       <workItem from="1640507107216" duration="7032000" />
       <workItem from="1640516721203" duration="1991000" />
+      <workItem from="1640596818512" duration="521000" />
     </task>
     <servers />
   </component>

@@ -74,4 +74,8 @@ public class EventService {
     public Event getEvent(Integer id) {
         return eventRepo.getEvent(id);
     }
+
+    public void unsubscribeUserFromEvent(Integer eventId, String userEmail) {
+        eventsSubscriptionRepo.removeSubscriber(eventId, userEmail);
+    }
 }

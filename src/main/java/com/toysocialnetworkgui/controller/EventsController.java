@@ -64,6 +64,8 @@ public class EventsController {
 
     @FXML
     protected Button buttonSubscribeEvent;
+    @FXML
+    protected Button buttonUnsubscribeEvent;
 
     public void initialize(Service service, User loggedUser, Stage window) {
         this.service = service;
@@ -120,7 +122,7 @@ public class EventsController {
         setEventList(getEvents());
 
     }
-@FXML
+    @FXML
     protected void onSubscribeClick(ActionEvent actionEvent){
         Event event = tableViewEvents.getSelectionModel().getSelectedItem();
         try{
@@ -145,5 +147,25 @@ public class EventsController {
 
         }
 
+    }
+
+    /**
+     * Removes the subscription from the selected event which you participate
+     * @param ev - ActionEvent
+     */
+    public void onUnsubscribeButtonClick(ActionEvent ev) {
+        Event event = listEventsSubscribed.getSelectionModel().getSelectedItem();
+        if(event != null) {
+            service.unsubscribeUserFromEvent(event.getId(), loggedUser.getEmail());
+            initList();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("You didn't select any event!");
+            alert.showAndWait();
+
+        }
     }
 }
