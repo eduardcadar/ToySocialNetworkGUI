@@ -1,6 +1,7 @@
 package db;
 
 import com.toysocialnetworkgui.domain.Conversation;
+import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.domain.network.Network;
@@ -43,7 +44,11 @@ public class TestServiceDb {
     private final Friendship f2 = new Friendship(us3, us1);
     private final Friendship f3 = new Friendship(us2, us4);
     private final Network ntw = new Network(uRepo, fRepo);
-    private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw);
+
+    private final EventDbRepo eventDbRepo = new EventDbRepo(url, username, password, "events");
+    private final EventsSubscriptionDbRepo eventsSubscriptionDbRepo = new EventsSubscriptionDbRepo(url, username, password, "events_subscription");
+    private final EventService eventService = new EventService(eventDbRepo,eventsSubscriptionDbRepo);
+    private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw,eventService );
 
     @BeforeEach
     public void setUp() {
@@ -204,5 +209,11 @@ public class TestServiceDb {
         assertEquals("mesaj23", c.getMessages().get(2).getMessage());
         assertEquals("mesaj24", c.getMessages().get(3).getMessage());
         assertEquals("mesaj25", c.getMessages().get(4).getMessage());
+    }
+
+    @Test
+    void testEvents(){
+        //     Event e1 = new Event("")
+
     }
 }

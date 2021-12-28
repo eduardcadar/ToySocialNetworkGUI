@@ -20,6 +20,7 @@
             <VBox>
                <children>
                   <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
+                  <ImageView fx:id="imageViewNotification" fitHeight="51.0" fitWidth="68.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
             <VBox>
@@ -43,6 +44,15 @@
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin></Button>
+                  <Button fx:id="buttonEvents" mnemonicParsing="false" onAction="#onEventsClick" text="Events">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/calendar.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />

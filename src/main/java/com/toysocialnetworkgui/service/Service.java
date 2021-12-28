@@ -2,8 +2,6 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.*;
 import com.toysocialnetworkgui.domain.network.Network;
-import com.toysocialnetworkgui.repository.FriendshipRepository;
-import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
@@ -12,7 +10,9 @@ import com.toysocialnetworkgui.utils.UserMessageDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+
 import java.util.*;
 
 public class Service {
@@ -21,13 +21,15 @@ public class Service {
     private final MessageService messageService;
     private final ConversationService conversationService;
     private final Network network;
+    private final EventService eventService;
 
-    public Service(UserService userService, FriendshipService friendshipService, MessageService messageService, ConversationService conversationService, Network network) {
+    public Service(UserService userService, FriendshipService friendshipService, MessageService messageService, ConversationService conversationService, Network network, EventService eventService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
         this.messageService = messageService;
         this.conversationService = conversationService;
         this.network = network;
+        this.eventService = eventService;
     }
 
     /**
@@ -463,4 +465,55 @@ public class Service {
     public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
     public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
     public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
+
+    /**
+     * Adds a new event into Social Network
+     * @param name - String
+     * @param location - String
+     * @param description - String
+     * @param startDate - LocalDate
+     * @param endDate -LocalDate
+     */
+    public void addEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate){
+        eventService.saveEvent(name,creator,location,category, description, startDate, endDate);
+    }
+
+    public List<Event> getAllEvents(){
+        return eventService.getAllEvents();
+
+    }
+    /**
+     * Removes the event
+     * @param name - String
+     * @param location - String
+     * @param description - String
+     * @param startDate - LocalDate
+     * @param endDate - LocalDate
+     */
+    public void removeEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+        eventService.removeEvent(name,location,description,startDate,endDate);
+    }
+
+    public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
+        eventService.updateEvent(name,location,description,startDate,endDate);
+    }
+
+    public void subscribeUserToEvent(Integer eventId, String userEmail){
+        // if user does not exist ->
+        // if event does not exits ->
+        // add Subscription
+       Event ev =  eventService.getEvent(eventId);
+       User u = userService.getUser(userEmail);
+       if(ev != null && u != null)
+            eventService.subscribeUserToEvent(eventId, userEmail);
+
+
+    }
+    public void unsubscribeUserFromEvent(Integer eventId, String userEmail){
+        eventService.unsubscribeUserFromEvent(eventId,userEmail);
+
+    }
+    public List<Event> getEventsForUser(String userEmail) {
+        return eventService.getEventsForUser(userEmail);
+    }
 }

@@ -55,9 +55,7 @@ public class LoginSceneController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
-        controller.setService(service);
-        controller.setStage(window);
-        controller.initialize(loggedUser);
+        controller.initialize(service, loggedUser, window);
         // Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);

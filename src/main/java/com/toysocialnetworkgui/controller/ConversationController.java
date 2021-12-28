@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ConversationController implements Observer {
     private Service service;
@@ -39,7 +41,7 @@ public class ConversationController implements Observer {
     @FXML
     TableColumn<Message, String> tableColumnMessage;
     @FXML
-    TableColumn<Message, LocalDateTime> tableColumnDate;
+    TableColumn<Message, String> tableColumnDate;
 
     public void initialize(Service service, User user, int idConversation) {
         pageNumber = 1;
@@ -91,7 +93,8 @@ public class ConversationController implements Observer {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tableColumnDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm"))));
+
         reloadMessages();
     }
 

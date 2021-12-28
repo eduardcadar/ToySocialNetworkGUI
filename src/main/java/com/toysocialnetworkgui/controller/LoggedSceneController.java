@@ -18,8 +18,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -76,6 +79,12 @@ public class LoggedSceneController implements Observer {
     @FXML
     TextField textFieldSearchFriend;
 
+    @FXML
+    Button buttonEvents;
+
+    @FXML
+    ImageView imageViewNotification = new ImageView();
+
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -84,7 +93,10 @@ public class LoggedSceneController implements Observer {
     private String currentSearchPattern;
     private int currentMonthFilter;
 
-    public void initialize(User user) {
+    public void initialize(Service service, User user, Stage window) {
+        this.window = window;
+        this.loggedUser = user;
+        this.service = service;
         pageNumber = 1;
         pageSize = 2;
         currentSearchPattern = "";
@@ -96,10 +108,14 @@ public class LoggedSceneController implements Observer {
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
         service.getConversationParticipantsRepo().addObserver(this);
-    }
+        int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
+        if(numberOfNotification != 0){
+            imageViewNotification.setImage(new Image("images/active_notification.png"));
+        }
+        else{
+            imageViewNotification.setImage(new Image("images/no_notification.png"));
 
-    public void setService(Service service) {
-        this.service = service;
+        }
     }
 
     /**
@@ -119,7 +135,6 @@ public class LoggedSceneController implements Observer {
         if (input.equals(""))
             setFriendsList(getFriends());
     }
-
     private void reloadConversationsList() {
         listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
     }
@@ -301,6 +316,18 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
+    protected void onEventsClick(ActionEvent event) throws IOException {
+        System.out.println("events");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent root = loader.load();
+        EventsController controller = loader.getController();
+        controller.initialize(service, loggedUser, window);
+        window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
+        window.show();
+
+    }
+
+    @FXML
     protected void onRemoveFriendButtonClick() {
         if (tableViewFriends.getSelectionModel().isEmpty())
             return;
@@ -349,9 +376,6 @@ public class LoggedSceneController implements Observer {
         }
     }
 
-    public void setStage(Stage window) {
-        this.window = window;
-    }
 
     @FXML
     protected void onLogoutButtonClick() throws IOException {
@@ -371,5 +395,20 @@ public class LoggedSceneController implements Observer {
     public void update(Object obj) {
         if (obj instanceof FriendshipDbRepo) reloadFriends();
         if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
+    }
+
+    /**
+     * Changes the image for the notification to the no_notification. Customize it late
+     * + Show the events in a drop box maybe?
+     * @param ev
+     */
+    @FXML
+    public void clearNotificationImage(MouseEvent ev) throws IOException {
+        System.out.println("Subscribed events: ");
+        service.getEventsForUser(loggedUser.getEmail()).forEach(System.out::print);
+        imageViewNotification.setImage(new Image("images/no_notification.png"));
+        // TODO
+        //  - Show only the subscribed events somewhere
+
     }
 }

@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +42,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="FxmlFile" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -58,10 +60,10 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/Service.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/service/FriendshipService.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/repository/db/FriendshipDbRepo.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -106,11 +108,11 @@
       <recent name="com.toysocialnetworkgui.utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Facultate\Anul2Sem1\Metode avansate de programare\Laborator\GitToySocialNetworkGUI\ToySocialNetworkGUI\src\main\java\com\toysocialnetworkgui\repository\db" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\lib" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main\resources\com\toysocialnetworkgui\controller" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI" />
       <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main" />
-      <recent name="C:\facultate\Semestrul 3\MAP\projects\ToySocialNetworkGUI\src\main\java" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.toysocialnetworkgui" />
@@ -131,28 +133,73 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestConversation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestConversation&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="TestFriendshipRequest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestFriendshipRequest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'ToySocialNetworkGUI.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests *" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="All in ToySocialNetworkGUI.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ToySocialNetworkGUI.test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestServiceDb (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="TEST_OBJECT" value="uniqueId" />
-      <uniqueIds>
-        <uniqueId value="[engine:junit-jupiter]/[class:db.TestServiceDb]" />
-      </uniqueIds>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -175,52 +222,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestServiceDb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestServiceDb.testConversations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="METHOD_NAME" value="testConversations" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.ToySocialNetworkApp" />
-      <item itemvalue="JUnit.TestServiceDb" />
-      <item itemvalue="JUnit.TestServiceDb.testConversations" />
-      <item itemvalue="JUnit.TestServiceDb (1)" />
+      <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
+      <item itemvalue="Gradle.TestConversation" />
+      <item itemvalue="Gradle.TestFriendshipRequest" />
       <item itemvalue="JUnit.TestServiceDb (2)" />
       <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
+        <item itemvalue="Gradle.TestFriendshipRequest" />
+        <item itemvalue="Gradle.TestConversation" />
+        <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
         <item itemvalue="JUnit.TestServiceDb (2)" />
-        <item itemvalue="JUnit.TestServiceDb (1)" />
-        <item itemvalue="JUnit.TestServiceDb" />
-        <item itemvalue="JUnit.TestServiceDb.testConversations" />
       </list>
     </recent_temporary>
   </component>
@@ -274,6 +290,8 @@
       <workItem from="1640446733493" duration="9148000" />
       <workItem from="1640507107216" duration="7032000" />
       <workItem from="1640516721203" duration="1991000" />
+      <workItem from="1640596818512" duration="6360000" />
+      <workItem from="1640683064824" duration="439000" />
     </task>
     <servers />
   </component>
@@ -290,12 +308,13 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ToySocialNetworkGUI$All_in_ToySocialNetworkGUI_test.ic" NAME="All in ToySocialNetworkGUI.test Coverage Results" MODIFIED="1639585346379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ToySocialNetworkGUI$All_in_ToySocialNetworkGUI_test.ic" NAME="All in ToySocialNetworkGUI.test Coverage Results" MODIFIED="1640601345565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
