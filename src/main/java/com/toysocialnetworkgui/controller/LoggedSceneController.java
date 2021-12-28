@@ -403,7 +403,12 @@ public class LoggedSceneController implements Observer {
      * @param ev
      */
     @FXML
-    public void clearNotificationImage(MouseEvent ev){
+    public void clearNotificationImage(MouseEvent ev) throws IOException {
+        System.out.println("Subscribed events: ");
+        service.getEventsForUser(loggedUser.getEmail()).forEach(System.out::print);
         imageViewNotification.setImage(new Image("images/no_notification.png"));
+        // TODO
+        //  - Show only the subscribed events somewhere
+
     }
 }

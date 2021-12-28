@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loggedScene.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,7 +290,8 @@
       <workItem from="1640446733493" duration="9148000" />
       <workItem from="1640507107216" duration="7032000" />
       <workItem from="1640516721203" duration="1991000" />
-      <workItem from="1640596818512" duration="4514000" />
+      <workItem from="1640596818512" duration="6360000" />
+      <workItem from="1640683064824" duration="439000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,7 @@
 package db;
 
 import com.toysocialnetworkgui.domain.Conversation;
+import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.domain.network.Network;
@@ -212,7 +213,7 @@ public class TestServiceDb {
 
     @Test
     void testEvents(){
-
+        //     Event e1 = new Event("")
 
     }
 }
