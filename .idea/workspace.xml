@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="" />
+    <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loginScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loginScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/style/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style/style.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -129,27 +134,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestConversation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;TestConversation&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="TestFriendshipRequest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -192,6 +176,48 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Tests in 'db'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;db.*&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="ToySocialNetworkGUI [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="All in ToySocialNetworkGUI.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ToySocialNetworkGUI.test" />
       <option name="PACKAGE_NAME" value="" />
@@ -200,39 +226,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestServiceDb (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ToySocialNetworkGUI.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="db.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="db" />
-      <option name="MAIN_CLASS_NAME" value="db.TestServiceDb" />
-      <option name="TEST_OBJECT" value="uniqueId" />
-      <uniqueIds>
-        <uniqueId value="[engine:junit-jupiter]/[class:db.TestServiceDb]" />
-      </uniqueIds>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.ToySocialNetworkApp" />
       <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
-      <item itemvalue="Gradle.TestConversation" />
       <item itemvalue="Gradle.TestFriendshipRequest" />
-      <item itemvalue="JUnit.TestServiceDb (2)" />
+      <item itemvalue="Gradle.Tests in 'db'" />
+      <item itemvalue="Gradle.ToySocialNetworkGUI [test]" />
       <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ToySocialNetworkGUI [test]" />
         <item itemvalue="JUnit.All in ToySocialNetworkGUI.test" />
-        <item itemvalue="Gradle.TestFriendshipRequest" />
-        <item itemvalue="Gradle.TestConversation" />
+        <item itemvalue="Gradle.Tests in 'db'" />
         <item itemvalue="Gradle.Tests in 'ToySocialNetworkGUI.test'" />
-        <item itemvalue="JUnit.TestServiceDb (2)" />
+        <item itemvalue="Gradle.TestFriendshipRequest" />
       </list>
     </recent_temporary>
   </component>
@@ -287,7 +295,9 @@
       <workItem from="1640507107216" duration="7032000" />
       <workItem from="1640516721203" duration="1991000" />
       <workItem from="1640596818512" duration="6360000" />
-      <workItem from="1640683064824" duration="439000" />
+      <workItem from="1640683064824" duration="1096000" />
+      <workItem from="1640698116939" duration="793000" />
+      <workItem from="1640770201730" duration="2726000" />
     </task>
     <servers />
   </component>
@@ -305,6 +315,17 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/ToySocialNetworkApp.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
