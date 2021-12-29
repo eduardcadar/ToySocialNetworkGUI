@@ -11,7 +11,6 @@
     -fx-border-radius: 5px;
     -fx-border-color: #FFFFFF;
     -fx-border-width: 0px;
-    -fx-blend-mode: lighten;
 }
 
 #button{
@@ -40,7 +39,4 @@
     -fx-padding: 0px 10px 5px 10px;
 }
 #buttonCreateAccount{
-    -fx-background-color: #045b8b;
-    -fx-border-radius: 10px;
-    -fx-blend-mode: darken;
 }

@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/utils/CONSTANTS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoginSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoginSceneController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loginScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/toysocialnetworkgui/controller/loginScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/style/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style/style.css" afterDir="false" />
     </list>
