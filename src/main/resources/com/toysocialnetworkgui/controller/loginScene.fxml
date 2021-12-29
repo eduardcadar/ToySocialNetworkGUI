@@ -3,38 +3,135 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="20.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoginSceneController">
-   <GridPane alignment="CENTER" hgap="10.0" maxWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="66.0" prefWidth="334.0" vgap="10.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-      <children>
-         <TextField id="textFieldLogin" fx:id="textFieldEmail" focusTraversable="false" prefHeight="30.0" prefWidth="150.0" promptText="Email">
-            <GridPane.margin>
-               <Insets />
-            </GridPane.margin>
-            <padding>
-               <Insets bottom="10.0" top="10.0" />
-            </padding></TextField>
-         <PasswordField id="textFieldLogin" fx:id="textFieldPassword" focusTraversable="false" prefHeight="30.0" prefWidth="150.0" promptText="Password" GridPane.rowIndex="1">
-            <padding>
-               <Insets bottom="10.0" top="10.0" />
-            </padding></PasswordField>
-      </children>
-      <VBox.margin>
-         <Insets left="30.0" right="30.0" />
-      </VBox.margin>
-   </GridPane>
-   <Button id="button" alignment="CENTER" focusTraversable="false" layoutX="187.0" layoutY="216.0" maxHeight="30.0" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="150.0" styleClass="buttonLogin" stylesheets="@../../../style/style.css" text="Connect" textAlignment="RIGHT" />
-   <Button id="button" fx:id="buttonCreateAccount" focusTraversable="false" maxHeight="20.0" mnemonicParsing="false" onAction="#onAdminButtonClick" prefHeight="20.0" styleClass="buttonCreate" text="Create account" />
-</VBox>
+<SplitPane dividerPositions="0.35837046467218325" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoginSceneController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #862CE4;">
+         <children>
+            <VBox layoutX="46.0" layoutY="99.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <VBox prefHeight="49.0" prefWidth="62.0">
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Join the club" />
+                     </children>
+                  </VBox>
+                  <HBox>
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/laugh.png" />
+                           </image>
+                        </ImageView>
+                        <VBox>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Community&#10;" wrappingWidth="76.55938720703125">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/logo.png" />
+                           </image>
+                        </ImageView>
+                        <VBox>
+                           <children>
+                              <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Friendships&#10;" wrappingWidth="76.55938720703125">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/calendar.png" />
+                           </image>
+                        </ImageView>
+                        <VBox>
+                           <children>
+                              <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Events&#10;" wrappingWidth="76.55938720703125">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+      <AnchorPane>
+         <children>
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="20.0" stylesheets="@../../../style/style.css">
+               <children>
+                  <ImageView fitHeight="48.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/b_logo.jpg" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" />
+                  <GridPane alignment="CENTER" hgap="10.0" maxWidth="200.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="66.0" prefWidth="334.0" vgap="10.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="150.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <TextField id="textFieldLogin" fx:id="textFieldEmail" focusTraversable="false" prefHeight="30.0" prefWidth="150.0" promptText="Email">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </TextField>
+                        <PasswordField id="textFieldLogin" fx:id="textFieldPassword" focusTraversable="false" prefHeight="30.0" prefWidth="150.0" promptText="Password" GridPane.rowIndex="1">
+                           <padding>
+                              <Insets bottom="10.0" top="10.0" />
+                           </padding>
+                        </PasswordField>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <Button id="button" alignment="CENTER" focusTraversable="false" layoutX="187.0" layoutY="216.0" maxHeight="30.0" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="150.0" styleClass="buttonLogin" stylesheets="@../../../style/style.css" text="Connect" textAlignment="RIGHT" textFill="WHITE" />
+                  <Button id="button" fx:id="buttonCreateAccount" focusTraversable="false" maxHeight="20.0" mnemonicParsing="false" onAction="#onAdminButtonClick" prefHeight="20.0" styleClass="buttonCreate" text="Create account" textFill="WHITE" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>
