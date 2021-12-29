@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73880257-c44e-43c1-954d-01e607b44b35" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" beforeDir="false" afterPath="$PROJECT_DIR$/Teste/db/TestServiceDb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toysocialnetworkgui/controller/LoggedSceneController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
