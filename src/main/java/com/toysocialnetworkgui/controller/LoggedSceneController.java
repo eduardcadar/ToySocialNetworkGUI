@@ -172,7 +172,12 @@ public class LoggedSceneController implements Observer {
 
     private void setLoggedUser(User user) {
         loggedUser = user;
-        textUserFullName.setText(user.getFirstName() + " "+ user.getLastName());
+        String firstName = user.getFirstName();
+        firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
+        String lastName = user.getLastName();
+        lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
+
+        textUserFullName.setText(firstName + " "+ lastName);
         textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
         textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
         textNrMessages.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
