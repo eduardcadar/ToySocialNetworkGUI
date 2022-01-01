@@ -1,17 +1,15 @@
 .root {
-    -fx-background-color: #5E60CE;
 }
 .button{
     -fx-border-color: none;
     -fx-background-radius: 10px 10px 10px 10px;
     -fx-start-margin: 10px;
     -fx-end-margin: 10px;
-    -fx-background-color: #56CFE1;
+    -fx-background-color: #862CE4;
     -fx-border-style: none;
     -fx-text-align: center;
     -fx-font-size: 12px;
     -fx-alignment: center-left;
-    -fx-blend-mode: color-burn;
     -fx-border-radius: 3px;
     -fx-min-height: 25px;
     -fx-min-width: 75px;
@@ -44,7 +42,7 @@
 }
 
 .buttonSearch:pressed {
-    -fx-background-color: black;
+    -fx-background-color: #862CE4;
     -fx-text-fill: white;
 }
 .image-view{

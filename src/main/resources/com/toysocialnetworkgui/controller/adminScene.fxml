@@ -101,12 +101,12 @@
             </HBox>
             <HBox prefHeight="62.0" prefWidth="330.0">
                <children>
-                  <Button id="button" fx:id="buttonCancel" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" stylesheets="@../../../style/styleCreateAcc.css" text="Cancel">
+                  <Button id="button" fx:id="buttonCancel" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" stylesheets="@../../../style/styleCreateAcc.css" text="Cancel" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button id="button" fx:id="buttonSubmit" focusTraversable="false" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit">
+                  <Button id="button" fx:id="buttonSubmit" focusTraversable="false" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="120.0" />
                      </HBox.margin>

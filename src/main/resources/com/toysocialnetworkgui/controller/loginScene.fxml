@@ -29,7 +29,7 @@
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Join the club" />
                      </children>
                   </VBox>
-                  <HBox>
+                  <HBox spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -51,7 +51,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -76,25 +76,28 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox>
+                  <HBox spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/calendar.png" />
                            </image>
                         </ImageView>
-                        <VBox>
+                        <VBox prefHeight="48.0" prefWidth="75.0">
                            <children>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Events&#10;" wrappingWidth="76.55938720703125">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </Text>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
                            </children>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
                         </VBox>
                      </children>
                   </HBox>

@@ -10,8 +10,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <HBox stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
@@ -19,7 +21,13 @@
          <children>
             <VBox>
                <children>
-                  <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" text="Label" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" layoutX="43.0" layoutY="87.0" text="Label" />
+                        <Label layoutX="148.0" layoutY="88.0" text="Friends#" />
+                        <Circle fx:id="imagePlaceHolder" fill="DODGERBLUE" layoutX="110.0" layoutY="46.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+                     </children>
+                  </AnchorPane>
                   <ImageView fx:id="imageViewNotification" fitHeight="51.0" fitWidth="68.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
