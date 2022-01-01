@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -14,24 +13,62 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <HBox stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
       <VBox prefHeight="507.0" prefWidth="235.0">
          <children>
-            <VBox>
+            <VBox prefHeight="227.0" prefWidth="235.0">
                <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="176.0" prefWidth="235.0">
                      <children>
-                        <Label fx:id="labelLoggedUser" alignment="TOP_LEFT" layoutX="43.0" layoutY="87.0" text="Label" />
-                        <Label layoutX="148.0" layoutY="88.0" text="Friends#" />
-                        <Circle fx:id="imagePlaceHolder" fill="DODGERBLUE" layoutX="110.0" layoutY="46.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+                        <VBox alignment="TOP_CENTER" layoutX="76.0" layoutY="14.0">
+                           <children>
+                              <Circle fx:id="imagePlaceHolder" fill="DODGERBLUE" radius="39.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Text fx:id="textUserFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="FULL NAME" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <HBox layoutX="-7.0" layoutY="112.0" prefHeight="52.0" prefWidth="235.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Text fx:id="textNrFriends" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Text fx:id="textNrEvents" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                    <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Events" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="73.0">
+                                 <children>
+                                    <Text fx:id="textNrMessages" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                    <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Messages" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
-                  <ImageView fx:id="imageViewNotification" fitHeight="51.0" fitWidth="68.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="imageViewNotification" fitHeight="29.0" fitWidth="29.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/no_notification.png" />
+                     </image></ImageView>
                </children>
             </VBox>
-            <VBox>
+            <VBox spacing="5.0">
                <children>
                   <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Update user">
                      <VBox.margin>
@@ -85,20 +122,27 @@
                      </graphic></Button>
                   <Button fx:id="buttonActivitiesReport" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" text="Activities report" />
                   <Button fx:id="buttonFriendReport" mnemonicParsing="false" onAction="#onButtonFriendReportClick" text="Friend messages report" />
+                  <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
-            </VBox>
-            <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout">
                <VBox.margin>
-                  <Insets bottom="5.0" top="5.0" />
+                  <Insets />
                </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../images/logout.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
-            <ListView fx:id="listConversations" prefHeight="240.0" prefWidth="235.0" />
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </VBox>
+            <ListView fx:id="listConversations" prefHeight="107.0" prefWidth="571.0" />
          </children>
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onRefreshFriends">

@@ -32,6 +32,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,6 +42,18 @@ import java.util.*;
 public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
+
+    @FXML
+    Text textUserFullName;
+
+    @FXML
+    Text textNrMessages;
+
+    @FXML
+    Text textNrEvents;
+
+    @FXML
+    Text textNrFriends;
 
     @FXML
     Button buttonRemoveFriend = new Button();
@@ -159,7 +172,10 @@ public class LoggedSceneController implements Observer {
 
     private void setLoggedUser(User user) {
         loggedUser = user;
-        labelLoggedUser.setText("Logged user: " + user);
+        textUserFullName.setText(user.getFirstName() + " "+ user.getLastName());
+        textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
+        textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
+        textNrMessages.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
 
     private ObservableList<String> getMonths() {
