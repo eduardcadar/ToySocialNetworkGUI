@@ -110,6 +110,9 @@ public class LoggedSceneController implements Observer {
     @FXML
     ImageView imageViewNotification = new ImageView();
 
+    @FXML
+    ToggleButton toggleFriendsText;
+
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -145,6 +148,11 @@ public class LoggedSceneController implements Observer {
         // TODO
         // - replace this with the actual user profile
         Image im = new Image("profile/anonymous.png");
+        if( loggedUser.getEmail().equals("stef@gmail.com"))
+            im = new Image("profile/stef@gmail.png");
+        if( loggedUser.getEmail().equals("ec@yahoo.com"))
+            im = new Image("profile/ec@yahoo.png");
+
         imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
