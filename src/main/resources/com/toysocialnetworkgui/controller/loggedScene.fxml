@@ -175,7 +175,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
-                              <Image url="@../../../images/reports.png" />
+                              <Image url="@../../../images/reports2.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -242,9 +242,9 @@
             </TableView>
             <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Previous page" />
+                  <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
                   <VBox prefHeight="100.0" prefWidth="383.0" />
-                  <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Next page" />
+                  <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
                </children>
             </HBox>
          </children>
