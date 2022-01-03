@@ -36,7 +36,7 @@ public class ToySocialNetworkApp extends Application {
         loginSceneController.setService(service);
         loginSceneController.setStage(primaryStage);
 
-        primaryStage.setResizable(false);
+      //  primaryStage.setResizable(false);
         primaryStage.setTitle("Big Blana Society");
         primaryStage.getIcons().add(new Image("images/logo.png"));
 

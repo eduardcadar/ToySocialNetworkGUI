@@ -41,7 +41,7 @@ import java.util.*;
 
 public class LoggedSceneController implements Observer {
     @FXML
-    Button buttonShowConversation;
+    ToggleButton buttonShowConversation;
 
     @FXML
     Text textUserFullName;
@@ -58,13 +58,13 @@ public class LoggedSceneController implements Observer {
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
-    Button buttonFriendRequest = new Button();
+    ToggleButton buttonFriendRequest;
     @FXML
     Button buttonAddFriend;
     @FXML
-    Button buttonFriendReport;
+    ToggleButton buttonFriendReport;
     @FXML
-    Button buttonActivitiesReport;
+    ToggleButton buttonActivitiesReport;
 
     @FXML
     ComboBox<String> comboBoxMonth;
@@ -72,7 +72,7 @@ public class LoggedSceneController implements Observer {
     Button buttonUpdateUser;
 
     @FXML
-    Button buttonLogout;
+    ToggleButton buttonLogout;
 
     @FXML
     ListView<Conversation> listConversations;
@@ -83,8 +83,7 @@ public class LoggedSceneController implements Observer {
     @FXML
     Circle  imagePlaceHolder;
 
-    @FXML
-    private Label labelLoggedUser;
+
     @FXML
     TableView<UserFriendDTO> tableViewFriends;
     @FXML
@@ -105,7 +104,7 @@ public class LoggedSceneController implements Observer {
     TextField textFieldSearchFriend;
 
     @FXML
-    Button buttonEvents;
+    ToggleButton buttonEvents;
 
     @FXML
     ImageView imageViewNotification = new ImageView();

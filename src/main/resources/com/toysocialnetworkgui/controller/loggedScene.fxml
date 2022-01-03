@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -21,7 +20,7 @@
 
 <HBox prefHeight="600.0" prefWidth="1000.0" stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
    <children>
-      <VBox prefHeight="507.0" prefWidth="235.0">
+      <VBox prefHeight="600.0" prefWidth="276.0">
          <children>
             <VBox prefHeight="227.0" prefWidth="235.0">
                <children>
@@ -71,9 +70,9 @@
                      </image></ImageView>
                </children>
             </VBox>
-            <VBox prefHeight="441.0" prefWidth="249.0" spacing="5.0">
+            <VBox prefHeight="371.0" prefWidth="256.0" spacing="5.0">
                <children>
-                  <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" text="Update user" textFill="WHITE">
+                  <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" styleClass="buttonSettings" text="Update user" textFill="WHITE">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
@@ -87,14 +86,10 @@
                   </Button>
                   <ToggleButton alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Friends" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="imageWrapper">
                            <image>
                               <Image url="@../../../images/friends.png" />
                            </image>
-                           <styleClass>
-                              <String fx:value="imageWrapper" />
-                              <String fx:value="image-view" />
-                           </styleClass>
                         </ImageView>
                      </graphic>
                      <cursor>
@@ -113,7 +108,7 @@
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin></Button>
-                  <ToggleButton alignment="TOP_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Events">
+                  <ToggleButton fx:id="buttonEvents" alignment="TOP_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onEventsClick" prefHeight="22.0" prefWidth="139.0" styleClass="category" text="Events">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
@@ -131,27 +126,22 @@
                         <Insets />
                      </VBox.margin>
                   </ToggleButton>
-                  <Button fx:id="buttonEvents" mnemonicParsing="false" onAction="#onEventsClick" text="Events" textFill="WHITE">
+                  <ToggleButton fx:id="buttonFriendRequest" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onFriendRequestClick" prefHeight="22.0" prefWidth="145.0" styleClass="category" text="Friend Requests" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../images/calendar.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button fx:id="buttonFriendRequest" alignment="CENTER" mnemonicParsing="false" onAction="#onFriendRequestClick" text="Friend Requests">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
                               <Image url="@../../../images/friends.png" />
                            </image>
                         </ImageView>
-                     </graphic></Button>
-                  <ToggleButton minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Conversation" textAlignment="CENTER">
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </ToggleButton>
+                  <ToggleButton fx:id="buttonShowConversation" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onShowConversationButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Conversation" textAlignment="CENTER">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
@@ -166,20 +156,37 @@
                         <Font size="16.0" />
                      </font>
                   </ToggleButton>
-                  <Button fx:id="buttonShowConversation" mnemonicParsing="false" onAction="#onShowConversationButtonClick" text="Show conversation" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
+                  <ToggleButton fx:id="buttonActivitiesReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Activities report" textAlignment="CENTER">
                      <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
-                              <Image url="@../../../images/message.png" />
+                              <Image url="@../../../images/reports.png" />
                            </image>
                         </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="buttonActivitiesReport" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" text="Activities report" />
-                  <Button fx:id="buttonFriendReport" mnemonicParsing="false" onAction="#onButtonFriendReportClick" text="Friend messages report" />
-                  <ToggleButton minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Logout" textAlignment="CENTER">
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </ToggleButton>
+                  <ToggleButton fx:id="buttonFriendReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonFriendReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Messages report" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                           <image>
+                              <Image url="@../../../images/reports2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </ToggleButton>
+                  <ToggleButton fx:id="buttonLogout" alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Logout" textAlignment="CENTER">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                            <image>
@@ -194,18 +201,6 @@
                         <Font size="16.0" />
                      </font>
                   </ToggleButton>
-                  <Button fx:id="buttonLogout" mnemonicParsing="false" onAction="#onLogoutButtonClick" text="Logout">
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../images/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                </children>
                <VBox.margin>
                   <Insets />
@@ -247,9 +242,9 @@
             </TableView>
             <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Previous page" />
+                  <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
                   <VBox prefHeight="100.0" prefWidth="383.0" />
-                  <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" text="Next page" />
+                  <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
                </children>
             </HBox>
          </children>
