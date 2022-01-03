@@ -1,9 +1,13 @@
 package com.toysocialnetworkgui.controller;
 
+
+
 import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
-import com.toysocialnetworkgui.repository.db.*;
+import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
@@ -18,11 +22,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -32,6 +42,18 @@ import java.util.*;
 public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
+
+    @FXML
+    Text textUserFullName;
+
+    @FXML
+    Text textNrMessages;
+
+    @FXML
+    Text textNrEvents;
+
+    @FXML
+    Text textNrFriends;
 
     @FXML
     Button buttonRemoveFriend = new Button();
@@ -57,6 +79,9 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     Button buttonSearch;
+
+    @FXML
+    Circle  imagePlaceHolder;
 
     @FXML
     private Label labelLoggedUser;
@@ -85,6 +110,9 @@ public class LoggedSceneController implements Observer {
     @FXML
     ImageView imageViewNotification = new ImageView();
 
+    @FXML
+    ToggleButton toggleFriendsText;
+
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -109,13 +137,23 @@ public class LoggedSceneController implements Observer {
         service.getFriendshipRepo().addObserver(this);
         service.getConversationParticipantsRepo().addObserver(this);
         int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
-        if(numberOfNotification != 0){
+        if (numberOfNotification != 0) {
             imageViewNotification.setImage(new Image("images/active_notification.png"));
-        }
-        else{
+        } else {
             imageViewNotification.setImage(new Image("images/no_notification.png"));
 
         }
+
+        imagePlaceHolder.setStroke(Color.web("#862CE4"));
+        // TODO
+        // - replace this with the actual user profile
+        Image im = new Image("profile/anonymous.png");
+        if( loggedUser.getEmail().equals("stef@gmail.com"))
+            im = new Image("profile/stef@gmail.png");
+        if( loggedUser.getEmail().equals("ec@yahoo.com"))
+            im = new Image("profile/ec@yahoo.png");
+
+        imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
     /**
@@ -135,13 +173,22 @@ public class LoggedSceneController implements Observer {
         if (input.equals(""))
             setFriendsList(getFriends());
     }
+
     private void reloadConversationsList() {
         listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
     }
 
     private void setLoggedUser(User user) {
         loggedUser = user;
-        labelLoggedUser.setText("Logged user: " + user);
+        String firstName = user.getFirstName();
+        firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
+        String lastName = user.getLastName();
+        lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
+
+        textUserFullName.setText(firstName + " "+ lastName);
+        textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
+        textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
+        textNrMessages.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
 
     private ObservableList<String> getMonths() {
@@ -160,7 +207,7 @@ public class LoggedSceneController implements Observer {
         ActivitiesReportChooseDateController controller = loader.getController();
         controller.initialize(service, loggedUser);
         Stage stage = new Stage();
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Activity report");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -185,7 +232,7 @@ public class LoggedSceneController implements Observer {
         controller.initialize(service, loggedUser, service.getUser(userEmail));
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Friend report");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -294,7 +341,7 @@ public class LoggedSceneController implements Observer {
         controller.initialize(service, loggedUser, idConversation);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Conversation");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -309,7 +356,7 @@ public class LoggedSceneController implements Observer {
         controller.initialize(service, loggedUser);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Add friend");
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -345,6 +392,7 @@ public class LoggedSceneController implements Observer {
 
     /**
      * Opens a new Stage to handle user interactions with friend requests
+     *
      * @param event - the event that triggered the function
      * @throws IOException - from load
      */
@@ -358,19 +406,20 @@ public class LoggedSceneController implements Observer {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Requests interface");
-        stage.setScene( new Scene(root));
+        stage.setScene(new Scene(root));
         stage.showAndWait();
     }
 
     /**
      * Press R to  refresh table
      * Might delete later ?? doesn't refresh when 2 instances work
+     *
      * @param keyEvent - the event that triggered the function
      */
     public void onRefreshFriends(KeyEvent keyEvent) {
         System.out.println(keyEvent.getCode());
-        if(keyEvent.isAltDown()){
-            if(keyEvent.getCode().equals(KeyCode.R)) {
+        if (keyEvent.isAltDown()) {
+            if (keyEvent.getCode().equals(KeyCode.R)) {
                 reloadFriends();
             }
         }
@@ -400,6 +449,7 @@ public class LoggedSceneController implements Observer {
     /**
      * Changes the image for the notification to the no_notification. Customize it late
      * + Show the events in a drop box maybe?
+     *
      * @param ev
      */
     @FXML

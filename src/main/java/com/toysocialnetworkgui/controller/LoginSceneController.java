@@ -11,7 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class LoginSceneController {
     private TextField textFieldPassword;
 
     @FXML
-    private Button buttonCreateAccount;
+    private Label signUpLabel;
 
     public void setService(Service service) {
         this.service = service;
@@ -62,7 +64,7 @@ public class LoginSceneController {
       //  window.show();
     }
 
-    public void onAdminButtonClick(ActionEvent event) throws IOException {
+    public void onSignUpClick(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("adminScene.fxml"));
         Parent root = loader.load();
         AdminSceneController controller = loader.getController();
