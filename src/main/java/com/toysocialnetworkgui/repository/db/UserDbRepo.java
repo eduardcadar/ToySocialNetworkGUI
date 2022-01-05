@@ -147,7 +147,6 @@ public class UserDbRepo extends Observable implements UserRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet res = ps.executeQuery();
-            //DE CONTINUAT
             while (res.next()) {
                 String firstname = res.getString("firstname");
                 String lastname = res.getString("lastname");
@@ -174,6 +173,7 @@ public class UserDbRepo extends Observable implements UserRepository {
      */
     @Override
     public void update(User user) {
+        validator.validate(user);
         if (getUser(user.getEmail()) == null)
             throw new RepoException("Update failed");
         String sql = "UPDATE " + usersTable + " SET firstname = ?, lastname = ?, password = ? WHERE email = ?";
