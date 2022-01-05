@@ -3,6 +3,7 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,11 +47,7 @@ public class LoginSceneController {
         else {
              loggedUser = this.service.getUser(textFieldEmail.getText());
             if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Wrong email or password");
-                alert.showAndWait();
+                MyAlert.StartAlert("Error", "Wrong email or password", Alert.AlertType.WARNING);
                 return;
             }
         }

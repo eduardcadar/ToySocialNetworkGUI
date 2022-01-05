@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.MyAlert;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,11 +38,7 @@ public class ActivitiesReportChooseDateController {
         LocalDate dateFrom = datePickerFrom.getValue();
         LocalDate dateUntil = datePickerUntil.getValue();
         if (dateFrom == null || dateUntil == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Choose from and until date!");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "Choose from and until date!", Alert.AlertType.WARNING);
             return;
         }
 
