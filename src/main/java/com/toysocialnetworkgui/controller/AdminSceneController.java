@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -87,22 +88,13 @@ public class AdminSceneController {
     @FXML
     protected void onSubmitButtonClick() {
         if(!textFieldPassword.getText().equals(textFieldPasswordConfirmation.getText())){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Passwords not match");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "Passwords do not match", Alert.AlertType.WARNING);
         }
         try {
-           service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
+            service.addUser(textFieldFirstname.getText(), textFieldLastname.getText(), textFieldEmail.getText(), textFieldPassword.getText());
             showLoginScene();
-       }
-       catch (RepoException | ValidatorException | DbException | IOException e){
-           Alert alert = new Alert(Alert.AlertType.WARNING);
-           alert.setTitle("Error");
-           alert.setHeaderText(null);
-           alert.setContentText(e.getMessage());
-           alert.showAndWait();
+       } catch (RepoException | ValidatorException | DbException | IOException e) {
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
        }
     }
 
@@ -119,7 +111,5 @@ public class AdminSceneController {
         controller.setService(service);
         controller.setStage(window);
         window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
-
-
     }
 }

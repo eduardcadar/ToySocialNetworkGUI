@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserMessageDTO;
 import javafx.event.ActionEvent;
@@ -70,18 +71,9 @@ public class ActivitiesReportController {
             document.save(path);
             document.close();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Report");
-            alert.setHeaderText(null);
-            alert.setContentText("Report exported to pdf!");
-            alert.showAndWait();
-
+            MyAlert.StartAlert("Report", "Report expected to pdf!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 
