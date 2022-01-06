@@ -18,250 +18,247 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
-   <children>
-      <SplitPane dividerPositions="0.29797979797979796" layoutX="-1.0" prefHeight="600.0" prefWidth="1146.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+
+<SplitPane dividerPositions="0.29797979797979796" prefHeight="600.0" prefWidth="1146.0" stylesheets="@../../../style/styleLogged.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoggedSceneController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <VBox prefHeight="600.0" prefWidth="276.0">
                <children>
-                  <VBox prefHeight="600.0" prefWidth="276.0">
+                  <VBox prefHeight="227.0" prefWidth="235.0">
                      <children>
-                        <VBox prefHeight="227.0" prefWidth="235.0">
+                        <AnchorPane prefHeight="176.0" prefWidth="235.0">
                            <children>
-                              <AnchorPane prefHeight="176.0" prefWidth="235.0">
+                              <VBox alignment="TOP_CENTER" layoutX="76.0" layoutY="14.0">
                                  <children>
-                                    <VBox alignment="TOP_CENTER" layoutX="76.0" layoutY="14.0">
+                                    <Circle fx:id="imagePlaceHolder" fill="DODGERBLUE" radius="39.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Text fx:id="textUserFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="FULL NAME" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <HBox layoutX="-7.0" layoutY="112.0" prefHeight="52.0" prefWidth="235.0">
+                                 <children>
+                                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <Circle fx:id="imagePlaceHolder" fill="DODGERBLUE" radius="39.0" stroke="BLACK" strokeType="INSIDE" />
-                                          <Text fx:id="textUserFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="FULL NAME" textAlignment="CENTER">
+                                          <Text fx:id="textNrFriends" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                                              <font>
-                                                <Font name="System Bold" size="15.0" />
+                                                <Font name="System Bold" size="12.0" />
                                              </font>
                                           </Text>
+                                          <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends" />
                                        </children>
                                     </VBox>
-                                    <HBox layoutX="-7.0" layoutY="112.0" prefHeight="52.0" prefWidth="235.0">
+                                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                                        <children>
-                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                                             <children>
-                                                <Text fx:id="textNrFriends" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
-                                                   <font>
-                                                      <Font name="System Bold" size="12.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends" />
-                                             </children>
-                                          </VBox>
-                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                                             <children>
-                                                <Text fx:id="textNrEvents" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                                                <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Events" />
-                                             </children>
-                                          </VBox>
-                                          <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="73.0">
-                                             <children>
-                                                <Text fx:id="textNrMessages" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                                                <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Messages" />
-                                             </children>
-                                          </VBox>
+                                          <Text fx:id="textNrEvents" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                          <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Events" />
                                        </children>
-                                    </HBox>
-                                 </children>
-                              </AnchorPane>
-                              <ImageView fx:id="imageViewNotification" fitHeight="29.0" fitWidth="29.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../images/no_notification.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="371.0" prefWidth="256.0" spacing="5.0">
-                           <children>
-                              <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" styleClass="buttonSettings" text="Update user" textFill="WHITE">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                                 <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../images/settings.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <Button alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Friends" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="imageWrapper">
-                                       <image>
-                                          <Image url="@../../../images/friends.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" prefHeight="26.0" prefWidth="98.0" text="Add friend">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" prefHeight="26.0" prefWidth="100.0" text="Remove friend">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="buttonEvents" alignment="TOP_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onEventsClick" prefHeight="22.0" prefWidth="139.0" styleClass="category" text="Events">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/calendar.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Button>
-                              <Button fx:id="buttonFriendRequest" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onFriendRequestClick" prefHeight="22.0" prefWidth="145.0" styleClass="category" text="Friend Requests" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/friends.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="buttonShowConversation" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onShowConversationButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Conversation" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/message.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="buttonActivitiesReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Activities report" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/reports.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="buttonFriendReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonFriendReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Messages report" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/reports2.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="buttonLogout" alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Logout" textAlignment="CENTER">
-                                 <graphic>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
-                                       <image>
-                                          <Image url="@../../../images/logout.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </VBox>
-                        <ListView fx:id="listConversations" prefHeight="107.0" prefWidth="571.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-          <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onRefreshFriends">
-                     <children>
-                        <HBox>
-                           <children>
-                              <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <TextField fx:id="textFieldSearchFriend" onAction="#clearSearchFriendSelection" promptText="Search">
-                                       <HBox.margin>
-                                          <Insets left="25.0" right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
+                                    </VBox>
+                                    <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="73.0">
+                                       <children>
+                                          <Text fx:id="textNrMessages" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                          <Text fill="#a8a5a5" strokeType="OUTSIDE" strokeWidth="0.0" text="Messages" />
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                            </children>
-                        </HBox>
-                        <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
-                          <columns>
-                              <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                            <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
-                              <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
-                            <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                        <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+                        </AnchorPane>
+                        <ImageView fx:id="imageViewNotification" fitHeight="29.0" fitWidth="29.0" onMouseClicked="#clearNotificationImage" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/no_notification.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="371.0" prefWidth="256.0" spacing="5.0">
+                     <children>
+                        <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" styleClass="buttonSettings" text="Update user" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/settings.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Friends" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="imageWrapper">
+                                 <image>
+                                    <Image url="@../../../images/friends.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="buttonAddFriend" mnemonicParsing="false" onAction="#onAddFriendButtonClick" prefHeight="26.0" prefWidth="98.0" text="Add friend">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="buttonRemoveFriend" mnemonicParsing="false" onAction="#onRemoveFriendButtonClick" prefHeight="26.0" prefWidth="100.0" text="Remove friend">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="buttonEvents" alignment="TOP_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onEventsClick" prefHeight="22.0" prefWidth="139.0" styleClass="category" text="Events">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/calendar.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="buttonFriendRequest" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onFriendRequestClick" prefHeight="22.0" prefWidth="145.0" styleClass="category" text="Friend Requests" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/friends.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="buttonShowConversation" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onShowConversationButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Conversation" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/message.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="buttonActivitiesReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonActivitiesReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Activities report" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/reports.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="buttonFriendReport" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onButtonFriendReportClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Messages report" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/reports2.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="buttonLogout" alignment="CENTER_LEFT" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="22.0" prefWidth="119.0" styleClass="category" text="Logout" textAlignment="CENTER">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
+                                 <image>
+                                    <Image url="@../../../images/logout.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </VBox>
+                  <ListView fx:id="listConversations" prefHeight="107.0" prefWidth="571.0" />
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+    <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onRefreshFriends">
+               <children>
+                  <HBox>
+                     <children>
+                        <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
-                              <VBox prefHeight="100.0" prefWidth="383.0" />
-                              <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
+                              <TextField fx:id="textFieldSearchFriend" onAction="#clearSearchFriendSelection" promptText="Search">
+                                 <HBox.margin>
+                                    <Insets left="25.0" right="5.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
                            </children>
                         </HBox>
                      </children>
-                  </VBox>
+                  </HBox>
+                  <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
+                    <columns>
+                        <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
+                      <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
+                        <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
+                      <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
+                        <VBox prefHeight="100.0" prefWidth="383.0" />
+                        <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
+                     </children>
+                  </HBox>
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
-</AnchorPane>
+            </VBox>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

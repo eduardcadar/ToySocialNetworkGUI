@@ -396,7 +396,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendController controller = fxmlLoader.getController();
-        controller.initialize(service, loggedUser);
+        controller.initialize(service, loggedUser, window);
         rightPane.getChildren().setAll(root);
 
     }
