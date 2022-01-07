@@ -33,6 +33,14 @@ public class MessageService {
         return repo.getConversationMessages(idConversation);
     }
 
+    /**
+     * @param idConversation id of the conversation
+     * @return number of messages in the conversation
+     */
+    public int getConversationSize(int idConversation) {
+        return repo.conversationSize(idConversation);
+    }
+
     public List<Message> getConversationMessagesPage(int idConversation, int firstrow, int rowcount) {
         return repo.getConversationMessagesPage(idConversation, firstrow, rowcount);
     }

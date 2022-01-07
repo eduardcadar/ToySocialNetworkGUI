@@ -16,13 +16,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ConversationController implements Observer {
     private Service service;
     private User loggedUser;
     private int idConversation;
+    private int lastConvSize;
     private int pageNumber;
     private int pageSize;
+    private ScheduledExecutorService exec;
 
     @FXML
     Button buttonPreviousPage;
@@ -44,13 +49,27 @@ public class ConversationController implements Observer {
     TableColumn<Message, String> tableColumnDate;
 
     public void initialize(Service service, User user, int idConversation) {
-        pageNumber = 1;
         pageSize = 3;
         this.service = service;
         this.loggedUser = user;
         this.idConversation = idConversation;
+        pageNumber = getLastPageNumber();
+        this.lastConvSize = service.getConversationSize(idConversation);
         initializeMessages();
         service.getMessageRepo().addObserver(this);
+
+        exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                if (service.getConversationSize(idConversation) != lastConvSize)
+                    reloadMessages();
+            }
+        }, 10, 10, TimeUnit.SECONDS);
+    }
+
+    public void tearDown() {
+        exec.shutdown();
     }
 
     @FXML
@@ -99,6 +118,7 @@ public class ConversationController implements Observer {
     }
 
     private void reloadMessages() {
+
         tableViewMessages.setItems(getMessages());
     }
 

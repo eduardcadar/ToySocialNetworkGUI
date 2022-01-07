@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
+import com.toysocialnetworkgui.utils.CommonFriendsDTO;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserMessageDTO;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
@@ -215,22 +216,6 @@ public class Service {
         return userFriendDTOS;
     }
 
-    public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
-        List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
-        List<String> friendsEmails = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
-        for (String friendEmail : friendsEmails){
-            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
-            User friend;
-            if (email.equals(friendship.getFirst()))
-                friend = userService.getUser(friendship.getSecond());
-            else
-                friend = userService.getUser(friendship.getFirst());
-            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
-            userFriendDTOS.add(userFriendDTO);
-        }
-        return userFriendDTOS;
-    }
-
     public List<UserFriendDTO> getFriendshipsDTOMonthFilteredPage(String email, int pageNumber, int pageSize, String pattern, int month) {
         List<UserFriendDTO> userFriendDTOS = new ArrayList<>();
         List<String> friendsEmails;
@@ -262,11 +247,11 @@ public class Service {
      */
     public List<User> getNotFriends(String email) {
         List<String> friends = friendshipService.getUserFriends(email);
-        List<User> notFriends = new ArrayList<>();
-        for (User u : userService.getAllUsers())
-            if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
-                notFriends.add(u);
-        return notFriends;
+
+        return userService.getAllUsers()
+                .stream()
+                .filter(u -> !friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
+                .toList();
     }
 
     /**
@@ -387,6 +372,14 @@ public class Service {
      */
     public Message getMessage(int id) {
         return messageService.getMessage(id);
+    }
+
+    /**
+     * @param idConversation id of the conversation
+     * @return number of messages in the conversation
+     */
+    public int getConversationSize(int idConversation) {
+        return messageService.getConversationSize(idConversation);
     }
 
     /**
@@ -515,5 +508,34 @@ public class Service {
     }
     public List<Event> getEventsForUser(String userEmail) {
         return eventService.getEventsForUser(userEmail);
+    }
+
+    /**
+     * Returns a list of CommonFriendsDTO objects with users that are not friends with the specified user
+     * @param email email of the user
+     * @return list of CommonFriendsDTOs
+     */
+    public List<CommonFriendsDTO> getUserCommonFriendsDTO(String email) {
+        List<CommonFriendsDTO> commonFriendsDTOs = new ArrayList<>();
+        User user = userService.getUser(email);
+
+        List<User> notFriends = getNotFriends(email);
+        List<String> notFriendsEmails = new ArrayList<>();
+        notFriends.forEach(nf -> notFriendsEmails.add(nf.getEmail()));
+
+        notFriends.forEach(n -> {
+            int size;
+            size = friendshipService.getUserFriends(n.getEmail())
+                    .stream()
+                    .filter(notFriendsEmails::contains)
+                    .toList()
+                    .size();
+            commonFriendsDTOs.add(new CommonFriendsDTO(user, n, size));
+        });
+
+        return commonFriendsDTOs
+                .stream()
+                .sorted((a, b) -> b.getNrOfCommonFriends().compareTo(a.getNrOfCommonFriends()))
+                .toList();
     }
 }

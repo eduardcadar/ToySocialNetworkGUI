@@ -332,6 +332,9 @@ public class LoggedSceneController implements Observer {
         ConversationController controller = loader.getController();
         controller.initialize(service, loggedUser, idConversation);
         Stage stage = new Stage();
+        stage.setOnCloseRequest(e -> {
+            controller.tearDown();
+        });
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Conversation");
