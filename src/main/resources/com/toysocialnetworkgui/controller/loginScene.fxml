@@ -29,6 +29,7 @@
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Join the club" />
                      </children>
                   </VBox>
+
                   <HBox spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
@@ -60,6 +61,7 @@
                         </ImageView>
                         <VBox>
                            <children>
+
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends" wrappingWidth="76.55938720703125">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
@@ -83,12 +85,14 @@
                               <Image url="@../../../images/calendar.png" />
                            </image>
                         </ImageView>
+
                         <VBox prefHeight="48.0" prefWidth="75.0">
                            <children>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Events&#10;" wrappingWidth="76.55938720703125">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
+
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -142,10 +146,12 @@
                      </VBox.margin>
                   </GridPane>
                   <Button id="button" alignment="CENTER" focusTraversable="false" layoutX="187.0" layoutY="216.0" maxHeight="30.0" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="150.0" styleClass="buttonLogin" stylesheets="@../../../style/style.css" text="Connect" textAlignment="RIGHT" textFill="WHITE" />
+
                   <Label fx:id="signUpLabel" onMouseClicked="#onSignUpClick" text="Sign up" textFill="#862ce4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
+
                </children>
             </VBox>
          </children>

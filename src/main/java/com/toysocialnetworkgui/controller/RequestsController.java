@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
@@ -233,18 +234,10 @@ public class RequestsController implements Observer {
             try {
                 service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
             } catch (RepoException e){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No request selected ");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
         }
     }
 
@@ -254,18 +247,10 @@ public class RequestsController implements Observer {
             try {
                 service.rejectFriendship(requestDTO.getEmail(), loggedUser.getEmail());
             } catch (RepoException e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No request selected ");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
         }
     }
 
@@ -276,19 +261,11 @@ public class RequestsController implements Observer {
             try {
             service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
         } catch(RepoException e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+                MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("No request selected ");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
         }
     }
 

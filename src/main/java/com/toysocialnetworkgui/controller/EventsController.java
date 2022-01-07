@@ -6,6 +6,7 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -160,22 +161,11 @@ public class EventsController {
             if(event != null){
                 service.subscribeUserToEvent(event.getId(), loggedUser.getEmail());
                 initList();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Please select an event");
-                alert.showAndWait();
-
+            } else {
+                MyAlert.StartAlert("Error", "Please select an event", Alert.AlertType.WARNING);
             }
-        }catch (RepoException | DbException e){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-
-
+        } catch (RepoException | DbException e) {
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
 
     }
@@ -189,14 +179,8 @@ public class EventsController {
         if(event != null) {
             service.unsubscribeUserFromEvent(event.getId(), loggedUser.getEmail());
             initList();
-        }
-        else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("You didn't select any event!");
-            alert.showAndWait();
-
+        } else {
+            MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.toysocialnetworkgui.controller;
 
-
-
 import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
@@ -11,6 +9,7 @@ import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +21,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -31,7 +29,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -227,11 +224,7 @@ public class LoggedSceneController implements Observer {
     @FXML
     protected void onButtonFriendReportClick(ActionEvent event) throws IOException {
         if (tableViewFriends.getSelectionModel().getSelectedItems().size() != 1) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Select one friend!");
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", "Select one friend!", Alert.AlertType.WARNING);
             return;
         }
         String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
@@ -426,11 +419,7 @@ public class LoggedSceneController implements Observer {
         try {
             service.removeFriendship(loggedUser.getEmail(), friend.getEmail());
         } catch (RepoException | DbException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
     }
 

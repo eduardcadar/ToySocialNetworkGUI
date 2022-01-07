@@ -6,7 +6,10 @@ import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
+
 import com.toysocialnetworkgui.utils.CONSTANTS;
+
+import com.toysocialnetworkgui.utils.MyAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,11 +70,7 @@ public class AddFriendController {
         try {
             service.addFriendship(loggedUser.getEmail(), friend.getEmail());
         } catch (RepoException | DbException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
