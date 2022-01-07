@@ -5,10 +5,7 @@ import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
-import com.toysocialnetworkgui.utils.CommonFriendsDTO;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
-import com.toysocialnetworkgui.utils.UserMessageDTO;
-import com.toysocialnetworkgui.utils.UserRequestDTO;
+import com.toysocialnetworkgui.utils.*;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.sql.SQLException;
@@ -241,6 +238,19 @@ public class Service {
         return friendshipService.getUserFriendsMonthFilteredSize(email, pattern, month);
     }
 
+    public int getUserFriendsFilteredSize(String email, String pattern) {
+        return friendshipService.getUserFriendsFilteredSize(email, pattern);
+    }
+
+    public List<User> getUserFriendsFilteredPage(String email, int pageNumber, int pageSize, String pattern) {
+        List<User> friends = new ArrayList<>();
+
+        List<String> friendsEmails = friendshipService.getUserFriendsFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern);
+        friendsEmails.forEach(f -> friends.add(userService.getUser(f)));
+
+        return friends;
+    }
+
     /**
      * @param email - String the email of the user
      * @return the users that are not friends with the given user
@@ -278,6 +288,20 @@ public class Service {
         });
 
         return conversations;
+    }
+
+    public List<ConversationDTO> getUserConversationDTOs(String email) {
+        List<ConversationDTO> conversationDTOs = new ArrayList<>();
+
+        List<Integer> conversations = conversationService.getUserConversations(email);
+        conversations.forEach(c -> {
+            List<String> participantsEmails = conversationService.getConversationParticipants(c);
+            List<User> participants = new ArrayList<>();
+            participantsEmails.forEach(e -> participants.add(userService.getUser(e)));
+            conversationDTOs.add(new ConversationDTO(c, participants));
+        });
+
+        return conversationDTOs;
     }
 
     /**
@@ -473,8 +497,8 @@ public class Service {
 
     public List<Event> getAllEvents(){
         return eventService.getAllEvents();
-
     }
+
     /**
      * Removes the event
      * @param name - String
@@ -499,13 +523,12 @@ public class Service {
        User u = userService.getUser(userEmail);
        if(ev != null && u != null)
             eventService.subscribeUserToEvent(eventId, userEmail);
-
-
     }
+
     public void unsubscribeUserFromEvent(Integer eventId, String userEmail){
         eventService.unsubscribeUserFromEvent(eventId,userEmail);
-
     }
+
     public List<Event> getEventsForUser(String userEmail) {
         return eventService.getEventsForUser(userEmail);
     }
@@ -538,4 +561,5 @@ public class Service {
                 .sorted((a, b) -> b.getNrOfCommonFriends().compareTo(a.getNrOfCommonFriends()))
                 .toList();
     }
+
 }

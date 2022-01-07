@@ -41,11 +41,11 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
     }
 
     public void addRequest(FriendshipRequest request) {
-        if(getRequest(request.getFirst(), request.getSecond()) != null){
+        if (getRequest(request.getFirst(), request.getSecond()) != null) {
             throw new RepoException("There is already a request sent by user");
         }
         String sql = "INSERT INTO " + tableName + " (email1, email2, requeststate, sendDate) values (?, ?, ?,?) ";
-        try(Connection connection = DriverManager.getConnection(url, username, password)){
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, request.getFirst());
             ps.setString(2, request.getSecond());
@@ -77,15 +77,15 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
     public List<FriendshipRequest> getAll() {
         ArrayList<FriendshipRequest> friendshipRequests = new ArrayList<>();
         String sql = "SELECT * FROM " + tableName;
-        try(Connection connection = DriverManager.getConnection(url,username,password)){
+        try (Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 String requestEmail1 = resultSet.getString("email1");
                 String requestEmail2 = resultSet.getString("email2");
                 REQUESTSTATE requestState = REQUESTSTATE.valueOf(resultSet.getString("requeststate"));
                 LocalDate sendDate = LocalDate.parse(resultSet.getString("sendDate"));
-                friendshipRequests.add(new FriendshipRequest(requestEmail1,requestEmail2,requestState,sendDate));
+                friendshipRequests.add(new FriendshipRequest(requestEmail1, requestEmail2, requestState, sendDate));
             }
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
@@ -95,7 +95,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
 
     public FriendshipRequest getRequest(String email1, String email2) {
         String sql = "SELECT * FROM " + tableName + " WHERE (email1 = ? AND email2 = ?)";
-        try(Connection connection = DriverManager.getConnection(url,username,password)){
+        try (Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, email1);
             ps.setString(2, email2);
@@ -107,8 +107,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
                 LocalDate sendDate = LocalDate.parse(resultSet.getString("sendDate"));
 
                 return new FriendshipRequest(requestEmail1,requestEmail2,requestState, sendDate);
-            }
-            else
+            } else
                 return null;
 
         } catch (SQLException throwables) {
@@ -117,12 +116,11 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
         return null;
     }
 
-
     public void removeRequest(FriendshipRequest friendshipRequest) {
-        if(getRequest(friendshipRequest.getFirst(),friendshipRequest.getSecond()) == null)
+        if (getRequest(friendshipRequest.getFirst(),friendshipRequest.getSecond()) == null)
             throw new RepoException("Friendship request doesn't exists");
         String sql = "DELETE FROM " + tableName + " WHERE (email1 = ? AND email2 = ?) ";
-        try(Connection connection = DriverManager.getConnection(url,username, password)){
+        try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, friendshipRequest.getFirst());
             ps.setString(2, friendshipRequest.getSecond());
@@ -131,7 +129,6 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
-
     }
 
     public boolean isEmpty() {
@@ -143,7 +140,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
         String sql = "UPDATE " + tableName +
                 " SET requeststate = ?" +
                 " WHERE (email1 = ? AND email2 = ?)";
-        try(Connection connection = DriverManager.getConnection(url,username,password)){
+        try (Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, request.getState().toString());
             ps.setString(2, request.getFirst());

@@ -16,7 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -31,7 +30,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -76,14 +74,10 @@ public class LoggedSceneController implements Observer {
     Button buttonLogout;
 
     @FXML
-    ListView<Conversation> listConversations;
-
-    @FXML
     Button buttonSearch;
 
     @FXML
-    Circle  imagePlaceHolder;
-
+    Circle imagePlaceHolder;
 
     @FXML
     TableView<UserFriendDTO> tableViewFriends;
@@ -129,17 +123,14 @@ public class LoggedSceneController implements Observer {
         currentMonthFilter = 0;
         setLoggedUser(user);
         initializeFriendsList();
-        reloadConversationsList();
         tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
-        service.getConversationParticipantsRepo().addObserver(this);
         int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
         if (numberOfNotification != 0) {
             imageViewNotification.setImage(new Image("images/active_notification.png"));
         } else {
             imageViewNotification.setImage(new Image("images/no_notification.png"));
-
         }
 
         imagePlaceHolder.setStroke(Color.web("#862CE4"));
@@ -170,10 +161,6 @@ public class LoggedSceneController implements Observer {
         String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
         if (input.equals(""))
             setFriendsList(getFriends());
-    }
-
-    private void reloadConversationsList() {
-        listConversations.getItems().setAll(service.getUserConversations(loggedUser.getEmail()));
     }
 
     private void setLoggedUser(User user) {
@@ -341,38 +328,11 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
-    protected void onShowConversationButtonClick(ActionEvent event) throws IOException {
-        int idConversation;
-        if (!listConversations.getSelectionModel().isEmpty()) {
-            idConversation = listConversations.
-                    getSelectionModel().getSelectedItem().getID();
-        } else if (!tableViewFriends.getSelectionModel().isEmpty()) {
-            List<String> participants = new ArrayList<>();
-            participants.add(loggedUser.getEmail());
-            tableViewFriends.getSelectionModel().getSelectedItems()
-                    .forEach(p -> participants.add(p.getEmail()));
-            idConversation = service.getConversation(participants).getID();
-        } else return;
-/*
+    protected void onShowConversationButtonClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, idConversation);
-        Stage stage = new Stage();
-        stage.setOnCloseRequest(e -> {
-            controller.tearDown();
-        });
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Conversation");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-//        reloadConversationsList();
-  */
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
-        Parent root = loader.load();
-        ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, idConversation);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
@@ -486,7 +446,6 @@ public class LoggedSceneController implements Observer {
     @Override
     public void update(Object obj) {
         if (obj instanceof FriendshipDbRepo) reloadFriends();
-        if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
     }
 
     /**
