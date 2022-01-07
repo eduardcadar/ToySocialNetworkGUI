@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -38,7 +39,10 @@ import java.util.*;
 
 public class LoggedSceneController implements Observer {
     @FXML
-    ToggleButton buttonShowConversation;
+    Button buttonShowConversation;
+
+    @FXML
+    AnchorPane rightPane;
 
     @FXML
     Text textUserFullName;
@@ -55,13 +59,13 @@ public class LoggedSceneController implements Observer {
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
-    ToggleButton buttonFriendRequest;
+    Button buttonFriendRequest;
     @FXML
     Button buttonAddFriend;
     @FXML
-    ToggleButton buttonFriendReport;
+    Button buttonFriendReport;
     @FXML
-    ToggleButton buttonActivitiesReport;
+    Button buttonActivitiesReport;
 
     @FXML
     ComboBox<String> comboBoxMonth;
@@ -69,7 +73,7 @@ public class LoggedSceneController implements Observer {
     Button buttonUpdateUser;
 
     @FXML
-    ToggleButton buttonLogout;
+    Button buttonLogout;
 
     @FXML
     ListView<Conversation> listConversations;
@@ -101,13 +105,11 @@ public class LoggedSceneController implements Observer {
     TextField textFieldSearchFriend;
 
     @FXML
-    ToggleButton buttonEvents;
+    Button buttonEvents;
 
     @FXML
     ImageView imageViewNotification = new ImageView();
 
-    @FXML
-    ToggleButton toggleFriendsText;
 
     private User loggedUser;
     private Service service;
@@ -197,6 +199,8 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
+
+     /*
         FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
         Parent root = loader.load();
 
@@ -207,6 +211,14 @@ public class LoggedSceneController implements Observer {
         stage.setTitle("Activity report");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+        */
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
+        Parent root = loader.load();
+
+        ActivitiesReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        rightPane.getChildren().setAll(root);
+
     }
 
     @FXML
@@ -216,10 +228,9 @@ public class LoggedSceneController implements Observer {
             return;
         }
         String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
-
+/*
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
         Parent root = loader.load();
-
         FriendReportChooseDateController controller = loader.getController();
         controller.initialize(service, loggedUser, service.getUser(userEmail));
         Stage stage = new Stage();
@@ -228,6 +239,13 @@ public class LoggedSceneController implements Observer {
         stage.setTitle("Friend report");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+*/
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
+        Parent root = loader.load();
+        FriendReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, service.getUser(userEmail));
+        rightPane.getChildren().setAll(root);
+
     }
 
     @FXML
@@ -298,17 +316,26 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onUpdateButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
+        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
         Parent root = loader.load();
         UpdateUserController controller = loader.getController();
         controller.setService(service);
         controller.initialize(loggedUser);
-        Stage stage = new Stage();
+*/
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
+        Parent root = loader.load();
+        UpdateUserController controller = loader.getController();
+        controller.setService(service);
+        controller.initialize(loggedUser, window);
+        rightPane.getChildren().setAll(root);
+
+        /*Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(((Node) event.getSource()).getScene().getWindow());
         stage.setTitle("Update user information");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+*/
 
         setLoggedUser(service.getUser(loggedUser.getEmail()));
     }
@@ -326,7 +353,7 @@ public class LoggedSceneController implements Observer {
                     .forEach(p -> participants.add(p.getEmail()));
             idConversation = service.getConversation(participants).getID();
         } else return;
-
+/*
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
@@ -338,11 +365,17 @@ public class LoggedSceneController implements Observer {
         stage.setScene(new Scene(root));
         stage.showAndWait();
 //        reloadConversationsList();
+  */
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
+        Parent root = loader.load();
+        ConversationController controller = loader.getController();
+        controller.initialize(service, loggedUser, idConversation);
+        rightPane.getChildren().setAll(root);
     }
 
     @FXML
     protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
+  /*      FXMLLoader loader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
         Parent root = loader.load();
         AddFriendController controller = loader.getController();
         controller.initialize(service, loggedUser);
@@ -352,18 +385,30 @@ public class LoggedSceneController implements Observer {
         stage.setTitle("Add friend");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+*/
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
+        Parent root = fxmlLoader.load();
+        AddFriendController controller = fxmlLoader.getController();
+        controller.initialize(service, loggedUser, window);
+        rightPane.getChildren().setAll(root);
+
     }
 
     @FXML
     protected void onEventsClick(ActionEvent event) throws IOException {
-        System.out.println("events");
+    /*    System.out.println("events");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
         Parent root = loader.load();
         EventsController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
         window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
         window.show();
-
+*/
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent dashboard = fxmlLoader.load();
+        EventsController controller = fxmlLoader.getController();
+        controller.initialize(service, loggedUser, window);
+        rightPane.getChildren().setAll(dashboard);
     }
 
     @FXML
@@ -386,7 +431,7 @@ public class LoggedSceneController implements Observer {
      */
     @FXML
     protected void onFriendRequestClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
+      /*  FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
         Parent root = loader.load();
         RequestsController controller = loader.getController();
         controller.initialize(service, loggedUser);
@@ -396,6 +441,13 @@ public class LoggedSceneController implements Observer {
         stage.setTitle("Requests interface");
         stage.setScene(new Scene(root));
         stage.showAndWait();
+        */
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
+        Parent dashboard = loader.load();
+        RequestsController controller = loader.getController();
+        controller.initialize(service, loggedUser);
+        rightPane.getChildren().setAll(dashboard);
+
     }
 
     /**

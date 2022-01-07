@@ -6,18 +6,26 @@ import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
+
+import com.toysocialnetworkgui.utils.CONSTANTS;
+
 import com.toysocialnetworkgui.utils.MyAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class AddFriendController {
     @FXML
@@ -33,10 +41,11 @@ public class AddFriendController {
 
     private User loggedUser;
     private Service service;
-
-    public void initialize(Service service, User user) {
+    private Stage window;
+    public void initialize(Service service, User user, Stage window) {
         this.service = service;
         this.loggedUser = user;
+        this.window = window;
         initializeUsersList();
     }
 
@@ -54,7 +63,7 @@ public class AddFriendController {
     }
 
     @FXML
-    protected void onAddFriendButtonClick(ActionEvent event) {
+    protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
         User friend = tableViewUsers.getSelectionModel().getSelectedItem();
         if (friend == null)
             return;
@@ -63,6 +72,11 @@ public class AddFriendController {
         } catch (RepoException | DbException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
-        ((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
+        Parent root = loader.load();
+        LoggedSceneController controller = loader.getController();
+        controller.initialize(service, loggedUser, window);
+        Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
+        window.setScene(scene);
     }
 }

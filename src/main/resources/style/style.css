@@ -23,6 +23,7 @@
     -fx-alignment: center;
     -fx-border-radius: 3px;
     -fx-cursor: hand;
+    -fx-text-fill: white;
 
 }
 #button:hover{

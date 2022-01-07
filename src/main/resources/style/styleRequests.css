@@ -1,0 +1,52 @@
+
+.table-view {
+    -fx-background-color: transparent;
+
+}
+.table-view, .column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-width: 1px;
+    -fx-border-coor: #862CE4;
+    -fx-border-radius: 1px;
+
+}
+.column-header {
+    -fx-background-color: transparent;
+    }
+.table-cell{
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd:selected{
+    -fx-background-color: #862CE4;
+    -fx-background-radius: 5px;
+}
+.table-row-cell:even:selected{
+    -fx-background-color: #862CE4;
+    -fx-background-radius: 5px;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.table-row-cell:even {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
