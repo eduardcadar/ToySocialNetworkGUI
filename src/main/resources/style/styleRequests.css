@@ -1,17 +1,25 @@
 
 .table-view {
     -fx-background-color: transparent;
+    -fx-border-color: #862CE4;
 
-}
-.table-view, .column-header-background {
-    -fx-background-color: transparent;
     -fx-border-width: 1px;
-    -fx-border-coor: #862CE4;
-    -fx-border-radius: 1px;
+}
+.column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+
 
 }
 .column-header {
     -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    /*
+    - aici se adauga css pt headere, nu putem pastra borderul din cauza ultimei coloane
+    care nu are nume, e cea cu cancel-ul
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+*/
     }
 .table-cell{
     -fx-border-color: transparent;
