@@ -110,7 +110,7 @@
          </children></AnchorPane>
       <AnchorPane>
          <children>
-            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="20.0" stylesheets="@../../../style/style.css">
+            <VBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="412.0" prefWidth="402.0" spacing="20.0" stylesheets="@../../../style/style.css">
                <children>
                   <ImageView fitHeight="48.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
                      <image>
