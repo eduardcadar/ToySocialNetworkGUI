@@ -7,6 +7,7 @@ import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.ConversationDTO;
+import com.toysocialnetworkgui.utils.MyAlert;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,9 +72,10 @@ public class ConversationController implements Observer {
         service.getConversationParticipantsRepo().addObserver(this);
         service.getMessageRepo().addObserver(this);
         rightPane.getParent().getScene().getWindow().setOnCloseRequest(event -> tearDown());
+        exec = Executors.newSingleThreadScheduledExecutor();
 
         listConversations.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (exec != null) tearDown();
+            tearDown();
             exec = Executors.newSingleThreadScheduledExecutor();
 
             if (listConversations.getSelectionModel().isEmpty())
@@ -102,7 +104,7 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onCreateConversationButtonClick() throws IOException {
-        exec.shutdown();
+        tearDown();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createConversation.fxml"));
         Parent root = loader.load();
@@ -133,6 +135,10 @@ public class ConversationController implements Observer {
     protected void onSendMessageButtonClick() {
         if (textFieldMessage.getLength() == 0)
             return;
+        if (idConversation == 0) {
+            MyAlert.StartAlert("No conversation selected", "Select a conversation!", Alert.AlertType.WARNING);
+            return;
+        }
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
         textFieldMessage.clear();

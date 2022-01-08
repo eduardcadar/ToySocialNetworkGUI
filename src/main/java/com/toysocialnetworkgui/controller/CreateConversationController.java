@@ -96,12 +96,15 @@ public class CreateConversationController {
     protected void onButtonRemoveFriendFromConversationClick() {
         if (listConversationFriends.getSelectionModel().isEmpty())
             return;
-        listFriends.getItems().add(listConversationFriends.getSelectionModel().getSelectedItem());
         listConversationFriends.getItems().remove(listConversationFriends.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     protected void onButtonCreateConversationClick() throws IOException {
+        if (listConversationFriends.getItems().isEmpty()) {
+            MyAlert.StartAlert("Error", "Add friends to the conversation", Alert.AlertType.WARNING);
+            return;
+        }
         List<String> participantsEmails = new ArrayList<>();
         participantsEmails.add(loggedUser.getEmail());
         listConversationFriends.getItems().forEach(f -> participantsEmails.add(f.getEmail()));
