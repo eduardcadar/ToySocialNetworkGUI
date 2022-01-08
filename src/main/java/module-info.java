@@ -8,7 +8,6 @@ module com.toysocialnetworkgui {
     requires java.sql;
     requires org.apache.pdfbox;
 
-
     opens com.toysocialnetworkgui to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.controller to javafx.fxml, javafx.base;
     opens com.toysocialnetworkgui.utils to javafx.fxml, javafx.base;

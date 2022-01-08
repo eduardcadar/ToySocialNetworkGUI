@@ -14,7 +14,6 @@ public interface FriendshipRepository {
     List<Friendship> getAll();
 
     List<String> getUserFriends(String email);
-    List<String> getUserFriendsPage(String email, int firstrow, int rowcount);
 
     void removeUserFships(String email);
 

@@ -5,9 +5,7 @@ import com.toysocialnetworkgui.domain.network.Network;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
-import com.toysocialnetworkgui.utils.UserMessageDTO;
-import com.toysocialnetworkgui.utils.UserRequestDTO;
+import com.toysocialnetworkgui.utils.*;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.sql.SQLException;
@@ -215,22 +213,6 @@ public class Service {
         return userFriendDTOS;
     }
 
-    public List<UserFriendDTO> getFriendshipsDTOPage(String email, int pageNumber, int pageSize){
-        List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
-        List<String> friendsEmails = friendshipService.getUserFriendsPage(email, (pageNumber - 1) * pageSize, pageSize);
-        for (String friendEmail : friendsEmails){
-            Friendship friendship = friendshipService.getFriendship(email, friendEmail);
-            User friend;
-            if (email.equals(friendship.getFirst()))
-                friend = userService.getUser(friendship.getSecond());
-            else
-                friend = userService.getUser(friendship.getFirst());
-            UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
-            userFriendDTOS.add(userFriendDTO);
-        }
-        return userFriendDTOS;
-    }
-
     public List<UserFriendDTO> getFriendshipsDTOMonthFilteredPage(String email, int pageNumber, int pageSize, String pattern, int month) {
         List<UserFriendDTO> userFriendDTOS = new ArrayList<>();
         List<String> friendsEmails;
@@ -256,17 +238,30 @@ public class Service {
         return friendshipService.getUserFriendsMonthFilteredSize(email, pattern, month);
     }
 
+    public int getUserFriendsFilteredSize(String email, String pattern) {
+        return friendshipService.getUserFriendsFilteredSize(email, pattern);
+    }
+
+    public List<User> getUserFriendsFilteredPage(String email, int pageNumber, int pageSize, String pattern) {
+        List<User> friends = new ArrayList<>();
+
+        List<String> friendsEmails = friendshipService.getUserFriendsFilteredPage(email, (pageNumber - 1) * pageSize, pageSize, pattern);
+        friendsEmails.forEach(f -> friends.add(userService.getUser(f)));
+
+        return friends;
+    }
+
     /**
      * @param email - String the email of the user
      * @return the users that are not friends with the given user
      */
     public List<User> getNotFriends(String email) {
         List<String> friends = friendshipService.getUserFriends(email);
-        List<User> notFriends = new ArrayList<>();
-        for (User u : userService.getAllUsers())
-            if (!friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
-                notFriends.add(u);
-        return notFriends;
+
+        return userService.getAllUsers()
+                .stream()
+                .filter(u -> !friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
+                .toList();
     }
 
     /**
@@ -293,6 +288,20 @@ public class Service {
         });
 
         return conversations;
+    }
+
+    public List<ConversationDTO> getUserConversationDTOs(String email) {
+        List<ConversationDTO> conversationDTOs = new ArrayList<>();
+
+        List<Integer> conversations = conversationService.getUserConversations(email);
+        conversations.forEach(c -> {
+            List<String> participantsEmails = conversationService.getConversationParticipants(c);
+            List<User> participants = new ArrayList<>();
+            participantsEmails.forEach(e -> participants.add(userService.getUser(e)));
+            conversationDTOs.add(new ConversationDTO(c, participants));
+        });
+
+        return conversationDTOs;
     }
 
     /**
@@ -390,6 +399,14 @@ public class Service {
     }
 
     /**
+     * @param idConversation id of the conversation
+     * @return number of messages in the conversation
+     */
+    public int getConversationSize(int idConversation) {
+        return messageService.getConversationSize(idConversation);
+    }
+
+    /**
      * Rejects the friendship between email1 si email2
      * @param email1 - String
      * @param email2 - String
@@ -480,8 +497,8 @@ public class Service {
 
     public List<Event> getAllEvents(){
         return eventService.getAllEvents();
-
     }
+
     /**
      * Removes the event
      * @param name - String
@@ -506,14 +523,43 @@ public class Service {
        User u = userService.getUser(userEmail);
        if(ev != null && u != null)
             eventService.subscribeUserToEvent(eventId, userEmail);
-
-
     }
+
     public void unsubscribeUserFromEvent(Integer eventId, String userEmail){
         eventService.unsubscribeUserFromEvent(eventId,userEmail);
-
     }
+
     public List<Event> getEventsForUser(String userEmail) {
         return eventService.getEventsForUser(userEmail);
     }
+
+    /**
+     * Returns a list of CommonFriendsDTO objects with users that are not friends with the specified user
+     * @param email email of the user
+     * @return list of CommonFriendsDTOs
+     */
+    public List<CommonFriendsDTO> getUserCommonFriendsDTO(String email) {
+        List<CommonFriendsDTO> commonFriendsDTOs = new ArrayList<>();
+        User user = userService.getUser(email);
+
+        List<User> notFriends = getNotFriends(email);
+        List<String> notFriendsEmails = new ArrayList<>();
+        notFriends.forEach(nf -> notFriendsEmails.add(nf.getEmail()));
+
+        notFriends.forEach(n -> {
+            int size;
+            size = friendshipService.getUserFriends(n.getEmail())
+                    .stream()
+                    .filter(notFriendsEmails::contains)
+                    .toList()
+                    .size();
+            commonFriendsDTOs.add(new CommonFriendsDTO(user, n, size));
+        });
+
+        return commonFriendsDTOs
+                .stream()
+                .sorted((a, b) -> b.getNrOfCommonFriends().compareTo(a.getNrOfCommonFriends()))
+                .toList();
+    }
+
 }

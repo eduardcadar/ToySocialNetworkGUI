@@ -141,11 +141,29 @@ public class MessageDbRepo extends Observable {
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet res = ps.executeQuery();
-            if (res.next()) {
+            if (res.next())
                 return res.getInt("size");
-            }
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * @param idConversation id of the conversation
+     * @return number of messages in the conversation
+     */
+    public int conversationSize(int idConversation) {
+        String sql = "SELECT COUNT(*) AS size FROM " + messagesTable +
+                " WHERE idconversation = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idConversation);
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
         }
         return 0;
     }

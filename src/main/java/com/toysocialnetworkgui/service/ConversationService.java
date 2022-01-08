@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.ConversationParticipant;
 import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.utils.ConversationDTO;
 
 import java.util.*;
 
@@ -76,5 +77,9 @@ public class ConversationService {
         Conversation conversation = conversationRepo.getConversation(id);
         conversation.setParticipants(participantsRepo.getConversationParticipants(id));
         return conversation;
+    }
+
+    public List<String> getConversationParticipants(int id) {
+        return participantsRepo.getConversationParticipants(id);
     }
 }
