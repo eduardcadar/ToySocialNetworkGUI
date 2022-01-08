@@ -12,5 +12,5 @@ public interface UserRepository {
     void clear();
     List<User> getAll();
     boolean isEmpty();
-    void update(User user);
+    User update(User user);
 }

@@ -6,16 +6,12 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import com.toysocialnetworkgui.validator.ValidatorException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.controlsfx.validation.ValidateEvent;
 
 import java.io.IOException;
 
@@ -34,15 +30,13 @@ public class UpdateUserController {
     @FXML
     private TextField textFieldOldPassword;
     @FXML
-    protected void onUpdateButtonClick(ActionEvent event) throws IOException {
-        if(!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())){
+    protected void onUpdateButtonClick() throws IOException {
+        if (!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())) {
             System.out.println("Passwords don't match!");
         }
-        else{
+        else {
             try {
-                service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText());
-                loggedUser = service.getUser(loggedUser.getEmail());
-
+                loggedUser = service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText());
             } catch (DbException | ValidatorException e) {
                 System.out.println(e.getMessage());
             }
