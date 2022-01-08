@@ -46,12 +46,14 @@ public class UserService {
      * @param email - the email of the user to be updated
      * @param password - the new password of the user
      */
-    public void updateUser(String firstname, String lastname, String email, String password) {
-        repo.update(new User(firstname, lastname, email, password));
+    public User updateUser(String firstname, String lastname, String email, String password) {
+        return repo.update(new User(firstname, lastname, email, password));
     }
-    public void updateUser(String firstname, String lastname, String email, String password, String path) {
-        repo.update(new User(firstname, lastname, email, password,path));
+
+    public User updateUser(String firstname, String lastname, String email, String password, String path) {
+        return repo.update(new User(firstname, lastname, email, password, path));
     }
+
     /**
      * @param email - String with the email of the user to be returned
      * @return the user with the email given as a parameter,

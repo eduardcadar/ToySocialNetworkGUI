@@ -7,10 +7,8 @@ import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import com.toysocialnetworkgui.validator.ValidatorException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -24,8 +22,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.controlsfx.validation.ValidateEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,26 +52,21 @@ public class UpdateUserController {
     @FXML
     private TextField textFieldOldPassword;
     @FXML
-    protected void onUpdateButtonClick(ActionEvent event) throws IOException {
-        if(!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())){
-            MyAlert.StartAlert("Error","Passwords don't match!", Alert.AlertType.ERROR );
-        }
-        else{
+    protected void onUpdateButtonClick() throws IOException {
+        if (!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())) {
+            MyAlert.StartAlert("Error", "Passwords do not match!", Alert.AlertType.WARNING);
+        } else
             try {
-                service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText(), lastProfilePicturePath);
-                loggedUser = service.getUser(loggedUser.getEmail());
-
+                loggedUser = service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText(), lastProfilePicturePath);
             } catch (DbException | ValidatorException e) {
-                System.out.println(e.getMessage());
+                MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
-        }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
         Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);
-
     }
 
     public void setService(Service service) {
@@ -88,7 +79,7 @@ public class UpdateUserController {
         lastProfilePicturePath = user.getProfilePicturePath();
     }
 
-    public void onProfilePictureClick(MouseEvent mouseEvent) throws IOException {
+    public void onProfilePictureClick() throws IOException {
         questionMark.setVisible(true);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -98,22 +89,20 @@ public class UpdateUserController {
         fileChooser.setInitialDirectory(new File(".\\src\\main\\resources\\profile"));
         fileChooser.setTitle("Pick an image from this folder, please!");
         File selectedFile = fileChooser.showOpenDialog(window);
-        if(selectedFile != null) {
-            questionMark.setVisible(false);
+        if (selectedFile != null) {
             String fullPath = selectedFile.getAbsolutePath();
             String[] args = fullPath.split("resources");
-            if(args.length != 2 || !fullPath.contains("profile")) {
+            if (args.length != 2 || !fullPath.contains("profile")) {
                 MyAlert.StartAlert("Error", "Pick an image from this profile folder, please!", Alert.AlertType.ERROR);
                 return;
             }
+            questionMark.setVisible(false);
             String pathToFile = args[1];
             pathToFile = pathToFile.replace("\\", "/");
             imagePlaceHolder.setStroke(Color.web("#862CE4"));
             Image im = new Image(pathToFile);
             imagePlaceHolder.setFill(new ImagePattern(im));
-            lastProfilePicturePath =  pathToFile;
-
+            lastProfilePicturePath = pathToFile;
         }
     }
-
 }

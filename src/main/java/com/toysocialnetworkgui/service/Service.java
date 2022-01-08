@@ -112,11 +112,11 @@ public class Service {
      * @param email - the email of the user to be updated
      * @param password - the new password of the user
      */
-    public void updateUser(String firstname, String lastname, String email, String password) {
-        userService.updateUser(firstname, lastname, email, password);
+    public User updateUser(String firstname, String lastname, String email, String password) {
+        return userService.updateUser(firstname, lastname, email, password);
     }
-    public void updateUser(String firstname, String lastname, String email, String password, String path) {
-        userService.updateUser(firstname, lastname, email, password, path);
+    public User updateUser(String firstname, String lastname, String email, String password, String path) {
+        return userService.updateUser(firstname, lastname, email, password, path);
     }
     /**
      * @return dictionary with the users of the communites - Map[Integer, List[String]]

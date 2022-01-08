@@ -183,7 +183,7 @@ public class UserDbRepo extends Observable implements UserRepository {
      * @param user - the user with the new attributes
      */
     @Override
-    public void update(User user) {
+    public User update(User user) {
         validator.validate(user);
         if (getUser(user.getEmail()) == null)
             throw new RepoException("Update failed");
@@ -200,5 +200,6 @@ public class UserDbRepo extends Observable implements UserRepository {
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
+        return user;
     }
 }
