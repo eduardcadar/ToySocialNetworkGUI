@@ -7,8 +7,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="452.0" prefWidth="573.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
    <children>
@@ -17,11 +15,6 @@
             <StackPane fx:id="profilePicturePicker" onMouseClicked="#onProfilePictureClick" prefHeight="150.0" prefWidth="200.0">
                <children>
                   <Circle fx:id="imagePlaceHolder" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Text fx:id="questionMark" strokeType="OUTSIDE" strokeWidth="0.0" text="?" textAlignment="CENTER" wrappingWidth="59.77886885404587">
-                     <font>
-                        <Font size="48.0" />
-                     </font>
-                  </Text>
                </children>
             </StackPane>
             <TextField id="textFieldLogin" fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />

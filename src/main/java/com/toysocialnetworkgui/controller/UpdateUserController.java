@@ -37,8 +37,6 @@ public class UpdateUserController {
     private String lastProfilePicturePath;
 
     @FXML
-    private Text questionMark;
-    @FXML
     private StackPane profilePicturePicker;
 
     private Stage window;
@@ -77,10 +75,12 @@ public class UpdateUserController {
         this.window = window;
         loggedUser = user;
         lastProfilePicturePath = user.getProfilePicturePath();
+        imagePlaceHolder.setStroke(Color.web("#862CE4"));
+        Image im = new Image(lastProfilePicturePath);
+        imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
     public void onProfilePictureClick() throws IOException {
-        questionMark.setVisible(true);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image", "*.jpg", "*.png", "*.jpeg")
@@ -96,7 +96,6 @@ public class UpdateUserController {
                 MyAlert.StartAlert("Error", "Pick an image from this profile folder, please!", Alert.AlertType.ERROR);
                 return;
             }
-            questionMark.setVisible(false);
             String pathToFile = args[1];
             pathToFile = pathToFile.replace("\\", "/");
             imagePlaceHolder.setStroke(Color.web("#862CE4"));
