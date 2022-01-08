@@ -4,18 +4,16 @@ import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import com.toysocialnetworkgui.validator.ValidatorException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.controlsfx.validation.ValidateEvent;
 
 import java.io.IOException;
 
@@ -34,17 +32,15 @@ public class UpdateUserController {
     @FXML
     private TextField textFieldOldPassword;
     @FXML
-    protected void onUpdateButtonClick(ActionEvent event) throws IOException {
-        if(!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())){
-            System.out.println("Passwords don't match!");
+    protected void onUpdateButtonClick() throws IOException {
+        if (!PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldOldPassword.getText())).equals(loggedUser.getPassword())) {
+            MyAlert.StartAlert("Error", "Passwords do not match!", Alert.AlertType.WARNING);
         }
-        else{
+        else {
             try {
-                service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText());
-                loggedUser = service.getUser(loggedUser.getEmail());
-
+                loggedUser = service.updateUser(textFieldFirstname.getText(), textFieldLastname.getText(), loggedUser.getEmail(), textFieldPassword.getText());
             } catch (DbException | ValidatorException e) {
-                System.out.println(e.getMessage());
+                MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
@@ -53,7 +49,6 @@ public class UpdateUserController {
         controller.initialize(service, loggedUser, window);
         Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);
-
     }
 
     public void setService(Service service) {

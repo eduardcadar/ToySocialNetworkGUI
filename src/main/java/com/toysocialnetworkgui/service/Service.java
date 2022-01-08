@@ -112,8 +112,8 @@ public class Service {
      * @param email - the email of the user to be updated
      * @param password - the new password of the user
      */
-    public void updateUser(String firstname, String lastname, String email, String password) {
-        userService.updateUser(firstname, lastname, email, password);
+    public User updateUser(String firstname, String lastname, String email, String password) {
+        return userService.updateUser(firstname, lastname, email, password);
     }
 
     /**
