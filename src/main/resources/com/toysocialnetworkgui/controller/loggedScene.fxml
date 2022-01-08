@@ -129,7 +129,7 @@
                               <Insets />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="buttonFriendRequest" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onFriendRequestClick" prefHeight="22.0" prefWidth="145.0" styleClass="category" text="Friend Requests" textAlignment="CENTER">
+                        <Button fx:id="buttonFriendRequest" minHeight="60.0" minWidth="120.0" mnemonicParsing="false" onAction="#onFriendRequestClick" prefHeight="22.0" prefWidth="145.0" styleClass="category" text="Explore community" textAlignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="category">
                                  <image>
