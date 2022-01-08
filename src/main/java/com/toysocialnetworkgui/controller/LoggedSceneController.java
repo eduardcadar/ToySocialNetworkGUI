@@ -133,16 +133,14 @@ public class LoggedSceneController implements Observer {
             imageViewNotification.setImage(new Image("images/no_notification.png"));
         }
 
-        imagePlaceHolder.setStroke(Color.web("#862CE4"));
-        // TODO
-        // - replace this with the actual user profile
-        Image im = new Image("profile/anonymous.png");
-        if( loggedUser.getEmail().equals("stef@gmail.com"))
-            im = new Image("profile/stef@gmail.png");
-        if( loggedUser.getEmail().equals("ec@yahoo.com"))
-            im = new Image("profile/ec@yahoo.png");
+        setupProfilePicture();
 
-        imagePlaceHolder.setFill(new ImagePattern(im));
+    }
+
+    private void setupProfilePicture() {
+        imagePlaceHolder.setStroke(Color.web("#862CE4"));
+       Image im = new Image(loggedUser.getProfilePicturePath());
+       imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
     /**
