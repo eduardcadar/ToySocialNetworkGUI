@@ -50,6 +50,10 @@ public class UserService {
         return repo.update(new User(firstname, lastname, email, password));
     }
 
+    public User updateUser(String firstname, String lastname, String email, String password, String path) {
+        return repo.update(new User(firstname, lastname, email, password, path));
+    }
+
     /**
      * @param email - String with the email of the user to be returned
      * @return the user with the email given as a parameter,

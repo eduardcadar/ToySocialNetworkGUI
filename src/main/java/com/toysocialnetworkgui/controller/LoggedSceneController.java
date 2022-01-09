@@ -1,9 +1,7 @@
 package com.toysocialnetworkgui.controller;
 
-import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
-import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
@@ -24,7 +22,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -132,16 +129,12 @@ public class LoggedSceneController implements Observer {
         } else {
             imageViewNotification.setImage(new Image("images/no_notification.png"));
         }
+        setupProfilePicture();
+    }
 
+    private void setupProfilePicture() {
         imagePlaceHolder.setStroke(Color.web("#862CE4"));
-        // TODO
-        // - replace this with the actual user profile
-        Image im = new Image("profile/anonymous.png");
-        if( loggedUser.getEmail().equals("stef@gmail.com"))
-            im = new Image("profile/stef@gmail.png");
-        if( loggedUser.getEmail().equals("ec@yahoo.com"))
-            im = new Image("profile/ec@yahoo.png");
-
+        Image im = new Image(loggedUser.getProfilePicturePath());
         imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
@@ -186,26 +179,12 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
-
-     /*
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
-        Parent root = loader.load();
-
-        ActivitiesReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser);
-        Stage stage = new Stage();
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Activity report");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-        */
         FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
         Parent root = loader.load();
 
         ActivitiesReportChooseDateController controller = loader.getController();
         controller.initialize(service, loggedUser);
         rightPane.getChildren().setAll(root);
-
     }
 
     @FXML
@@ -215,24 +194,12 @@ public class LoggedSceneController implements Observer {
             return;
         }
         String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
-/*
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
-        Parent root = loader.load();
-        FriendReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser, service.getUser(userEmail));
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Friend report");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-*/
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
         Parent root = loader.load();
         FriendReportChooseDateController controller = loader.getController();
         controller.initialize(service, loggedUser, service.getUser(userEmail));
         rightPane.getChildren().setAll(root);
-
     }
 
     @FXML
@@ -302,27 +269,13 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
-    protected void onUpdateButtonClick(ActionEvent event) throws IOException {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
-        Parent root = loader.load();
-        UpdateUserController controller = loader.getController();
-        controller.setService(service);
-        controller.initialize(loggedUser);
-*/
+    protected void onUpdateButtonClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
         Parent root = loader.load();
         UpdateUserController controller = loader.getController();
         controller.setService(service);
         controller.initialize(loggedUser, window);
         rightPane.getChildren().setAll(root);
-
-        /*Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Update user information");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-*/
 
         setLoggedUser(service.getUser(loggedUser.getEmail()));
     }
@@ -338,35 +291,15 @@ public class LoggedSceneController implements Observer {
 
     @FXML
     protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
-  /*      FXMLLoader loader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
-        Parent root = loader.load();
-        AddFriendController controller = loader.getController();
-        controller.initialize(service, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Add friend");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-*/
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendController controller = fxmlLoader.getController();
         controller.initialize(service, loggedUser, window);
         rightPane.getChildren().setAll(root);
-
     }
 
     @FXML
-    protected void onEventsClick(ActionEvent event) throws IOException {
-    /*    System.out.println("events");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
-        Parent root = loader.load();
-        EventsController controller = loader.getController();
-        controller.initialize(service, loggedUser, window);
-        window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
-        window.show();
-*/
+    protected void onEventsClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
         Parent dashboard = fxmlLoader.load();
         EventsController controller = fxmlLoader.getController();
@@ -388,46 +321,16 @@ public class LoggedSceneController implements Observer {
 
     /**
      * Opens a new Stage to handle user interactions with friend requests
-     *
-     * @param event - the event that triggered the function
      * @throws IOException - from load
      */
     @FXML
-    protected void onFriendRequestClick(ActionEvent event) throws IOException {
-      /*  FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
-        Parent root = loader.load();
-        RequestsController controller = loader.getController();
-        controller.initialize(service, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Requests interface");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-        */
+    protected void onFriendRequestClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
         Parent dashboard = loader.load();
         RequestsController controller = loader.getController();
         controller.initialize(service, loggedUser);
         rightPane.getChildren().setAll(dashboard);
-
     }
-
-    /**
-     * Press R to  refresh table
-     * Might delete later ?? doesn't refresh when 2 instances work
-     *
-     * @param keyEvent - the event that triggered the function
-     */
-    public void onRefreshFriends(KeyEvent keyEvent) {
-        System.out.println(keyEvent.getCode());
-        if (keyEvent.isAltDown()) {
-            if (keyEvent.getCode().equals(KeyCode.R)) {
-                reloadFriends();
-            }
-        }
-    }
-
 
     @FXML
     protected void onLogoutButtonClick() throws IOException {
@@ -451,11 +354,9 @@ public class LoggedSceneController implements Observer {
     /**
      * Changes the image for the notification to the no_notification. Customize it late
      * + Show the events in a drop box maybe?
-     *
-     * @param ev
      */
     @FXML
-    public void clearNotificationImage(MouseEvent ev) throws IOException {
+    public void clearNotificationImage() {
         System.out.println("Subscribed events: ");
         service.getEventsForUser(loggedUser.getEmail()).forEach(System.out::print);
         imageViewNotification.setImage(new Image("images/no_notification.png"));

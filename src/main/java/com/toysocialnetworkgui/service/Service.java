@@ -115,7 +115,9 @@ public class Service {
     public User updateUser(String firstname, String lastname, String email, String password) {
         return userService.updateUser(firstname, lastname, email, password);
     }
-
+    public User updateUser(String firstname, String lastname, String email, String password, String path) {
+        return userService.updateUser(firstname, lastname, email, password, path);
+    }
     /**
      * @return dictionary with the users of the communites - Map[Integer, List[String]]
      */

@@ -4,13 +4,19 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.shape.Circle?>
 
 <AnchorPane prefHeight="452.0" prefWidth="573.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
    <children>
-      <VBox alignment="CENTER" layoutX="186.0" layoutY="166.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="200.0" spacing="15.0">
+      <VBox alignment="CENTER" layoutX="179.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="214.0" spacing="15.0">
          <children>
+            <StackPane fx:id="profilePicturePicker" onMouseClicked="#onProfilePictureClick" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Circle fx:id="imagePlaceHolder" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </StackPane>
             <TextField id="textFieldLogin" fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />
             <TextField id="textFieldLogin" fx:id="textFieldLastname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New last name" styleClass="text-field" />
             <PasswordField id="textFieldLogin" fx:id="textFieldOldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="Old password" styleClass="text-field" />
