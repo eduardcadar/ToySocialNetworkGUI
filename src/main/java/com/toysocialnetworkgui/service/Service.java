@@ -8,7 +8,6 @@ import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.*;
 import com.toysocialnetworkgui.validator.ValidatorException;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 import java.util.*;
@@ -555,7 +554,7 @@ public class Service {
                     .filter(notFriendsEmails::contains)
                     .toList()
                     .size();
-            commonFriendsDTOs.add(new CommonFriendsDTO(user, n, size));
+            commonFriendsDTOs.add(new CommonFriendsDTO(n, size));
         });
 
         return commonFriendsDTOs

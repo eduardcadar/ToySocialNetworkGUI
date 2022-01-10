@@ -3,29 +3,34 @@ package com.toysocialnetworkgui.utils;
 import com.toysocialnetworkgui.domain.User;
 
 public class CommonFriendsDTO {
-    private User user1, user2;
+    private User user;
+    private String email;
+    private String firstName;
+    private String lastName;
     private Integer nrOfCommonFriends;
 
-    public CommonFriendsDTO(User user1, User user2, Integer nrOfCommonFriends) {
-        this.user1 = user1;
-        this.user2 = user2;
+    public CommonFriendsDTO(User user, Integer nrOfCommonFriends) {
+        this.user = user;
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
         this.nrOfCommonFriends = nrOfCommonFriends;
     }
 
-    public User getUser1() {
-        return user1;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public User getUser2() {
-        return user2;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getNrOfCommonFriends() {
@@ -34,5 +39,21 @@ public class CommonFriendsDTO {
 
     public void setNrOfCommonFriends(Integer nrOfCommonFriends) {
         this.nrOfCommonFriends = nrOfCommonFriends;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
