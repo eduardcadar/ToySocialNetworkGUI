@@ -81,10 +81,12 @@ public class ConversationController implements Observer {
             if (listConversations.getSelectionModel().isEmpty())
                 return;
             setIdConversation(listConversations.getSelectionModel().getSelectedItem().getId());
+            pageNumber = getLastPageNumber();
             reloadMessages();
 
             exec.scheduleAtFixedRate(() -> {
                 if (service.getConversationSize(idConversation) != lastConvSize)
+                    pageNumber = getLastPageNumber();
                     reloadMessages();
             }, 10, 10, TimeUnit.SECONDS);
         });
@@ -142,6 +144,7 @@ public class ConversationController implements Observer {
         String messageText = textFieldMessage.getText();
         service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
         textFieldMessage.clear();
+        pageNumber = getLastPageNumber();
         reloadMessages();
     }
 
@@ -166,7 +169,6 @@ public class ConversationController implements Observer {
     }
 
     private void reloadMessages() {
-        pageNumber = getLastPageNumber();
         this.lastConvSize = service.getConversationSize(idConversation);
         tableViewMessages.setItems(getMessages());
     }
