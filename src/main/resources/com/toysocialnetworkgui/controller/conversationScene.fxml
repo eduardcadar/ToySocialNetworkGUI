@@ -9,19 +9,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
+<HBox alignment="BOTTOM_CENTER" prefHeight="635.0" prefWidth="918.0" spacing="60.0" stylesheets="@../../../style/styleConversation.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
    <children>
       <VBox prefHeight="304.0" prefWidth="612.0">
          <children>
-            <TableView fx:id="tableViewMessages" prefHeight="200.0" prefWidth="618.0">
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="612.0" text="Aici pun Message.getParticipants()" />
+            <TableView fx:id="tableViewMessages" prefHeight="522.0" prefWidth="612.0">
               <columns>
                 <TableColumn fx:id="tableColumnID" prefWidth="75.0" text="ID" visible="false" />
-                <TableColumn fx:id="tableColumnSender" prefWidth="136.00000607967377" text="Sender" />
-                  <TableColumn fx:id="tableColumnMessage" prefWidth="367.20001220703125" text="Message" />
-                  <TableColumn fx:id="tableColumnDate" prefWidth="120.79999389648435" text="Sent on" />
+                <TableColumn fx:id="tableColumnSender" editable="false" prefWidth="67.99999845027924" sortable="false" text="Sender" />
+                  <TableColumn fx:id="tableColumnMessage" prefWidth="430.40003204345703" text="Message" />
+                  <TableColumn fx:id="tableColumnDate" prefWidth="111.19998168945312" text="Sent on" />
               </columns>
             </TableView>
-            <VBox>
+            <VBox prefHeight="144.0" prefWidth="612.0">
                <children>
                   <HBox prefHeight="14.0" prefWidth="626.0">
                      <children>
@@ -43,8 +44,8 @@
       </VBox>
       <VBox>
          <children>
-            <Label text="Conversations" />
-            <ListView fx:id="listConversations" prefHeight="285.0" prefWidth="198.0" />
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="198.0" text="Conversations" textAlignment="CENTER" />
+            <ListView fx:id="listConversations" prefHeight="575.0" prefWidth="198.0" />
             <Button fx:id="buttonCreateConversation" mnemonicParsing="false" onAction="#onCreateConversationButtonClick" prefHeight="26.0" prefWidth="198.0" text="Create conversation" />
          </children>
       </VBox>

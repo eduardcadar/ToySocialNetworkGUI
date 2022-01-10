@@ -8,7 +8,10 @@ import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.ConversationDTO;
 import com.toysocialnetworkgui.utils.MyAlert;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -17,7 +20,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -49,7 +57,7 @@ public class ConversationController implements Observer {
     @FXML
     TableColumn<Message, Integer> tableColumnID;
     @FXML
-    TableColumn<Message, String> tableColumnSender;
+    TableColumn<Message, Circle> tableColumnSender;
     @FXML
     TableColumn<Message, String> tableColumnMessage;
     @FXML
@@ -86,6 +94,7 @@ public class ConversationController implements Observer {
             exec.scheduleAtFixedRate(() -> {
                 if (service.getConversationSize(idConversation) != lastConvSize)
                     reloadMessages();
+
             }, 10, 10, TimeUnit.SECONDS);
         });
     }
@@ -115,6 +124,7 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onPreviousPageButtonClick() {
+        System.out.println("am apaast pe prev");
         if (idConversation == 0) return;
         if (pageNumber == 1)
             return;
@@ -133,6 +143,7 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onSendMessageButtonClick() {
+
         if (textFieldMessage.getLength() == 0)
             return;
         if (idConversation == 0) {
@@ -160,7 +171,39 @@ public class ConversationController implements Observer {
 
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
+   //     tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
+        tableColumnSender.setStyle("-fx-alignment: CENTER");
+        tableColumnSender.setCellValueFactory(param -> new ObservableValue<Circle>() {
+            @Override
+            public void addListener(ChangeListener<? super Circle> listener) {
+
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super Circle> listener) {
+
+            }
+            @Override
+            public Circle getValue() {
+                Circle imagePlaceHolder = new Circle();
+                imagePlaceHolder.setRadius(20);
+                imagePlaceHolder.setStroke(Color.web("#862CE4"));
+                User u = service.getUser(param.getValue().getSender());
+                Image im = new Image(u.getProfilePicturePath());
+                imagePlaceHolder.setFill(new ImagePattern(im));
+                return imagePlaceHolder;
+                }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+
+            }
+        });
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         tableColumnDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm"))));
     }
