@@ -73,7 +73,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="tableAddFriend" focusTraversable="false" onMouseClicked="#handleAddFriendClickEvent" prefHeight="426.0" prefWidth="342.0">
+                  <TableView fx:id="tableAddFriend" focusTraversable="false" onMouseClicked="#handleAddFriendClickEvent" prefHeight="426.0" prefWidth="342.0" stylesheets="@../../../style/styleRequests.css">
                      <columns>
                         <TableColumn fx:id="tableAddFriendColumnFirstname" prefWidth="79.20001220703125" sortable="false" text="First Name" />
                         <TableColumn fx:id="tableAddFriendColumnLastname" prefWidth="75.2000732421875" sortable="false" text="Last Name" />
