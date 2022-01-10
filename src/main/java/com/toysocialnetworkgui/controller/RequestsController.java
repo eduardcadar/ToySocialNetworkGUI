@@ -1,12 +1,12 @@
 package com.toysocialnetworkgui.controller;
 
-import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
+import com.toysocialnetworkgui.utils.CommonFriendsDTO;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
 import javafx.beans.InvalidationListener;
@@ -21,10 +21,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class RequestsController implements Observer {
     private Service service;
@@ -72,15 +70,17 @@ public class RequestsController implements Observer {
     private TableColumn<UserRequestDTO, ImageView> tableRejectRequest;
 
     @FXML
-    TableView<User> tableAddFriend;
+    TableView<CommonFriendsDTO> tableAddFriend;
     @FXML
-    TableColumn<User, String> tableAddFriendColumnEmail;
+    TableColumn<CommonFriendsDTO, String> tableAddFriendColumnEmail;
     @FXML
-    TableColumn<User, String> tableAddFriendColumnFirstname;
+    TableColumn<CommonFriendsDTO, String> tableAddFriendColumnFirstname;
     @FXML
-    TableColumn<User, String> tableAddFriendColumnLastname;
+    TableColumn<CommonFriendsDTO, String> tableAddFriendColumnLastname;
     @FXML
-    TableColumn<User, ImageView> tableAddFriendColumnSendReq;
+    TableColumn<CommonFriendsDTO, Integer> tableAddFriendColumnCommonFriendsNr;
+    @FXML
+    TableColumn<CommonFriendsDTO, ImageView> tableAddFriendColumnSendReq;
 
 
 
@@ -111,9 +111,10 @@ public class RequestsController implements Observer {
 //        tableReceivedColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
 //        tableReceivedRequestsView.getSortOrder().add(tableReceivedColumnSentDate);
     }
-    private ObservableList<User> getNotFriends() {
+
+    private ObservableList<CommonFriendsDTO> getNotFriends() {
         return FXCollections.observableArrayList(
-                service.getNotFriends(loggedUser.getEmail()));
+                service.getUserCommonFriendsDTO(loggedUser.getEmail()));
     }
 
     private void initializeAddFriendList() {
@@ -124,6 +125,7 @@ public class RequestsController implements Observer {
         tableAddFriendColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableAddFriendColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableAddFriendColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        tableAddFriendColumnCommonFriendsNr.setCellValueFactory(new PropertyValueFactory<>("nrOfCommonFriends"));
         tableAddFriendColumnSendReq.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {
@@ -153,6 +155,7 @@ public class RequestsController implements Observer {
 
             }
         });
+        tableAddFriendColumnCommonFriendsNr.setStyle("-fx-alignment: center");
         tableAddFriend.setItems(getNotFriends());
     }
 
@@ -480,11 +483,12 @@ public class RequestsController implements Observer {
             }
         }
     }
+
     public void handleAddFriendClickEvent(MouseEvent mouseEvent) {
         if (tableAddFriend.getSelectionModel() != null) {
             if (tableAddFriend.getSelectionModel().getSelectedCells().size() > 0) {
                 System.out.println("Clicked on " + (tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() ) ;
-                if ((tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() == 2) {
+                if ((tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() == 3) {
                     sentFriendRequest();
                     setSentRequestsList(getSentRequests());
                 }
@@ -493,7 +497,7 @@ public class RequestsController implements Observer {
     }
 
     private void sentFriendRequest() {
-        User friend = tableAddFriend.getSelectionModel().getSelectedItem();
+        User friend = tableAddFriend.getSelectionModel().getSelectedItem().getUser();
         if (friend == null)
             return;
         try {

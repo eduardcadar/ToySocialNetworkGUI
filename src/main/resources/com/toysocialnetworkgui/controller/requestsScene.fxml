@@ -63,7 +63,7 @@
                   </VBox>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="411.0" prefWidth="303.0">
+            <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="463.0" prefWidth="332.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="534.0" text="Friend suggestions" textAlignment="CENTER">
                      <padding>
@@ -73,19 +73,17 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TableView fx:id="tableAddFriend" focusTraversable="false" onMouseClicked="#handleAddFriendClickEvent" prefHeight="426.0" prefWidth="303.0">
+                  <TableView fx:id="tableAddFriend" focusTraversable="false" onMouseClicked="#handleAddFriendClickEvent" prefHeight="426.0" prefWidth="342.0">
                      <columns>
-                        <TableColumn fx:id="tableAddFriendColumnFirstname" prefWidth="105.60003966093063" sortable="false" text="First Name" />
-                        <TableColumn fx:id="tableAddFriendColumnLastname" prefWidth="92.00003051757812" sortable="false" text="Last Name" />
-                        <TableColumn fx:id="tableAddFriendColumnSendReq" prefWidth="75.0" sortable="false" style="-fx-alignment: center;" text="Add" />
+                        <TableColumn fx:id="tableAddFriendColumnFirstname" prefWidth="79.20001220703125" sortable="false" text="First Name" />
+                        <TableColumn fx:id="tableAddFriendColumnLastname" prefWidth="75.2000732421875" sortable="false" text="Last Name" />
+                        <TableColumn fx:id="tableAddFriendColumnCommonFriendsNr" minWidth="0.0" prefWidth="109.60011291503906" text="Common friends" />
+                        <TableColumn fx:id="tableAddFriendColumnSendReq" prefWidth="54.39996337890625" sortable="false" style="-fx-alignment: center;" text="Add" />
                         <TableColumn fx:id="tableAddFriendColumnEmail" minWidth="0.0" prefWidth="0.0" resizable="false" text="Email" visible="false" />
                      </columns>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
                   </TableView>
                </children>
             </VBox>
