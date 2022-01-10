@@ -30,6 +30,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,9 @@ public class ConversationController implements Observer {
     private int pageSize;
     private ScheduledExecutorService exec;
     private AnchorPane rightPane;
+
+    @FXML
+    Label conversationTitle;
 
     @FXML
     Button buttonPreviousPage;
@@ -90,6 +94,11 @@ public class ConversationController implements Observer {
                 return;
             setIdConversation(listConversations.getSelectionModel().getSelectedItem().getId());
             pageNumber = getLastPageNumber();
+            List<User> participants = listConversations.getSelectionModel().getSelectedItem().getParticipants();
+            StringBuilder title = new StringBuilder();
+            for(User u : participants)
+                title.append(u.getFirstName()).append(" ").append(u.getLastName()).append(", ");
+            conversationTitle.setText(title.substring(0, title.lastIndexOf(", ")));
             reloadMessages();
 
             exec.scheduleAtFixedRate(() -> {
@@ -174,7 +183,6 @@ public class ConversationController implements Observer {
 
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-   //     tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
         tableColumnSender.setStyle("-fx-alignment: CENTER");
         tableColumnSender.setCellValueFactory(param -> new ObservableValue<Circle>() {
             @Override

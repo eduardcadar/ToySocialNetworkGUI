@@ -16,7 +16,7 @@
    <children>
       <VBox prefHeight="304.0" prefWidth="612.0">
          <children>
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="612.0" text="Aici pun Message.getParticipants()" />
+            <Label fx:id="conversationTitle" alignment="CENTER" prefHeight="18.0" prefWidth="612.0" text="Participants" />
             <TableView fx:id="tableViewMessages" prefHeight="473.0" prefWidth="612.0">
               <columns>
                 <TableColumn fx:id="tableColumnID" prefWidth="75.0" text="ID" visible="false" />
