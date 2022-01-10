@@ -94,11 +94,7 @@ public class ConversationController implements Observer {
                 return;
             setIdConversation(listConversations.getSelectionModel().getSelectedItem().getId());
             pageNumber = getLastPageNumber();
-            List<User> participants = listConversations.getSelectionModel().getSelectedItem().getParticipants();
-            StringBuilder title = new StringBuilder();
-            for(User u : participants)
-                title.append(u.getFirstName()).append(" ").append(u.getLastName()).append(", ");
-            conversationTitle.setText(title.substring(0, title.lastIndexOf(", ")));
+            setConversationTitle();
             reloadMessages();
 
             exec.scheduleAtFixedRate(() -> {
@@ -108,6 +104,15 @@ public class ConversationController implements Observer {
 
             }, 10, 10, TimeUnit.SECONDS);
         });
+    }
+
+    private void setConversationTitle() {
+     /*   List<User> participants = listConversations.getSelectionModel().getSelectedItem().getParticipants();
+        StringBuilder title = new StringBuilder();
+        for(User u : participants)
+            title.append(u.getFirstName()).append(" ").append(u.getLastName()).append(", ");
+       */
+        conversationTitle.setText(listConversations.getSelectionModel().getSelectedItem().toString());
     }
 
     public void setIdConversation(int idConversation) {
@@ -135,7 +140,6 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onPreviousPageButtonClick() {
-        System.out.println("am apaast pe prev");
         if (idConversation == 0) return;
         if (pageNumber == 1)
             return;

@@ -9,16 +9,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="452.0" prefWidth="573.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
+<AnchorPane prefHeight="650.0" prefWidth="800.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
    <children>
-      <VBox alignment="CENTER" layoutX="179.0" layoutY="54.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="343.0" prefWidth="214.0" spacing="15.0">
+      <VBox alignment="CENTER" layoutX="309.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="214.0" spacing="15.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="309.0" AnchorPane.rightAnchor="477.0" AnchorPane.topAnchor="5.0">
          <children>
             <StackPane fx:id="profilePicturePicker" onMouseClicked="#onProfilePictureClick" prefHeight="150.0" prefWidth="200.0">
                <children>
                   <Circle fx:id="imagePlaceHolder" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
-                     </cursor></Circle>
+                     </cursor>
+                  </Circle>
                </children>
             </StackPane>
             <TextField id="textFieldLogin" fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />
