@@ -12,6 +12,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -218,43 +219,52 @@
       </AnchorPane>
     <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="599.0" prefWidth="810.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
+            <StackPane layoutX="181.0">
                <children>
-                  <HBox>
+                  <ImageView fitHeight="496.0" fitWidth="510.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/meme.jpg" />
+                     </image>
+                  </ImageView>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false">
                      <children>
-                        <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox>
                            <children>
-                              <TextField fx:id="textFieldSearchFriend" onAction="#clearSearchFriendSelection" promptText="Search">
-                                 <HBox.margin>
-                                    <Insets left="25.0" right="5.0" />
-                                 </HBox.margin>
-                              </TextField>
-                              <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
+                              <ComboBox fx:id="comboBoxMonth" onAction="#onSelectMonth" prefHeight="26.0" prefWidth="163.0" promptText="filter friends by month" visibleRowCount="13" />
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="textFieldSearchFriend" onAction="#clearSearchFriendSelection" promptText="Search">
+                                       <HBox.margin>
+                                          <Insets left="25.0" right="5.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchFriend" prefHeight="26.0" prefWidth="30.0" styleClass="buttonSearch" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
+                          <columns>
+                              <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
+                            <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
+                              <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
+                            <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
+                              <VBox prefHeight="100.0" prefWidth="383.0" />
+                              <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
                            </children>
                         </HBox>
                      </children>
-                  </HBox>
-                  <TableView fx:id="tableViewFriends" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="521.0">
-                    <columns>
-                        <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                      <TableColumn fx:id="tableColumnFirstname" prefWidth="86.40002286434174" sortable="false" text="First name" />
-                        <TableColumn fx:id="tableColumnLastname" prefWidth="75.0" sortable="false" text="Last name" />
-                      <TableColumn fx:id="tableColumnDate" prefWidth="72.0" sortType="DESCENDING" text="Friends from" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-                  <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="previousPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onPreviousPageButtonClick" prefHeight="26.0" prefWidth="138.0" styleClass="buttonPage" text="Previous page" />
-                        <VBox prefHeight="100.0" prefWidth="383.0" />
-                        <Button fx:id="nextPage" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" onAction="#onNextPageButtonClick" prefHeight="26.0" prefWidth="100.0" styleClass="buttonPage" text="Next page" textAlignment="CENTER" />
-                     </children>
-                  </HBox>
+                  </VBox>
                </children>
-            </VBox>
+            </StackPane>
          </children>
       </AnchorPane>
   </items>
