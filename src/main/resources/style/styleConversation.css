@@ -55,3 +55,29 @@ Something with selection goes wrong here???
     -fx-padding: 0;
     -fx-shape: null;
 }
+
+
+.image-view{
+    -fx-cursor: hand;
+}
+.image_wrapper{
+    -fx-color: -fx-base ;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 ;
+    -fx-background-radius: 0 ;
+    -fx-padding: 0 ;
+    -fx-text-fill: #a8a5a5 ;
+    -fx-alignment: center;
+    -fx-min-width: 50px;
+    -fx-max-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-height: 50px;
+}
+
+.image_wrapper:selected, .image_wrapper:selected:focused,.image_wrapper:hover {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 ;
+    -fx-background-radius: 0 ;
+
+
+}
