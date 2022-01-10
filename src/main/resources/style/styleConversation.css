@@ -68,10 +68,10 @@ Something with selection goes wrong here???
     -fx-padding: 0 ;
     -fx-text-fill: #a8a5a5 ;
     -fx-alignment: center;
-    -fx-min-width: 50px;
-    -fx-max-width: 50px;
-    -fx-min-height: 50px;
-    -fx-max-height: 50px;
+    -fx-min-width: 30px;
+    -fx-max-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
 }
 
 .image_wrapper:selected, .image_wrapper:selected:focused,.image_wrapper:hover {
@@ -100,4 +100,14 @@ Something with selection goes wrong here???
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: #862CE4;
     -fx-text-fill: white;
+}
+
+.text-field {
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+.text-field:focused{
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #862CE4;
 }
