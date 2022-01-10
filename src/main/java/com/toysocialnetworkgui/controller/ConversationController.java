@@ -74,7 +74,7 @@ public class ConversationController implements Observer {
     public void initialize(Service service, User user, AnchorPane rightPane) {
         tableViewMessages.setPlaceholder(new Label("No messages"));
         listConversations.setPlaceholder(new Label("You have no conversations"));
-        this.pageSize = 3;
+        this.pageSize = 10;
         this.service = service;
         this.loggedUser = user;
         this.rightPane = rightPane;
