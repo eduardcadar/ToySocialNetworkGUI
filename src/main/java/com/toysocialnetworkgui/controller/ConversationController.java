@@ -209,6 +209,7 @@ public class ConversationController implements Observer {
                 User u = service.getUser(param.getValue().getSender());
                 Image im = new Image(u.getProfilePicturePath());
                 imagePlaceHolder.setFill(new ImagePattern(im));
+                Tooltip.install(imagePlaceHolder, new Tooltip(u.toString()));
                 return imagePlaceHolder;
             }
 
