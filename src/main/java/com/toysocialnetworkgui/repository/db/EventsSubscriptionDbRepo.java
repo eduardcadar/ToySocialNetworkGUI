@@ -91,9 +91,7 @@ public class EventsSubscriptionDbRepo {
             ResultSet resultSet = ps.executeQuery();
             while(resultSet.next()){
                 eventsId.add(resultSet.getInt("event_id"));
-
             }
-
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
