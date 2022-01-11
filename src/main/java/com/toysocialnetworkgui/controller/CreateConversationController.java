@@ -15,7 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class CreateConversationController {
     private Service service;
@@ -23,7 +22,6 @@ public class CreateConversationController {
     private int pageNumber;
     private int pageSize;
     private String currentSearchPattern;
-    private ScheduledExecutorService exec;
     private AnchorPane rightPane;
 
     @FXML
@@ -45,14 +43,13 @@ public class CreateConversationController {
     @FXML
     Button nextPage;
 
-    public void initialize(Service service, User loggedUser, AnchorPane rightPane, ScheduledExecutorService exec) {
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.pageNumber = 1;
         this.pageSize = 5;
         this.currentSearchPattern = "";
         this.rightPane = rightPane;
-        this.exec = exec;
         reloadFriends();
     }
 
@@ -116,7 +113,7 @@ public class CreateConversationController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, rightPane, exec);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 }

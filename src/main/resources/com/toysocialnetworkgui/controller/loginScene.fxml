@@ -147,7 +147,7 @@
                   </GridPane>
                   <Button id="button" alignment="CENTER" focusTraversable="false" layoutX="187.0" layoutY="216.0" maxHeight="30.0" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="150.0" styleClass="buttonLogin" stylesheets="@../../../style/style.css" text="Connect" textAlignment="RIGHT" textFill="WHITE" />
 
-                  <Label fx:id="signUpLabel" onMouseClicked="#onSignUpClick" text="Sign up" textFill="#862ce4">
+                  <Label onMouseClicked="#onSignUpClick" text="Sign up" textFill="#862ce4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
