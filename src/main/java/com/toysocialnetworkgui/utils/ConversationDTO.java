@@ -31,7 +31,8 @@ public class ConversationDTO {
 
     @Override
     public String toString() {
-        StringBuilder tostring = new StringBuilder("Conversation with: ");
+        //StringBuilder tostring = new StringBuilder("Conversation with: ");
+        StringBuilder tostring = new StringBuilder("");
         participants.forEach(p -> tostring.append(p.toString()).append(", "));
 
         return tostring.toString().substring(0, tostring.length() - 2);

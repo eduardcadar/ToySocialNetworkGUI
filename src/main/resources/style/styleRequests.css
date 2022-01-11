@@ -28,10 +28,13 @@
 .table-row-cell:odd:selected{
     -fx-background-color: #862CE4;
     -fx-background-radius: 5px;
+    -fx-text-background-color: white;
+
 }
 .table-row-cell:even:selected{
     -fx-background-color: #862CE4;
     -fx-background-radius: 5px;
+    -fx-text-background-color: white;
 }
 
 .table-row-cell:odd{
