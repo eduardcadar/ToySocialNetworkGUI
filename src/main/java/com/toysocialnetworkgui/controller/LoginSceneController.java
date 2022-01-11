@@ -5,16 +5,12 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.PasswordEncryptor;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,17 +25,15 @@ public class LoginSceneController {
     @FXML
     private TextField textFieldPassword;
 
-    @FXML
-    private Label signUpLabel;
-
-    public void setService(Service service) {
+    public void initialize(Service service, Stage primaryStage) {
         this.service = service;
+        this.window = primaryStage;
     }
 
     @FXML
-    protected void onLoginButtonClick(ActionEvent event) throws IOException {
+    protected void onLoginButtonClick() throws IOException {
         User loggedUser;
-        if(textFieldEmail.getText().equals(""))
+        if (textFieldEmail.getText().equals(""))
              loggedUser = this.service.getUser("stef@gmail.com");
 
         // TODO
@@ -61,25 +55,14 @@ public class LoginSceneController {
       //  window.show();
     }
 
-    public void onSignUpClick(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("adminScene.fxml"));
+    @FXML
+    public void onSignUpClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("createAccount.fxml"));
         Parent root = loader.load();
-        AdminSceneController controller = loader.getController();
+        CreateAccountController controller = loader.getController();
         controller.initialize(service, window);
 
         window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
         window.show();
-      /*  Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Admin interface");
-        stage.setScene( new Scene(root));
-        stage.showAndWait();
-        */
-    }
-
-
-    public void setStage(Stage primaryStage) {
-        this.window = primaryStage;
     }
 }

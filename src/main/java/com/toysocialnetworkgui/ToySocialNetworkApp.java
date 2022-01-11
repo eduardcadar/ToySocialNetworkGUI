@@ -35,8 +35,7 @@ public class ToySocialNetworkApp extends Application {
 
         loginScene = new Scene(fxmlLogin.load(), CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT);
         loginSceneController = fxmlLogin.getController();
-        loginSceneController.setService(service);
-        loginSceneController.setStage(primaryStage);
+        loginSceneController.initialize(service, primaryStage);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         primaryStage.setUserData(exec);
         primaryStage.setOnCloseRequest(event ->

@@ -30,36 +30,25 @@ public class RequestsController implements Observer {
 
     @FXML
     private TableView<UserRequestDTO> tableSentRequestsView;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnFirstName;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnLastName;
-
     @FXML
     private TableColumn<UserRequestDTO, ImageView > tableSentColumnState;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableSentColumnSentDate;
-
     @FXML
     private TableColumn<UserRequestDTO, ImageView> tableSentColumnCancel;
 
-
-
     @FXML
     private TableView<UserRequestDTO> tableReceivedRequestsView;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnFirstName;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnLastName;
-
     @FXML
     private TableColumn<UserRequestDTO, ImageView > tableReceivedColumnState;
-
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnSentDate;
 
@@ -82,8 +71,6 @@ public class RequestsController implements Observer {
     @FXML
     TableColumn<CommonFriendsDTO, ImageView> tableAddFriendColumnSendReq;
 
-
-
     public void initialize(Service service, User loggedUser) {
         this.service = service;
         this.loggedUser = loggedUser;
@@ -95,7 +82,6 @@ public class RequestsController implements Observer {
 
     /**
      * Initialize the two tables corresponding to the Requested sent and Requested Received
-     *
      */
     private void initializeRequestsList() {
         initializeSentRequestsList();
@@ -121,21 +107,18 @@ public class RequestsController implements Observer {
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
         tableAddFriend.getColumns().forEach(e -> e.setReorderable(false));
-        ///
+
         tableAddFriendColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableAddFriendColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableAddFriendColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableAddFriendColumnCommonFriendsNr.setCellValueFactory(new PropertyValueFactory<>("nrOfCommonFriends"));
-        tableAddFriendColumnSendReq.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+        tableAddFriendColumnSendReq.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
-            public void addListener(ChangeListener<? super ImageView> listener) {
-
-            }
+            public void addListener(ChangeListener<? super ImageView> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super ImageView> listener) {
+            public void removeListener(ChangeListener<? super ImageView> listener) {}
 
-            }
             @Override
             public ImageView getValue() {
                 ImageView imageView = new ImageView();
@@ -146,14 +129,10 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
         tableAddFriendColumnCommonFriendsNr.setStyle("-fx-alignment: center");
         tableAddFriend.setItems(getNotFriends());
@@ -168,14 +147,11 @@ public class RequestsController implements Observer {
         tableReceivedColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableReceivedColumnState.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
-            public void addListener(ChangeListener<? super ImageView> listener) {
-
-            }
+            public void addListener(ChangeListener<? super ImageView> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super ImageView> listener) {
+            public void removeListener(ChangeListener<? super ImageView> listener) {}
 
-            }
             @Override
             public ImageView getValue() {
                 switch (param.getValue().getState()){
@@ -185,7 +161,6 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/accepted_request.png"));
                         return imageView;
-
                     }
                     case PENDING -> {
                         ImageView imageView = new ImageView();
@@ -193,7 +168,6 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/pending_request.png"));
                         return imageView;
-
                     }
                     case REJECTED -> {
                         ImageView imageView = new ImageView();
@@ -201,10 +175,7 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/rejected_request.png"));
                         return imageView;
-
-
                     }
-
                 }
                 ImageView imageView = new ImageView();
                 imageView.setFitHeight(30);
@@ -214,27 +185,20 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
         tableReceivedColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 
-        tableAcceptRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+        tableAcceptRequest.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
-            public void addListener(ChangeListener<? super ImageView> listener) {
-
-            }
+            public void addListener(ChangeListener<? super ImageView> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super ImageView> listener) {
+            public void removeListener(ChangeListener<? super ImageView> listener) {}
 
-            }
             @Override
             public ImageView getValue() {
                 ImageView imageView = new ImageView();
@@ -245,25 +209,19 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
-        tableRejectRequest.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+
+        tableRejectRequest.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
-            public void addListener(ChangeListener<? super ImageView> listener) {
-
-            }
+            public void addListener(ChangeListener<? super ImageView> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super ImageView> listener) {
+            public void removeListener(ChangeListener<? super ImageView> listener) {}
 
-            }
             @Override
             public ImageView getValue() {
                 ImageView imageView = new ImageView();
@@ -274,14 +232,10 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
 
         setReceivedRequestsList(getReceivedRequests());
@@ -290,25 +244,20 @@ public class RequestsController implements Observer {
     }
 
     private void initializeSentRequestsList() {
-
         //
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
         tableSentRequestsView.getColumns().forEach(e -> e.setReorderable(false));
-        //
 
         tableSentColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableSentColumnLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableSentColumnState.setCellValueFactory(param -> new ObservableValue<ImageView>() {
             @Override
-            public void addListener(ChangeListener<? super ImageView> listener) {
-
-            }
+            public void addListener(ChangeListener<? super ImageView> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super ImageView> listener) {
+            public void removeListener(ChangeListener<? super ImageView> listener) {}
 
-            }
             @Override
             public ImageView getValue() {
                 switch (param.getValue().getState()){
@@ -318,7 +267,6 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/accepted_request.png"));
                         return imageView;
-
                     }
                     case PENDING -> {
                         ImageView imageView = new ImageView();
@@ -326,7 +274,6 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/pending_request.png"));
                         return imageView;
-
                     }
                     case REJECTED -> {
                         ImageView imageView = new ImageView();
@@ -334,10 +281,7 @@ public class RequestsController implements Observer {
                         imageView.setFitWidth(30);
                         imageView.setImage(new Image("images/rejected_request.png"));
                         return imageView;
-
-
                     }
-
                 }
                 ImageView imageView = new ImageView();
                 imageView.setFitHeight(30);
@@ -347,26 +291,21 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
         tableSentColumnSentDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getSendDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-        tableSentColumnCancel.setCellValueFactory(param -> new ObservableValue<ImageView>() {
+        tableSentColumnCancel.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {
-
             }
 
             @Override
             public void removeListener(ChangeListener<? super ImageView> listener) {
-
             }
+
             @Override
             public ImageView getValue() {
                 ImageView imageView = new ImageView();
@@ -377,20 +316,15 @@ public class RequestsController implements Observer {
             }
 
             @Override
-            public void addListener(InvalidationListener listener) {
-
-            }
+            public void addListener(InvalidationListener listener) {}
 
             @Override
-            public void removeListener(InvalidationListener listener) {
-
-            }
+            public void removeListener(InvalidationListener listener) {}
         });
 
         setSentRequestsList(getSentRequests());
         tableSentColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
         tableSentRequestsView.getSortOrder().add(tableSentColumnSentDate);
-
     }
 
     private void setSentRequestsList(ObservableList<UserRequestDTO> requests) {
@@ -413,7 +347,7 @@ public class RequestsController implements Observer {
      * Reloads both tables SentRequests and ReceivedRequests
      */
     // TODO
-    //  might reload only the affected table  deal with this later
+    //  might reload only the affected table deal with this later
     public void reloadTables(){
         setSentRequestsList(getSentRequests());
         setReceivedRequestsList(getReceivedRequests());
@@ -424,12 +358,11 @@ public class RequestsController implements Observer {
         if (requestDTO != null) {
             try {
                 service.acceptFriendship(requestDTO.getEmail(), loggedUser.getEmail());
-            } catch (RepoException e){
+            } catch (RepoException e) {
                 MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
-        } else {
+        } else
             MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
-        }
     }
 
     public void onButtonRejectClick(){
@@ -440,51 +373,46 @@ public class RequestsController implements Observer {
             } catch (RepoException e) {
                 MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
-        } else {
+        } else
             MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
-        }
     }
 
-    public void onButtonCancelClick(){
+    public void onButtonCancelClick() {
         System.out.println("Cancel click");
         UserRequestDTO dto = tableSentRequestsView.getSelectionModel().getSelectedItem();
-        if(dto != null) {
+        if (dto != null) {
             try {
-            service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
-        } catch(RepoException e) {
+                service.cancelPendingRequest(loggedUser.getEmail(), dto.getEmail());
+            } catch (RepoException e) {
                 MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
             }
-        }
-        else {
+        } else
             MyAlert.StartAlert("Error", "No request selected", Alert.AlertType.WARNING);
-        }
     }
 
-    public void handleReceivedClickEvent(MouseEvent mouseEvent) {
-        if(tableReceivedRequestsView.getSelectionModel() != null) {
-            if(tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
+    public void handleReceivedClickEvent() {
+        if (tableReceivedRequestsView.getSelectionModel() != null) {
+            if (tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
                 System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
-                if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
+                if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4)
                     onButtonAcceptClick();
-                } else if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 5) {
+                else if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 5)
                     onButtonRejectClick();
-                }
             }
         }
     }
     
-    public void handleSentClickEvent(MouseEvent mouseEvent) {
+    public void handleSentClickEvent() {
         if (tableSentRequestsView.getSelectionModel() != null) {
             if (tableSentRequestsView.getSelectionModel().getSelectedCells().size() > 0) {
                 System.out.println("Clicked on " + (tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
-                if ((tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4) {
+                if ((tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4)
                     onButtonCancelClick();
-                }
             }
         }
     }
 
-    public void handleAddFriendClickEvent(MouseEvent mouseEvent) {
+    public void handleAddFriendClickEvent() {
         if (tableAddFriend.getSelectionModel() != null) {
             if (tableAddFriend.getSelectionModel().getSelectedCells().size() > 0) {
                 System.out.println("Clicked on " + (tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() ) ;

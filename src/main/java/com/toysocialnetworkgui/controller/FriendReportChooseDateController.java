@@ -43,7 +43,7 @@ public class FriendReportChooseDateController {
     }
 
     @FXML
-    protected void onButtonGenerateClick(ActionEvent event) throws IOException {
+    protected void onButtonGenerateClick() throws IOException {
         if (listViewFriends.getSelectionModel().isEmpty()) {
             MyAlert.StartAlert("Error", "Select one friend!", Alert.AlertType.WARNING);
             return;

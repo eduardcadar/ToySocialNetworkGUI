@@ -274,8 +274,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
         Parent root = loader.load();
         UpdateUserController controller = loader.getController();
-        controller.setService(service);
-        controller.initialize(loggedUser, window);
+        controller.initialize(loggedUser, window, service);
         rightPane.getChildren().setAll(root);
 
         setLoggedUser(service.getUser(loggedUser.getEmail()));
@@ -342,8 +341,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScene.fxml"));
         Parent root = loader.load();
         LoginSceneController controller = loader.getController();
-        controller.setService(service);
-        controller.setStage(window);
+        controller.initialize(service, window);
         window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
     }
 
