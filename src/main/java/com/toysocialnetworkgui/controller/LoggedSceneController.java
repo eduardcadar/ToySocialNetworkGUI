@@ -33,25 +33,22 @@ import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class LoggedSceneController implements Observer {
+public class LoggedSceneController {
     @FXML
     Button buttonShowConversation;
-
     @FXML
     AnchorPane rightPane;
-
     @FXML
     Text textUserFullName;
-
     @FXML
     Text textNrMessages;
-
     @FXML
     Text textNrEvents;
-
     @FXML
     Text textNrFriends;
 
+    @FXML
+    Button buttonFriends;
     @FXML
     Button buttonRemoveFriend = new Button();
     @FXML
@@ -62,68 +59,28 @@ public class LoggedSceneController implements Observer {
     Button buttonFriendReport;
     @FXML
     Button buttonActivitiesReport;
-
-    @FXML
-    ComboBox<String> comboBoxMonth;
     @FXML
     Button buttonUpdateUser;
-
     @FXML
     Button buttonLogout;
-
-    @FXML
-    Button buttonSearch;
-
     @FXML
     Circle imagePlaceHolder;
 
     @FXML
-    TableView<UserFriendDTO> tableViewFriends;
-    @FXML
-    TableColumn<UserFriendDTO, String> tableColumnEmail;
-    @FXML
-    TableColumn<UserFriendDTO, String> tableColumnFirstname;
-    @FXML
-    TableColumn<UserFriendDTO, String> tableColumnLastname;
-    @FXML
-    TableColumn<UserFriendDTO, Date> tableColumnDate;
-
-    @FXML
-    Button previousPage;
-    @FXML
-    Button nextPage;
-
-    @FXML
-    TextField textFieldSearchFriend;
-
-    @FXML
     Button buttonEvents;
-
     @FXML
     ImageView imageViewNotification = new ImageView();
-
 
     private User loggedUser;
     private Service service;
     private Stage window;
-    private int pageNumber;
-    private int pageSize;
-    private String currentSearchPattern;
-    private int currentMonthFilter;
 
     public void initialize(Service service, User user, Stage window) {
         this.window = window;
         this.loggedUser = user;
         this.service = service;
-        pageNumber = 1;
-        pageSize = 2;
-        currentSearchPattern = "";
-        currentMonthFilter = 0;
+
         setLoggedUser(user);
-        initializeFriendsList();
-        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        comboBoxMonth.setItems(getMonths());
-        service.getFriendshipRepo().addObserver(this);
         int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
         if (numberOfNotification != 0) {
             imageViewNotification.setImage(new Image("images/active_notification.png"));
@@ -146,24 +103,6 @@ public class LoggedSceneController implements Observer {
         imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
-    /**
-     * Filter the friends searching by name from textFieldSearchFriend
-     */
-    public void onButtonSearchFriend() {
-        pageNumber = 1;
-        currentSearchPattern = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
-        setFriendsList(getFriends());
-    }
-
-    /**
-     * Show all friends if the textField for searching is empty
-     */
-    public void clearSearchFriendSelection() {
-        String input = textFieldSearchFriend.getText().toLowerCase(Locale.ROOT);
-        if (input.equals(""))
-            setFriendsList(getFriends());
-    }
-
     private void setLoggedUser(User user) {
         loggedUser = user;
         String firstName = user.getFirstName();
@@ -177,12 +116,13 @@ public class LoggedSceneController implements Observer {
         textNrMessages.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
 
-    private ObservableList<String> getMonths() {
-        return FXCollections.observableArrayList(Arrays.asList(
-                "any month",
-                "january", "february", "march", "april",
-                "may", "june", "july", "august",
-                "september", "october", "november", "december"));
+    @FXML
+    protected void onButtonFriendsClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends.fxml"));
+        Parent root = loader.load();
+        FriendsController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
     }
 
     @FXML
@@ -201,72 +141,6 @@ public class LoggedSceneController implements Observer {
         FriendReportChooseDateController controller = loader.getController();
         controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
-    }
-
-    @FXML
-    protected void onSelectMonth() {
-        pageNumber = 1;
-        String month = comboBoxMonth.getValue();
-        if (month == null)
-            month = "any month";
-        switch (month) {
-            case "january" -> currentMonthFilter = 1;
-            case "february" -> currentMonthFilter = 2;
-            case "march" -> currentMonthFilter = 3;
-            case "april" -> currentMonthFilter = 4;
-            case "may" -> currentMonthFilter = 5;
-            case "june" -> currentMonthFilter = 6;
-            case "july" -> currentMonthFilter = 7;
-            case "august" -> currentMonthFilter = 8;
-            case "september" -> currentMonthFilter = 9;
-            case "october" -> currentMonthFilter = 10;
-            case "november" -> currentMonthFilter = 11;
-            case "december" -> currentMonthFilter = 12;
-            default -> currentMonthFilter = 0;
-        }
-        setFriendsList(FXCollections.observableArrayList(service
-                .getFriendshipsDTOMonthFilteredPage(loggedUser.getEmail(), pageNumber, pageSize, currentSearchPattern, currentMonthFilter)));
-    }
-
-    private void reloadFriends() {
-        setFriendsList(getFriends());
-    }
-
-    private ObservableList<UserFriendDTO> getFriends() {
-        return FXCollections.observableArrayList(service
-                .getFriendshipsDTOMonthFilteredPage(loggedUser.getEmail(), pageNumber, pageSize, currentSearchPattern, currentMonthFilter));
-    }
-
-    private void setFriendsList(ObservableList<UserFriendDTO> friends) {
-        tableViewFriends.setItems(friends);
-    }
-
-    private void initializeFriendsList() {
-        tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        setFriendsList(getFriends());
-
-        textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
-    }
-
-    @FXML
-    protected void onPreviousPageButtonClick() {
-        if (pageNumber == 1)
-            return;
-        pageNumber--;
-        reloadFriends();
-    }
-
-    @FXML
-    protected void onNextPageButtonClick() {
-        int lastPage = ((service
-                .getUserFriendsMonthFilteredSize(loggedUser.getEmail(), currentSearchPattern, currentMonthFilter) - 1) / pageSize) + 1;
-        if (pageNumber == lastPage)
-            return;
-        pageNumber++;
-        reloadFriends();
     }
 
     @FXML
@@ -307,18 +181,6 @@ public class LoggedSceneController implements Observer {
         rightPane.getChildren().setAll(dashboard);
     }
 
-    @FXML
-    protected void onRemoveFriendButtonClick() {
-        if (tableViewFriends.getSelectionModel().isEmpty())
-            return;
-        UserFriendDTO friend = tableViewFriends.getSelectionModel().getSelectedItem();
-        try {
-            service.removeFriendship(loggedUser.getEmail(), friend.getEmail());
-        } catch (RepoException | DbException e) {
-            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
-        }
-    }
-
     /**
      * Opens a new Stage to handle user interactions with friend requests
      * @throws IOException - from load
@@ -343,11 +205,6 @@ public class LoggedSceneController implements Observer {
         LoginSceneController controller = loader.getController();
         controller.initialize(service, window);
         window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
-    }
-
-    @Override
-    public void update(Object obj) {
-        if (obj instanceof FriendshipDbRepo) reloadFriends();
     }
 
     /**
