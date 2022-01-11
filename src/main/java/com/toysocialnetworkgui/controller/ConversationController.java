@@ -54,6 +54,8 @@ public class ConversationController implements Observer {
     @FXML
     Button buttonNextPage;
     @FXML
+    Button buttonRefresh;
+    @FXML
     TextField textFieldMessage;
     @FXML
     Button buttonSendMessage;
@@ -75,7 +77,7 @@ public class ConversationController implements Observer {
     public void initialize(Service service, User user, AnchorPane rightPane, ScheduledExecutorService exec) {
         tableViewMessages.setPlaceholder(new Label("No messages"));
         listConversations.setPlaceholder(new Label("You have no conversations"));
-        this.pageSize = 10;
+        this.pageSize = 9;
         this.service = service;
         this.loggedUser = user;
         this.rightPane = rightPane;
@@ -99,7 +101,6 @@ public class ConversationController implements Observer {
                 if (service.getConversationSize(idConversation) != lastConvSize)
                     pageNumber = getLastPageNumber();
                     reloadMessages();
-
             }, 10, 10, TimeUnit.SECONDS);
         });
     }
@@ -139,6 +140,12 @@ public class ConversationController implements Observer {
     }
 
     @FXML
+    protected void onRefreshButtonClick() {
+        this.pageNumber = getLastPageNumber();
+        reloadMessages();
+    }
+
+    @FXML
     protected void onPreviousPageButtonClick() {
         if (idConversation == 0) return;
         if (pageNumber == 1)
@@ -158,7 +165,6 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onSendMessageButtonClick() {
-
         if (textFieldMessage.getLength() == 0)
             return;
         if (idConversation == 0) {
@@ -188,16 +194,13 @@ public class ConversationController implements Observer {
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         tableColumnSender.setStyle("-fx-alignment: CENTER");
-        tableColumnSender.setCellValueFactory(param -> new ObservableValue<Circle>() {
+        tableColumnSender.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
-            public void addListener(ChangeListener<? super Circle> listener) {
-
-            }
+            public void addListener(ChangeListener<? super Circle> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super Circle> listener) {
+            public void removeListener(ChangeListener<? super Circle> listener) {}
 
-            }
             @Override
             public Circle getValue() {
                 Circle imagePlaceHolder = new Circle();
@@ -207,17 +210,13 @@ public class ConversationController implements Observer {
                 Image im = new Image(u.getProfilePicturePath());
                 imagePlaceHolder.setFill(new ImagePattern(im));
                 return imagePlaceHolder;
-                }
-
-            @Override
-            public void addListener(InvalidationListener listener) {
-
             }
 
             @Override
-            public void removeListener(InvalidationListener listener) {
+            public void addListener(InvalidationListener listener) {}
 
-            }
+            @Override
+            public void removeListener(InvalidationListener listener) {}
         });
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         tableColumnDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm"))));
