@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -45,10 +46,21 @@ public class EventsController {
     @FXML
     protected TextField textFieldEventName;
 
+
+    @FXML
+    protected Text textEventName;
+
     @FXML
     protected TextField textFieldEventLocation;
+
     @FXML
-    protected TextArea textAreaEventDescription;
+    protected Text textEventLocation;
+
+    @FXML
+    protected TextArea textCreateEventDescription;
+
+    @FXML
+    protected Text textShowEventDescription;
 
     @FXML
     protected Text addEventPhotoText;
@@ -57,7 +69,13 @@ public class EventsController {
     protected DatePicker datePickerEventStart;
 
     @FXML
+    protected Text textDateStart;
+
+    @FXML
     protected DatePicker datePickerEventEnd;
+
+    @FXML
+    protected Text textDateEnd;
 
     @FXML
     protected TableView<Event> tableViewEvents;
@@ -82,7 +100,13 @@ public class EventsController {
     Rectangle rectangleImageEvent;
 
     @FXML
+    Rectangle imageSavedEvent;
+
+    @FXML
     protected TextField textFieldCategory;
+
+    @FXML
+    protected Text textEventCategory;
 
     @FXML
     protected Text textAddEventPhoto;
@@ -90,6 +114,19 @@ public class EventsController {
     boolean uploadedPhoto = false;
 
     String lastEventPicturePath = "";
+    @FXML
+    AnchorPane  createEventPane;
+
+    @FXML
+    AnchorPane showEventPane;
+
+    @FXML
+    Button buttonVisibleCreate;
+
+    @FXML
+    Button buttonSeeEvents;
+
+
 
     public void initialize(Service service, User loggedUser, Stage window) {
         uploadedPhoto = false;
@@ -103,6 +140,9 @@ public class EventsController {
         Callback<DatePicker, DateCell> dontLetUserPickEarlyDate =dontLetUserPickEarlyDate();
 
         datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyDate);
+
+        showEventPane.setVisible(false);
+        createEventPane.setVisible(true);
     }
 
     /**
@@ -172,7 +212,7 @@ public class EventsController {
         LocalDate endDate = datePickerEventEnd.getValue();
         String location = textFieldEventLocation.getText();
         String category = textFieldCategory.getText();
-        String description = textAreaEventDescription.getText();
+        String description = textCreateEventDescription.getText();
         String creator = loggedUser.getEmail();
         try{
             service.addEvent(name,creator,location,category, description, startDate, endDate, lastEventPicturePath);
@@ -211,6 +251,18 @@ public class EventsController {
             MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
     }
 
+    /**
+     * Renders in rectangle the image indicated by path
+     * @param rectangle
+     * @param path
+     */
+    public void putImagePathInRectangle(Rectangle rectangle, String path){
+        rectangle.setStroke(Color.web("#862CE4"));
+        rectangle.setStrokeWidth(2);
+        Image im = new Image(path);
+        rectangle.setFill(new ImagePattern(im));
+    }
+
     public void onEventImageClick(MouseEvent mouseEvent) {
         textAddEventPhoto.setVisible(false);
         FileChooser fileChooser = new FileChooser();
@@ -230,11 +282,7 @@ public class EventsController {
             }
             String pathToFile = args[1];
             pathToFile = pathToFile.replace("\\", "/");
-            rectangleImageEvent.setStroke(Color.web("#862CE4"));
-            rectangleImageEvent.setStrokeWidth(2);
-
-            Image im = new Image(pathToFile);
-            rectangleImageEvent.setFill(new ImagePattern(im));
+            putImagePathInRectangle(rectangleImageEvent, pathToFile);
             lastEventPicturePath = pathToFile;
             uploadedPhoto = true;
         }
@@ -243,5 +291,33 @@ public class EventsController {
         }
 
     }
+    public void onButtonSeeEvents(ActionEvent event){
+        showEventPane.setVisible(true);
+        createEventPane.setVisible(false);
+        ///
+        populateSavedEvent(service.getAllEvents().get(0));
+        ///
 
+
+
+    }
+    public void onButtonVisibleCreate(ActionEvent event){
+        showEventPane.setVisible(false);
+        createEventPane.setVisible(true);
+    }
+
+    /**
+     * Place the details of the event in Anchor pane
+     * @param event
+     */
+    public void populateSavedEvent(Event event){
+        textEventName.setText(event.getName());
+        textDateStart.setText(event.getStart().toString());
+        textDateEnd.setText(event.getEnd().toString());
+        textEventLocation.setText(event.getLocation());
+        textEventCategory.setText(event.getCategory());
+        textShowEventDescription.setText(event.getDescription());
+        putImagePathInRectangle(imageSavedEvent, event.getPhotoPath());
+
+    }
 }

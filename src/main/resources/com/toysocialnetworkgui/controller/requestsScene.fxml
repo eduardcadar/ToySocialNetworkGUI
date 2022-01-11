@@ -28,7 +28,7 @@
                             <TableColumn fx:id="tableSentColumnLastName" prefWidth="60.0" sortable="false" text="Last Name" />
                               <TableColumn fx:id="tableSentColumnState" prefWidth="50.0" sortable="false" style="-fx-alignment: center;" text="State" />
                               <TableColumn fx:id="tableSentColumnSentDate" prefWidth="92.80006408691406" sortType="DESCENDING" text="Sent Date" />
-                              <TableColumn fx:id="tableSentColumnCancel" prefWidth="51.20001220703125" style="-fx-alignment: center;" text="Cancel" />
+                              <TableColumn fx:id="tableSentColumnCancel" prefWidth="51.20001220703125" style="-fx-alignment: center; -fx-cursor: hand;" text="Cancel" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -49,8 +49,8 @@
                               <TableColumn fx:id="tableReceivedColumnLastName" prefWidth="60.0" sortable="false" text="Last Name" />
                               <TableColumn fx:id="tableReceivedColumnState" prefWidth="50.0" sortable="false" style="-fx-alignment: center;" text="State" />
                               <TableColumn fx:id="tableReceivedColumnSentDate" prefWidth="71.20001220703125" sortType="DESCENDING" text="Sent Date" />
-                              <TableColumn fx:id="tableAcceptRequest" prefWidth="50.0" sortable="false" style="-fx-alignment: center;" text="Accept" />
-                              <TableColumn fx:id="tableRejectRequest" prefWidth="50.0" sortable="false" style="-fx-alignment: center;" text="Reject" />
+                              <TableColumn fx:id="tableAcceptRequest" prefWidth="50.0" sortable="false" style="-fx-alignment: center; -fx-cursor: hand;" text="Accept" />
+                              <TableColumn fx:id="tableRejectRequest" prefWidth="50.0" sortable="false" style="-fx-alignment: center; -fx-cursor: hand;" text="Reject" />
                            </columns>
                            <VBox.margin>
                               <Insets />
@@ -78,7 +78,7 @@
                         <TableColumn fx:id="tableAddFriendColumnFirstname" prefWidth="79.20001220703125" sortable="false" text="First Name" />
                         <TableColumn fx:id="tableAddFriendColumnLastname" prefWidth="75.2000732421875" sortable="false" text="Last Name" />
                         <TableColumn fx:id="tableAddFriendColumnCommonFriendsNr" minWidth="0.0" prefWidth="109.60011291503906" text="Common friends" />
-                        <TableColumn fx:id="tableAddFriendColumnSendReq" prefWidth="54.39996337890625" sortable="false" style="-fx-alignment: center;" text="Add" />
+                        <TableColumn fx:id="tableAddFriendColumnSendReq" prefWidth="54.39996337890625" sortable="false" style="-fx-alignment: center; -fx-cursor: hand;" text="Add" />
                         <TableColumn fx:id="tableAddFriendColumnEmail" minWidth="0.0" prefWidth="0.0" resizable="false" text="Email" visible="false" />
                      </columns>
                      <VBox.margin>
