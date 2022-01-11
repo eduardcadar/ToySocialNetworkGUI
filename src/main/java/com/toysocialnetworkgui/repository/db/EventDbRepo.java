@@ -93,7 +93,8 @@ public class EventDbRepo implements EventRepository {
             String category = resultSet.getString("category");
             LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            return new Event(id, nameEv, creator, location, category, description, startDate, endDate);
+            String photoPath = resultSet.getString("photo_path");
+            return new Event(id, nameEv, creator, location, category, description, startDate, endDate,photoPath);
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }
@@ -122,7 +123,8 @@ public class EventDbRepo implements EventRepository {
             String category = resultSet.getString("category");
             LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            return new Event(id, nameEv, creator, location, category, description, startDate, endDate);
+            String photoPath = resultSet.getString("photo_path");
+            return new Event(id, nameEv, creator, location, category, description, startDate, endDate, photoPath);
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }
@@ -183,7 +185,8 @@ public class EventDbRepo implements EventRepository {
                 String category = resultSet.getString("category");
                 LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                arrayList.add( new Event(id, nameEv, creator, location, category, description, startDate, endDate));
+                String photoPath = resultSet.getString("photo_path");
+                arrayList.add( new Event(id, nameEv, creator, location, category, description, startDate, endDate,photoPath));
           }
         }catch (SQLException e){
             throw new DbException(e.getMessage());
