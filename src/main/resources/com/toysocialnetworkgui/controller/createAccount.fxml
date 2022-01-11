@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" stylesheets="@../../../style/styleCreateAcc.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.AdminSceneController">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" stylesheets="@../../../style/styleCreateAcc.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.CreateAccountController">
    <children>
       <VBox fillWidth="false" layoutX="137.0" layoutY="101.0" prefHeight="298.0" prefWidth="330.0">
          <children>

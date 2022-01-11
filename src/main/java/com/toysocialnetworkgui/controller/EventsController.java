@@ -8,6 +8,7 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.validator.ValidatorException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -110,7 +111,7 @@ public class EventsController {
      * @return - callback function
      */
     Callback<DatePicker, DateCell> dontLetUserPickEarlyDate(){
-        return new Callback<DatePicker, DateCell>() {
+        return new Callback<>() {
             @Override
             public DateCell call(final DatePicker param) {
                 return new DateCell() {
@@ -118,11 +119,10 @@ public class EventsController {
                     public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
                         LocalDate startDate = datePickerEventStart.getValue();
-                        if(startDate != null)
+                        if (startDate != null)
                             setDisable(empty || item.compareTo(startDate) < 0);
-                        else{
+                        else
                             setDisable(true);
-                        }
                     }
 
                 };
@@ -140,25 +140,26 @@ public class EventsController {
         columnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
         columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         setEventList(getEvents());
-
     }
+
     private ObservableList<Event> getEvents() {
         return FXCollections.observableArrayList(service
                 .getAllEvents());
     }
+
     private void setEventList(ObservableList<Event> events) {
         tableViewEvents.setItems(events);
     }
 
     @FXML
     protected void onCancelEventClick(ActionEvent event) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
         Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);
-
     }
 
     public void onButtonCreateClick(ActionEvent event) throws IOException {
@@ -182,36 +183,32 @@ public class EventsController {
         // TODO
         //  - do some notify observer here?
         setEventList(getEvents());
-
     }
+
     @FXML
-    protected void onSubscribeClick(ActionEvent actionEvent){
+    protected void onSubscribeClick(){
         Event event = tableViewEvents.getSelectionModel().getSelectedItem();
-        try{
-            if(event != null){
+        try {
+            if (event != null){
                 service.subscribeUserToEvent(event.getId(), loggedUser.getEmail());
                 initList();
-            } else {
+            } else
                 MyAlert.StartAlert("Error", "Please select an event", Alert.AlertType.WARNING);
-            }
         } catch (RepoException | DbException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
-
     }
 
     /**
      * Removes the subscription from the selected event which you participate
-     * @param ev - ActionEvent
      */
-    public void onUnsubscribeButtonClick(ActionEvent ev) {
+    public void onUnsubscribeButtonClick() {
         Event event = listEventsSubscribed.getSelectionModel().getSelectedItem();
-        if(event != null) {
+        if (event != null) {
             service.unsubscribeUserFromEvent(event.getId(), loggedUser.getEmail());
             initList();
-        } else {
+        } else
             MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
-        }
     }
 
     public void onEventImageClick(MouseEvent mouseEvent) {

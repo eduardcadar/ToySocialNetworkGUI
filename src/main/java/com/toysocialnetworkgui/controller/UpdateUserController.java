@@ -67,11 +67,8 @@ public class UpdateUserController {
         window.setScene(scene);
     }
 
-    public void setService(Service service) {
+    public void initialize(User user, Stage window, Service service) {
         this.service = service;
-    }
-
-    public void initialize(User user, Stage window) {
         this.window = window;
         loggedUser = user;
         lastProfilePicturePath = user.getProfilePicturePath();
@@ -80,7 +77,7 @@ public class UpdateUserController {
         imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
-    public void onProfilePictureClick() throws IOException {
+    public void onProfilePictureClick() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image", "*.jpg", "*.png", "*.jpeg")

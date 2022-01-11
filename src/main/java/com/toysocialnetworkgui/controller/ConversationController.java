@@ -14,25 +14,21 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ConversationController implements Observer {
@@ -43,6 +39,7 @@ public class ConversationController implements Observer {
     private int pageNumber;
     private int pageSize;
     private ScheduledExecutorService exec;
+    private ScheduledFuture<?> task;
     private AnchorPane rightPane;
 
     @FXML
@@ -52,6 +49,8 @@ public class ConversationController implements Observer {
     Button buttonPreviousPage;
     @FXML
     Button buttonNextPage;
+    @FXML
+    Button buttonRefresh;
     @FXML
     TextField textFieldMessage;
     @FXML
@@ -74,21 +73,18 @@ public class ConversationController implements Observer {
     public void initialize(Service service, User user, AnchorPane rightPane) {
         tableViewMessages.setPlaceholder(new Label("No messages"));
         listConversations.setPlaceholder(new Label("You have no conversations"));
-        this.pageSize = 10;
+        this.pageSize = 9;
         this.service = service;
         this.loggedUser = user;
         this.rightPane = rightPane;
         this.idConversation = 0;
+        this.exec = (ScheduledExecutorService)rightPane.getParent().getScene().getWindow().getUserData();
         reloadConversationsList();
         initializeMessages();
         service.getConversationParticipantsRepo().addObserver(this);
         service.getMessageRepo().addObserver(this);
-        rightPane.getParent().getScene().getWindow().setOnCloseRequest(event -> tearDown());
-        exec = Executors.newSingleThreadScheduledExecutor();
-
         listConversations.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            tearDown();
-            exec = Executors.newSingleThreadScheduledExecutor();
+            stopTask();
 
             if (listConversations.getSelectionModel().isEmpty())
                 return;
@@ -97,11 +93,10 @@ public class ConversationController implements Observer {
             setConversationTitle();
             reloadMessages();
 
-            exec.scheduleAtFixedRate(() -> {
+            task = exec.scheduleAtFixedRate(() -> {
                 if (service.getConversationSize(idConversation) != lastConvSize)
                     pageNumber = getLastPageNumber();
                     reloadMessages();
-
             }, 10, 10, TimeUnit.SECONDS);
         });
     }
@@ -119,8 +114,10 @@ public class ConversationController implements Observer {
         this.idConversation = idConversation;
     }
 
-    public void tearDown() {
-        if (!exec.isShutdown()) exec.shutdown();
+    private void stopTask() {
+        if (task != null)
+            if (!task.isCancelled())
+                task.cancel(true);
     }
 
     private void reloadConversationsList() {
@@ -129,13 +126,19 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onCreateConversationButtonClick() throws IOException {
-        tearDown();
+        stopTask();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createConversation.fxml"));
         Parent root = loader.load();
         CreateConversationController controller = loader.getController();
         controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    protected void onRefreshButtonClick() {
+        this.pageNumber = getLastPageNumber();
+        reloadMessages();
     }
 
     @FXML
@@ -158,7 +161,6 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onSendMessageButtonClick() {
-
         if (textFieldMessage.getLength() == 0)
             return;
         if (idConversation == 0) {
@@ -170,10 +172,6 @@ public class ConversationController implements Observer {
         textFieldMessage.clear();
         pageNumber = getLastPageNumber();
         reloadMessages();
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
     }
 
     private int getLastPageNumber() {
@@ -188,16 +186,13 @@ public class ConversationController implements Observer {
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         tableColumnSender.setStyle("-fx-alignment: CENTER");
-        tableColumnSender.setCellValueFactory(param -> new ObservableValue<Circle>() {
+        tableColumnSender.setCellValueFactory(param -> new ObservableValue<>() {
             @Override
-            public void addListener(ChangeListener<? super Circle> listener) {
-
-            }
+            public void addListener(ChangeListener<? super Circle> listener) {}
 
             @Override
-            public void removeListener(ChangeListener<? super Circle> listener) {
+            public void removeListener(ChangeListener<? super Circle> listener) {}
 
-            }
             @Override
             public Circle getValue() {
                 Circle imagePlaceHolder = new Circle();
@@ -206,18 +201,15 @@ public class ConversationController implements Observer {
                 User u = service.getUser(param.getValue().getSender());
                 Image im = new Image(u.getProfilePicturePath());
                 imagePlaceHolder.setFill(new ImagePattern(im));
+                Tooltip.install(imagePlaceHolder, new Tooltip(u.toString()));
                 return imagePlaceHolder;
-                }
-
-            @Override
-            public void addListener(InvalidationListener listener) {
-
             }
 
             @Override
-            public void removeListener(InvalidationListener listener) {
+            public void addListener(InvalidationListener listener) {}
 
-            }
+            @Override
+            public void removeListener(InvalidationListener listener) {}
         });
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
         tableColumnDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm"))));

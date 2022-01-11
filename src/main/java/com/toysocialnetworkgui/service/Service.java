@@ -534,6 +534,13 @@ public class Service {
         return eventService.getEventsForUser(userEmail);
     }
 
+    public List<Event> getUserUpcomingEvents(String email) {
+        return eventService.getEventsForUser(email)
+                .stream()
+                .filter(ev -> ev.getEnd().isAfter(LocalDate.now()))
+                .toList();
+    }
+
     /**
      * Returns a list of CommonFriendsDTO objects with users that are not friends with the specified user
      * @param email email of the user

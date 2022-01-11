@@ -11,7 +11,6 @@ import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,8 +19,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -30,7 +27,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class LoggedSceneController implements Observer {
     @FXML
@@ -123,13 +124,20 @@ public class LoggedSceneController implements Observer {
         tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
-        int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
+        int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
         if (numberOfNotification != 0) {
             imageViewNotification.setImage(new Image("images/active_notification.png"));
         } else {
             imageViewNotification.setImage(new Image("images/no_notification.png"));
         }
         setupProfilePicture();
+
+        ((ScheduledExecutorService)window.getUserData())
+                .scheduleAtFixedRate(() -> {
+            if (!service.getUserUpcomingEvents(loggedUser.getEmail()).isEmpty())
+                if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
+                    imageViewNotification.setImage(new Image("images/active_notification.png"));
+        }, 5, 60, TimeUnit.SECONDS);
     }
 
     private void setupProfilePicture() {
@@ -178,27 +186,20 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
-    protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
+    protected void onButtonActivitiesReportClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
         Parent root = loader.load();
-
         ActivitiesReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
     @FXML
-    protected void onButtonFriendReportClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().getSelectedItems().size() != 1) {
-            MyAlert.StartAlert("Error", "Select one friend!", Alert.AlertType.WARNING);
-            return;
-        }
-        String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
-
+    protected void onButtonFriendReportClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
         Parent root = loader.load();
         FriendReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser, service.getUser(userEmail));
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
@@ -273,8 +274,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
         Parent root = loader.load();
         UpdateUserController controller = loader.getController();
-        controller.setService(service);
-        controller.initialize(loggedUser, window);
+        controller.initialize(loggedUser, window, service);
         rightPane.getChildren().setAll(root);
 
         setLoggedUser(service.getUser(loggedUser.getEmail()));
@@ -290,7 +290,7 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
-    protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
+    protected void onAddFriendButtonClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendController controller = fxmlLoader.getController();
@@ -341,8 +341,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScene.fxml"));
         Parent root = loader.load();
         LoginSceneController controller = loader.getController();
-        controller.setService(service);
-        controller.setStage(window);
+        controller.initialize(service, window);
         window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
     }
 
@@ -357,8 +356,8 @@ public class LoggedSceneController implements Observer {
      */
     @FXML
     public void clearNotificationImage() {
-        System.out.println("Subscribed events: ");
-        service.getEventsForUser(loggedUser.getEmail()).forEach(System.out::print);
+        System.out.print("Subscribed events: ");
+        service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
         imageViewNotification.setImage(new Image("images/no_notification.png"));
         // TODO
         //  - Show only the subscribed events somewhere

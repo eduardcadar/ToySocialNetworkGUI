@@ -9,9 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,31 +23,48 @@ public class FriendReportChooseDateController {
     DatePicker datePickerUntil;
     @FXML
     Button buttonGenerate;
+    @FXML
+    private ListView<User> listViewFriends;
 
     private Service service;
     private User loggedUser;
-    private User otherUser;
+    private AnchorPane rightPane;
 
-    public void initialize(Service service, User loggedUser, User otherUser) {
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
-        this.otherUser = otherUser;
+        this.rightPane = rightPane;
+        initializeFriendsList();
+    }
+
+    private void initializeFriendsList() {
+        listViewFriends.getItems().setAll(service.getUserFriends(loggedUser.getEmail()));
+        listViewFriends.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     @FXML
-    protected void onButtonGenerateClick(ActionEvent event) throws IOException {
+    protected void onButtonGenerateClick() throws IOException {
+        if (listViewFriends.getSelectionModel().isEmpty()) {
+            MyAlert.StartAlert("Error", "Select one friend!", Alert.AlertType.WARNING);
+            return;
+        }
+        User otherUser = listViewFriends.getSelectionModel().getSelectedItem();
+        
         LocalDate dateFrom = datePickerFrom.getValue();
         LocalDate dateUntil = datePickerUntil.getValue();
         if (dateFrom == null || dateUntil == null) {
             MyAlert.StartAlert("Error", "Choose from and until date!", Alert.AlertType.WARNING);
             return;
         }
+        if (dateFrom.isAfter(dateUntil)) {
+            MyAlert.StartAlert("Error", "From date should be after until date", Alert.AlertType.WARNING);
+            return;
+        }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReport.fxml"));
         Parent root = loader.load();
         FriendReportController controller = loader.getController();
-        controller.initialize(service, loggedUser, otherUser, dateFrom, dateUntil);
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+        controller.initialize(service, loggedUser, otherUser, dateFrom, dateUntil, rightPane);
+        rightPane.getChildren().setAll(root);
     }
 }

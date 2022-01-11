@@ -6,8 +6,11 @@ import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserMessageDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -32,11 +35,13 @@ public class FriendReportController {
     private Service service;
     private User loggedUser;
     private User otherUser;
+    private AnchorPane rightPane;
 
-    public void initialize(Service service, User loggedUser, User otherUser, LocalDate dateFrom, LocalDate dateUntil) {
+    public void initialize(Service service, User loggedUser, User otherUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.otherUser = otherUser;
+        this.rightPane = rightPane;
         labelTitle.setText("Conversation between " + loggedUser + " and " + otherUser);
         loadMessages(dateFrom, dateUntil);
     }
@@ -50,7 +55,7 @@ public class FriendReportController {
     }
 
     @FXML
-    protected void onButtonExportClick(ActionEvent event) {
+    protected void onButtonExportClick(ActionEvent event) throws IOException {
         if (textFieldFilename.getText().isBlank())
             return;
         DirectoryChooser chooser = new DirectoryChooser();
@@ -68,6 +73,12 @@ public class FriendReportController {
         } catch (IOException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
+        Parent root = loader.load();
+        FriendReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
     }
 
     private void addContent(PDDocument document) throws IOException {
