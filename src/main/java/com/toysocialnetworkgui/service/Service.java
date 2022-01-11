@@ -534,6 +534,13 @@ public class Service {
         return eventService.getEventsForUser(userEmail);
     }
 
+    public List<Event> getUserUpcomingEvents(String email) {
+        return eventService.getEventsForUser(email)
+                .stream()
+                .filter(ev -> ev.getEnd().isAfter(LocalDate.now()))
+                .toList();
+    }
+
     /**
      * Returns a list of CommonFriendsDTO objects with users that are not friends with the specified user
      * @param email email of the user
@@ -541,17 +548,17 @@ public class Service {
      */
     public List<CommonFriendsDTO> getUserCommonFriendsDTO(String email) {
         List<CommonFriendsDTO> commonFriendsDTOs = new ArrayList<>();
-        User user = userService.getUser(email);
 
         List<User> notFriends = getNotFriends(email);
-        List<String> notFriendsEmails = new ArrayList<>();
-        notFriends.forEach(nf -> notFriendsEmails.add(nf.getEmail()));
+        List<User> friends = getUserFriends(email);
+        List<String> friendsEmails = new ArrayList<>();
+        friends.forEach(f -> friendsEmails.add(f.getEmail()));
 
         notFriends.forEach(n -> {
             int size;
             size = friendshipService.getUserFriends(n.getEmail())
                     .stream()
-                    .filter(notFriendsEmails::contains)
+                    .filter(friendsEmails::contains)
                     .toList()
                     .size();
             commonFriendsDTOs.add(new CommonFriendsDTO(n, size));
