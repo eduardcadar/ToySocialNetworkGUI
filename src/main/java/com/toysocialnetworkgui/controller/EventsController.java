@@ -241,7 +241,9 @@ public class EventsController {
             lastEventPicturePath = pathToFile;
             uploadedPhoto = true;
         }
-        textAddEventPhoto.setVisible(true);
+        else if(lastEventPicturePath.isEmpty()){
+            textAddEventPhoto.setVisible(true);
+        }
 
     }
 
