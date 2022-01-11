@@ -195,27 +195,20 @@ public class LoggedSceneController implements Observer {
     }
 
     @FXML
-    protected void onButtonActivitiesReportClick(ActionEvent event) throws IOException {
+    protected void onButtonActivitiesReportClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
         Parent root = loader.load();
-
         ActivitiesReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
     @FXML
-    protected void onButtonFriendReportClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().getSelectedItems().size() != 1) {
-            MyAlert.StartAlert("Error", "Select one friend!", Alert.AlertType.WARNING);
-            return;
-        }
-        String userEmail = tableViewFriends.getSelectionModel().getSelectedItem().getEmail();
-
+    protected void onButtonFriendReportClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
         Parent root = loader.load();
         FriendReportChooseDateController controller = loader.getController();
-        controller.initialize(service, loggedUser, service.getUser(userEmail));
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
