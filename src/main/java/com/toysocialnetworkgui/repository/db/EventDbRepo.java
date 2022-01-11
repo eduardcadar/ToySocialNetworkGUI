@@ -6,7 +6,6 @@ import com.toysocialnetworkgui.repository.EventRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.validator.EventValidator;
 import com.toysocialnetworkgui.validator.Validator;
-import com.toysocialnetworkgui.validator.ValidatorException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -34,9 +33,16 @@ public class EventDbRepo implements EventRepository {
                 " date_end varchar NOT NULL, " +
                 " PRIMARY KEY(id)" +
                 ")";
+        String updateTableAddPhoto = "ALTER TABLE " + eventTable +
+                " ADD COLUMN IF NOT EXISTS photo_path varchar DEFAULT '/events/error.png'";
+
+
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeUpdate();
+            PreparedStatement updateStatementAddProfile = connection.prepareStatement(updateTableAddPhoto);
+            updateStatementAddProfile.executeUpdate();
+
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -48,14 +54,11 @@ public class EventDbRepo implements EventRepository {
      * @param event - Event
      */
     public void save(Event event) {
-        // TODO
         validator.validate(event);
-        //  - check for duplicates ?
         if(getEvent(event.getName()) != null){
             throw new RepoException("There is another event with the same name. Check it out if you want to participate there!");
         }
-
-        String sql = "INSERT INTO " + eventTable + " (name,creator, location, category, description, date_start, date_end) VALUES (?, ?, ?, ?, ?,?,?)";
+        String sql = "INSERT INTO " + eventTable + " (name,creator, location, category, description, date_start, date_end,photo_path) VALUES (?, ?, ?, ?, ?,?,?,?)";
         try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1,event.getName());
@@ -65,6 +68,7 @@ public class EventDbRepo implements EventRepository {
             ps.setString(5, event.getDescription());
             ps.setString(6, event.getStart().toString());
             ps.setString(7, event.getEnd().toString());
+            ps.setString(8, event.getPhotoPath());
 
             ps.executeUpdate();
         } catch (SQLException e) {

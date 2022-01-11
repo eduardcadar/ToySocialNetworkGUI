@@ -492,8 +492,8 @@ public class Service {
      * @param startDate - LocalDate
      * @param endDate -LocalDate
      */
-    public void addEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate){
-        eventService.saveEvent(name,creator,location,category, description, startDate, endDate);
+    public void addEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate, String eventPhotoPath){
+        eventService.saveEvent(name,creator,location,category, description, startDate, endDate, eventPhotoPath);
     }
 
     public List<Event> getAllEvents(){

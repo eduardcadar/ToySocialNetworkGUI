@@ -27,6 +27,7 @@ public class Event {
     private String location;
     private String category;
     private String organizer;
+    private String photoPath;
 
     public Integer getId() {
         return id;
@@ -44,7 +45,7 @@ public class Event {
         this.organizer = organizer;
     }
 
-    public Event(String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end) {
+    public Event(String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end, String eventPath) {
         this.organizer = organizer;
         this.name = name;
         this.description = description;
@@ -52,6 +53,7 @@ public class Event {
         this.end = end;
         this.location = location;
         this.category = category;
+        this.photoPath = eventPath;
     }
 
 
@@ -64,6 +66,7 @@ public class Event {
         this.end = end;
         this.location = location;
         this.category = category;
+        this.photoPath = "/events/error.png";
     }
 
     public String getLocation() {
@@ -143,4 +146,7 @@ public class Event {
         this.end = end;
     }
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
 }

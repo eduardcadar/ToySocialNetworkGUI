@@ -7,24 +7,29 @@ import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
+import com.toysocialnetworkgui.validator.ValidatorException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 public class EventsController {
     private Service service;
@@ -42,7 +47,10 @@ public class EventsController {
     @FXML
     protected TextField textFieldEventLocation;
     @FXML
-    protected TextField textFieldEventDescription;
+    protected TextArea textAreaEventDescription;
+
+    @FXML
+    protected Text addEventPhotoText;
 
     @FXML
     protected DatePicker datePickerEventStart;
@@ -69,7 +77,22 @@ public class EventsController {
     @FXML
     protected Button buttonUnsubscribeEvent;
 
+    @FXML
+    Rectangle rectangleImageEvent;
+
+    @FXML
+    protected TextField textFieldCategory;
+
+    @FXML
+    protected Text textAddEventPhoto;
+
+    boolean uploadedPhoto = false;
+
+    String lastEventPicturePath = "";
+
     public void initialize(Service service, User loggedUser, Stage window) {
+        uploadedPhoto = false;
+        lastEventPicturePath = "";
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
@@ -129,7 +152,6 @@ public class EventsController {
 
     @FXML
     protected void onCancelEventClick(ActionEvent event) throws IOException {
-        System.out.println("cancel");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
@@ -140,15 +162,23 @@ public class EventsController {
     }
 
     public void onButtonCreateClick(ActionEvent event) throws IOException {
-        System.out.println("Create clicked");
+        if(!uploadedPhoto || lastEventPicturePath.isEmpty()){
+            MyAlert.StartAlert("Error", "Please upload a photo!", Alert.AlertType.ERROR);
+            return;
+        }
         String name = textFieldEventName.getText();
-        String location = textFieldEventLocation.getText();
-        String description = textFieldEventDescription.getText();
         LocalDate startDate = datePickerEventStart.getValue();
         LocalDate endDate = datePickerEventEnd.getValue();
+        String location = textFieldEventLocation.getText();
+        String category = textFieldCategory.getText();
+        String description = textAreaEventDescription.getText();
         String creator = loggedUser.getEmail();
-        String category = "test category";
-        service.addEvent(name,creator,location,category, description, startDate, endDate);
+        try{
+            service.addEvent(name,creator,location,category, description, startDate, endDate, lastEventPicturePath);
+        }
+        catch (ValidatorException | DbException | RepoException e){
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
+        }
         // TODO
         //  - do some notify observer here?
         setEventList(getEvents());
@@ -183,4 +213,36 @@ public class EventsController {
             MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
         }
     }
+
+    public void onEventImageClick(MouseEvent mouseEvent) {
+        textAddEventPhoto.setVisible(false);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image", "*.jpg", "*.png", "*.jpeg")
+        );
+
+        fileChooser.setInitialDirectory(new File(".\\src\\main\\resources\\events"));
+        fileChooser.setTitle("Pick an image from this folder, please!");
+        File selectedFile = fileChooser.showOpenDialog(window);
+        if (selectedFile != null) {
+            String fullPath = selectedFile.getAbsolutePath();
+            String[] args = fullPath.split("resources");
+            if (args.length != 2 || !fullPath.contains("events")) {
+                MyAlert.StartAlert("Error", "Pick an image from this profile folder, please!", Alert.AlertType.ERROR);
+                return;
+            }
+            String pathToFile = args[1];
+            pathToFile = pathToFile.replace("\\", "/");
+            rectangleImageEvent.setStroke(Color.web("#862CE4"));
+            rectangleImageEvent.setStrokeWidth(2);
+
+            Image im = new Image(pathToFile);
+            rectangleImageEvent.setFill(new ImagePattern(im));
+            lastEventPicturePath = pathToFile;
+            uploadedPhoto = true;
+        }
+        textAddEventPhoto.setVisible(true);
+
+    }
+
 }
