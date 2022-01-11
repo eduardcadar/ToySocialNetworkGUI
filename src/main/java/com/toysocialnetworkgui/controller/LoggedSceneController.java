@@ -127,7 +127,7 @@ public class LoggedSceneController implements Observer {
         tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         comboBoxMonth.setItems(getMonths());
         service.getFriendshipRepo().addObserver(this);
-        int numberOfNotification = service.getEventsForUser(loggedUser.getEmail()).size();
+        int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
         if (numberOfNotification != 0) {
             imageViewNotification.setImage(new Image("images/active_notification.png"));
         } else {
@@ -137,7 +137,7 @@ public class LoggedSceneController implements Observer {
 
         exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(() -> {
-            if (service.getEventsForUser(loggedUser.getEmail()).size() > 0)
+            if (service.getUserUpcomingEvents(loggedUser.getEmail()).size() > 0)
                 if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
                     imageViewNotification.setImage(new Image("images/active_notification.png"));
         }, 5, 60, TimeUnit.SECONDS);
@@ -375,7 +375,7 @@ public class LoggedSceneController implements Observer {
     @FXML
     public void clearNotificationImage() {
         System.out.print("Subscribed events: ");
-        service.getEventsForUser(loggedUser.getEmail()).forEach(System.out::println);
+        service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
         imageViewNotification.setImage(new Image("images/no_notification.png"));
         // TODO
         //  - Show only the subscribed events somewhere
