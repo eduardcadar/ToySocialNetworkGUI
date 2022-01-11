@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class ToySocialNetworkApp extends Application {
 
@@ -35,6 +37,10 @@ public class ToySocialNetworkApp extends Application {
         loginSceneController = fxmlLogin.getController();
         loginSceneController.setService(service);
         loginSceneController.setStage(primaryStage);
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        primaryStage.setUserData(exec);
+        primaryStage.setOnCloseRequest(event ->
+                ((ScheduledExecutorService)primaryStage.getUserData()).shutdown());
 
       //  primaryStage.setResizable(false);
         primaryStage.setTitle("Big Blana Society");

@@ -11,7 +11,6 @@ import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,8 +19,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -30,8 +27,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Executors;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -112,7 +110,6 @@ public class LoggedSceneController implements Observer {
     private int pageSize;
     private String currentSearchPattern;
     private int currentMonthFilter;
-    private ScheduledExecutorService exec;
 
     public void initialize(Service service, User user, Stage window) {
         this.window = window;
@@ -135,18 +132,12 @@ public class LoggedSceneController implements Observer {
         }
         setupProfilePicture();
 
-        exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(() -> {
-            if (service.getUserUpcomingEvents(loggedUser.getEmail()).size() > 0)
+        ((ScheduledExecutorService)window.getUserData())
+                .scheduleAtFixedRate(() -> {
+            if (!service.getUserUpcomingEvents(loggedUser.getEmail()).isEmpty())
                 if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
                     imageViewNotification.setImage(new Image("images/active_notification.png"));
         }, 5, 60, TimeUnit.SECONDS);
-
-        window.setOnCloseRequest(event -> tearDown());
-    }
-
-    public void tearDown() {
-        if (!exec.isShutdown()) exec.shutdown();
     }
 
     private void setupProfilePicture() {
@@ -295,12 +286,12 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, rightPane, exec);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
     @FXML
-    protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
+    protected void onAddFriendButtonClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
         Parent root = fxmlLoader.load();
         AddFriendController controller = fxmlLoader.getController();

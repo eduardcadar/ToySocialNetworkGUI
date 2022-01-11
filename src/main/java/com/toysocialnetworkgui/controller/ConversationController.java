@@ -20,17 +20,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -74,7 +70,7 @@ public class ConversationController implements Observer {
     @FXML
     Button buttonCreateConversation;
 
-    public void initialize(Service service, User user, AnchorPane rightPane, ScheduledExecutorService exec) {
+    public void initialize(Service service, User user, AnchorPane rightPane) {
         tableViewMessages.setPlaceholder(new Label("No messages"));
         listConversations.setPlaceholder(new Label("You have no conversations"));
         this.pageSize = 9;
@@ -82,7 +78,7 @@ public class ConversationController implements Observer {
         this.loggedUser = user;
         this.rightPane = rightPane;
         this.idConversation = 0;
-        this.exec = exec;
+        this.exec = (ScheduledExecutorService)rightPane.getParent().getScene().getWindow().getUserData();
         reloadConversationsList();
         initializeMessages();
         service.getConversationParticipantsRepo().addObserver(this);
@@ -135,7 +131,7 @@ public class ConversationController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createConversation.fxml"));
         Parent root = loader.load();
         CreateConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, rightPane, exec);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(root);
     }
 
@@ -176,10 +172,6 @@ public class ConversationController implements Observer {
         textFieldMessage.clear();
         pageNumber = getLastPageNumber();
         reloadMessages();
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
     }
 
     private int getLastPageNumber() {
