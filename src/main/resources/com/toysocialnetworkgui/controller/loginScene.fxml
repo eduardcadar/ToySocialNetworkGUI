@@ -56,7 +56,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../images/logo.png" />
+                              <Image url="@../../../images/community.png" />
                            </image>
                         </ImageView>
                         <VBox>
@@ -114,7 +114,7 @@
                <children>
                   <ImageView fitHeight="48.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../images/b_logo.jpg" />
+                        <Image url="@../../../images/logo_bbs.png" />
                      </image>
                   </ImageView>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" />

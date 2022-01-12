@@ -294,11 +294,7 @@ public class EventsController {
     public void onButtonSeeEvents(ActionEvent event){
         showEventPane.setVisible(true);
         createEventPane.setVisible(false);
-        ///
         populateSavedEvent(service.getAllEvents().get(0));
-        ///
-
-
 
     }
     public void onButtonVisibleCreate(ActionEvent event){
