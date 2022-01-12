@@ -43,7 +43,7 @@ public class ToySocialNetworkApp extends Application {
 
       //  primaryStage.setResizable(false);
         primaryStage.setTitle("Big Blana Society");
-        primaryStage.getIcons().add(new Image("images/logo.png"));
+        primaryStage.getIcons().add(new Image("images/logo_small.png"));
 
         primaryStage.setScene(loginScene);
         primaryStage.show();

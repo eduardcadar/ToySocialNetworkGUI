@@ -97,6 +97,7 @@ public class FriendsController implements Observer {
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        tableColumnRemove.setStyle("-fx-cursor:hand");
         tableColumnRemove.setCellValueFactory(p -> new ObservableValue<>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {}
@@ -120,7 +121,6 @@ public class FriendsController implements Observer {
             @Override
             public void removeListener(InvalidationListener listener) {}
         });
-        tableColumnRemove.setStyle("-fx-alignment: CENTER");
         tableColumnMessage.setCellValueFactory(p -> new ObservableValue<>() {
             @Override
             public void addListener(ChangeListener<? super ImageView> listener) {}
@@ -133,7 +133,7 @@ public class FriendsController implements Observer {
                 ImageView imageView = new ImageView();
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
-                imageView.setImage(new Image("images/message.png"));
+                imageView.setImage(new Image("images/open_conv.png"));
                 Tooltip.install(imageView, new Tooltip("message"));
                 return imageView;
             }
@@ -144,7 +144,6 @@ public class FriendsController implements Observer {
             @Override
             public void removeListener(InvalidationListener listener) {}
         });
-        tableColumnMessage.setStyle("-fx-alignment: CENTER");
         textFieldSearchFriend.textProperty().addListener(listener -> clearSearchFriendSelection());
     }
 
