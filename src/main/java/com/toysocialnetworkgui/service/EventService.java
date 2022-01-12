@@ -3,6 +3,7 @@ package com.toysocialnetworkgui.service;
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.EventRepository;
+import com.toysocialnetworkgui.repository.db.EventDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 
 import java.sql.SQLException;
@@ -12,12 +13,14 @@ import java.util.List;
 
 public class EventService {
 
-    private EventRepository eventRepo;
-
+    private EventDbRepo eventRepo;
     private EventsSubscriptionDbRepo eventsSubscriptionRepo;
-    public EventRepository getEventRepo() { return eventRepo; }
 
-    public EventService(EventRepository repo, EventsSubscriptionDbRepo eventsSubscriptionDbRepo) {
+    public EventDbRepo getEventRepo() { return eventRepo; }
+
+    public EventsSubscriptionDbRepo getEventsSubscriptionRepo() { return eventsSubscriptionRepo; }
+
+    public EventService(EventDbRepo repo, EventsSubscriptionDbRepo eventsSubscriptionDbRepo) {
         this.eventRepo = repo;
         this.eventsSubscriptionRepo = eventsSubscriptionDbRepo;
     }

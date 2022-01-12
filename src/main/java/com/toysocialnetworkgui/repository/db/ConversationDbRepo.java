@@ -1,11 +1,12 @@
 package com.toysocialnetworkgui.repository.db;
 
 import com.toysocialnetworkgui.domain.Conversation;
+import com.toysocialnetworkgui.repository.observer.Observable;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 
-public class ConversationDbRepo {
+public class ConversationDbRepo implements Observable {
     private final String url, username, password, conversationsTable;
 
     public ConversationDbRepo(String url, String username, String password, String conversationsTable) {
@@ -51,6 +52,7 @@ public class ConversationDbRepo {
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, String.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
+            notifyObservers();
             ResultSet res = ps.getGeneratedKeys();
             if (res.next())
                 conversation.setID(res.getInt(1));
@@ -68,6 +70,7 @@ public class ConversationDbRepo {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

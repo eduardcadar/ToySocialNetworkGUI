@@ -483,6 +483,9 @@ public class Service {
     public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
     public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
     public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
+    public EventDbRepo getEventRepo() { return eventService.getEventRepo(); }
+    public EventsSubscriptionDbRepo getEventsSubscriptionRepo() { return eventService.getEventsSubscriptionRepo(); }
+    public ConversationService getConversationService() { return conversationService; }
 
     /**
      * Adds a new event into Social Network

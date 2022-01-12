@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDbRepo extends Observable implements UserRepository {
+public class UserDbRepo implements Observable, UserRepository {
     private final String url, username, password, usersTable;
     private final Validator<User> validator;
 
@@ -66,7 +66,7 @@ public class UserDbRepo extends Observable implements UserRepository {
             ps.setString(4, u.getPassword());
             ps.setString(5, u.getProfilePicturePath());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -107,7 +107,7 @@ public class UserDbRepo extends Observable implements UserRepository {
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -140,7 +140,7 @@ public class UserDbRepo extends Observable implements UserRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -196,7 +196,7 @@ public class UserDbRepo extends Observable implements UserRepository {
             ps.setString(4, user.getProfilePicturePath());
             ps.setString(5, user.getEmail());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

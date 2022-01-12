@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendshipRequestDbRepo extends Observable implements FriendshipRequestRepository {
+public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRepository {
     private final String url, username, password, tableName;
 
     public FriendshipRequestDbRepo(String url, String username, String password, String tableName){
@@ -52,7 +52,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
             ps.setString(3, request.getState().toString());
             ps.setString(4, request.getSendDate().toString());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -64,7 +64,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -125,7 +125,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
             ps.setString(1, friendshipRequest.getFirst());
             ps.setString(2, friendshipRequest.getSecond());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -146,7 +146,7 @@ public class FriendshipRequestDbRepo extends Observable implements FriendshipReq
             ps.setString(2, request.getFirst());
             ps.setString(3, request.getSecond());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

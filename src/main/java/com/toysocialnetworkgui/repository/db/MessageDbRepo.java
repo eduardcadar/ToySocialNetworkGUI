@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageDbRepo extends Observable {
+public class MessageDbRepo implements Observable {
     private final String url, username, password, messagesTable;
     private final Validator<Message> validator;
 
@@ -55,7 +55,7 @@ public class MessageDbRepo extends Observable {
             ps.setString(3, message.getMessage());
             ps.setString(4, String.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
             ResultSet res = ps.getGeneratedKeys();
             if (res.next())
                 message.setID(res.getInt(1));
@@ -176,7 +176,7 @@ public class MessageDbRepo extends Observable {
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
