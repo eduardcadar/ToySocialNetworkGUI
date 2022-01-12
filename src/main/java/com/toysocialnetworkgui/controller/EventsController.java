@@ -17,6 +17,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -30,6 +32,7 @@ import javafx.util.Callback;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class EventsController {
     private Service service;
@@ -52,16 +55,12 @@ public class EventsController {
     @FXML
     protected Text textShowEventDescription;
 
-
-
     @FXML
     protected DatePicker datePickerEventStart;
     @FXML
-    protected Text textDateStart;
+    protected Text textDate;
     @FXML
     protected DatePicker datePickerEventEnd;
-    @FXML
-    protected Text textDateEnd;
 
     @FXML
     protected TableView<Event> tableViewEvents;
@@ -111,41 +110,37 @@ public class EventsController {
     @FXML
     Button buttonNextEvent;
 
-    private boolean onlySubscribedEvents;
     private int pageNumber;
-
     private EventWantedView eventWantedView;
+    private int currentEventId;
+
     public void initialize(Service service, User loggedUser, Stage window, EventWantedView view) {
         uploadedPhoto = false;
         lastEventPicturePath = "";
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
+        this.eventWantedView = view;
         initTable();
         initList();
-        this.eventWantedView = view;
 
-        // hide these buttons, they will be visible depending on requested view
-
-        buttonPreviousEvent.setVisible(false);
-        buttonNextEvent.setVisible(false);
-
-        switch(eventWantedView) {
+        switch (eventWantedView) {
             case ALL -> initializeAllEvents();
             case SUBSCRIBED -> initializeSubscribedEvents();
             case CREATE -> initializeCreateEvent();
         }
-
     }
 
     /**
-     * Initialize creeate event, show create event pain and apply constarint to datePickerEvent
+     * Initialize creeate event, show create event pain and apply constraint to datePickerEvent
      */
     private void initializeCreateEvent() {
+        buttonSeeEvents.setEffect(null);
+        buttonSeeSubscribed.setEffect(null);
+        buttonVisibleCreate.setEffect(new DropShadow());
         showCreateView();
-        Callback<DatePicker, DateCell> dontLetUserPickEarlyDate =dontLetUserPickEarlyDate();
+        Callback<DatePicker, DateCell> dontLetUserPickEarlyDate = dontLetUserPickEarlyDate();
         datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyDate);
-
     }
 
     /**
@@ -153,22 +148,25 @@ public class EventsController {
      * and load the first event from page
      */
     private void initializeSubscribedEvents() {
+        buttonSeeEvents.setEffect(null);
+        buttonSeeSubscribed.setEffect(new DropShadow());
+        buttonVisibleCreate.setEffect(null);
         hideCreateView();
-        showEventPane.setVisible(true);
         pageNumber = 1;
         loadEvent();
     }
+
     /**
      * Initialize subscribed events: Hide create view, Show event output and load the first event from page
      */
-
     private void initializeAllEvents() {
+        buttonSeeEvents.setEffect(new DropShadow());
+        buttonSeeSubscribed.setEffect(null);
+        buttonVisibleCreate.setEffect(null);
         hideCreateView();
-        showEventPane.setVisible(true);
         pageNumber = 1;
         loadEvent();
     }
-
 
     /**
      * Callback to not let user enter: i) end date before a start date
@@ -196,7 +194,7 @@ public class EventsController {
     }
 
     private void initList() {
-        listEventsSubscribed.getItems().setAll(service.getEventsForUser(loggedUser.getEmail()));
+        listEventsSubscribed.getItems().setAll(service.getUserEvents(loggedUser.getEmail()));
     }
 
     private void initTable() {
@@ -255,16 +253,10 @@ public class EventsController {
      */
     @FXML
     protected void onSubscribeClick() {
-
-        Event event = service.getEventsPage(pageNumber, 1).get(0);
         try {
-            if (event != null){
-                service.subscribeUserToEvent(event.getId(), loggedUser.getEmail());
-                buttonSubscribeEvent.setVisible(false);
-                buttonUnsubscribeEvent.setVisible(true);
-                initList();
-            } else
-                MyAlert.StartAlert("Error", "Please select an event", Alert.AlertType.WARNING);
+            service.subscribeUserToEvent(currentEventId, loggedUser.getEmail());
+            loadEvent();
+            initList();
         } catch (RepoException | DbException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
@@ -274,12 +266,10 @@ public class EventsController {
      * Unsubscribe from event from ONLY SUBSCRIBED VIEW
      */
     public void onUnsubscribeButtonClick() {
-        Event event = service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0);
-        if (event != null) {
-            service.unsubscribeUserFromEvent(event.getId(), loggedUser.getEmail());
-            initList();
-        } else
-            MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
+        service.unsubscribeUserFromEvent(currentEventId, loggedUser.getEmail());
+        if (pageNumber > 1) pageNumber--;
+        loadEvent();
+        initList();
     }
 
     /**
@@ -329,7 +319,6 @@ public class EventsController {
         initialize(service, loggedUser, window, EventWantedView.SUBSCRIBED);
     }
 
-
     /**
      * Loads the first event
      * Knows to take following decisions:
@@ -338,29 +327,28 @@ public class EventsController {
      * 3. Sets subscribe/unsubscribe button depending on you are actually subscribed or not
      */
     public void loadEvent() {
+        int lastPage = getLastPageNumber();
+        if (lastPage < 1) {
+            MyAlert.StartAlert("Error", "No events!", Alert.AlertType.WARNING);
+            initialize(service, loggedUser, window, EventWantedView.ALL);
+            return;
+        }
         buttonPreviousEvent.setVisible(pageNumber != 1);
-        buttonNextEvent.setVisible(pageNumber != getLastPageNumber());
-        if (eventWantedView == EventWantedView.SUBSCRIBED )
-        {
-            buttonUnsubscribeEvent.setVisible(true);
-            buttonSubscribeEvent.setVisible(false);
-            populateSavedEvent(service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0));
+        buttonNextEvent.setVisible(pageNumber != lastPage);
+        Event event;
+        if (eventWantedView == EventWantedView.SUBSCRIBED)
+            event = service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0);
+        else if (eventWantedView == EventWantedView.ALL)
+            event = service.getEventsPage(pageNumber, 1).get(0);
+        else {
+            MyAlert.StartAlert("Error", "Error on loading event", Alert.AlertType.WARNING);
+            return;
         }
-        if (eventWantedView == EventWantedView.ALL)
-        {
-            buttonUnsubscribeEvent.setVisible(true);
-            buttonSubscribeEvent.setVisible(true);
-            Event ev = service.getEventsPage(pageNumber, 1).get(0);
-            if(service.isSubscribed(loggedUser.getEmail(), ev.getId())){
-                buttonSubscribeEvent.setVisible(false);
-                buttonUnsubscribeEvent.setVisible(true);
-            }else{
-                buttonSubscribeEvent.setVisible(true);
-                buttonUnsubscribeEvent.setVisible(false);
-            }
-
-            populateSavedEvent(ev);
-        }
+        currentEventId = event.getId();
+        boolean isSubscribedToCurrentEvent = service.isSubscribed(loggedUser.getEmail(), currentEventId);
+        buttonUnsubscribeEvent.setVisible(isSubscribedToCurrentEvent);
+        buttonSubscribeEvent.setVisible(!isSubscribedToCurrentEvent);
+        populateSavedEvent(event);
     }
 
     @FXML
@@ -381,7 +369,7 @@ public class EventsController {
 
     private int getLastPageNumber() {
         if (eventWantedView == EventWantedView.SUBSCRIBED) return service.getUserEventsSize(loggedUser.getEmail());
-        if (eventWantedView == EventWantedView.ALL)return service.getAllEvents().size();
+        if (eventWantedView == EventWantedView.ALL) return service.getAllEvents().size();
         return 0;
     }
 
@@ -391,23 +379,27 @@ public class EventsController {
 
     /**
      * Place the details of the SAVED event in Anchor pane responsible for showing
-     * @param event
+     * @param event the event to be shown
      */
     public void populateSavedEvent(Event event) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CONSTANTS.DATE_PATTERN);
         textEventName.setText(event.getName());
-        textDateStart.setText(event.getStart().toString());
-        textDateEnd.setText(event.getEnd().toString());
+        textDate.setText(event.getStart().format(formatter) + " - " + event.getEnd().format(formatter));
         textEventLocation.setText(event.getLocation());
         textEventCategory.setText(event.getCategory());
         textShowEventDescription.setText(event.getDescription());
         putImagePathInRectangle(rectangleShowSavedImage, event.getPhotoPath());
     }
 
-    private void hideCreateView(){
+    private void hideCreateView() {
         createEventPane.setVisible(false);
+        showEventPane.setVisible(true);
      }
 
-    private void showCreateView(){
+    private void showCreateView() {
+        buttonPreviousEvent.setVisible(false);
+        buttonNextEvent.setVisible(false);
+        showEventPane.setVisible(false);
         createEventPane.setVisible(true);
     }
 }

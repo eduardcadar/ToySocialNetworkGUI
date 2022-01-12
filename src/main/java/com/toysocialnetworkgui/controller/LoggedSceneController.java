@@ -2,8 +2,6 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.EventWantedView;
 import com.toysocialnetworkgui.domain.User;
-import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
-import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
@@ -106,7 +104,7 @@ public class LoggedSceneController implements Observer {
         lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
 
         textUserFullName.setText(firstName + " "+ lastName);
-        textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
+        textNrEvents.setText(String.valueOf(service.getUserEvents(loggedUser.getEmail()).size()));
         textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
         textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
@@ -199,14 +197,15 @@ public class LoggedSceneController implements Observer {
      */
     @FXML
     public void clearNotificationImage() throws IOException {
-        System.out.print("Subscribed events: ");
-        service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
         imageViewNotification.setImage(new Image("images/no_notification.png"));
+
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
         Parent dashboard = fxmlLoader.load();
         EventsController controller = fxmlLoader.getController();
         controller.initialize(service, loggedUser, window, EventWantedView.SUBSCRIBED);
+        if (service.getUserEventsSize(loggedUser.getEmail()) == 0)
+            return;
         rightPane.getChildren().setAll(dashboard);
     }
 

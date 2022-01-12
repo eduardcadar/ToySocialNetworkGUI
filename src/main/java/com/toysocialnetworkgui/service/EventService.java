@@ -2,11 +2,9 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
-import com.toysocialnetworkgui.repository.EventRepository;
 import com.toysocialnetworkgui.repository.db.EventDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +63,7 @@ public class EventService {
         return eventRepo.getAll();
     }
 
-    public List<Event> getEventsForUser(String userEmail) {
+    public List<Event> getUserEvents(String userEmail) {
         List<Integer> eventsId = eventsSubscriptionRepo.getEventsForUser(userEmail);
         List<Event> events = new ArrayList<>();
         eventsId.forEach(id -> {

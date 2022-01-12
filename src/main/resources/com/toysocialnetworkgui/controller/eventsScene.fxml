@@ -37,7 +37,7 @@
       </VBox>
       <StackPane layoutX="208.0">
          <children>
-            <AnchorPane fx:id="showEventPane" prefHeight="650.0" prefWidth="416.0" visible="false">
+            <AnchorPane fx:id="showEventPane" prefHeight="650.0" prefWidth="416.0">
                <children>
                   <VBox fillWidth="false" layoutY="155.0" prefHeight="481.0" prefWidth="416.0" spacing="20.0" styleClass="event_box">
                      <children>
@@ -59,23 +59,8 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <Text fx:id="textDateStart" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" wrappingWidth="94.13672018051147" />
-                              <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" wrappingWidth="31.20001220703125">
-                                 <HBox.margin>
-                                    <Insets left="20.0" right="20.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="19.0" />
-                                 </font>
-                              </Text>
-                              <Text fx:id="textDateEnd" strokeType="OUTSIDE" strokeWidth="0.0" text="End" wrappingWidth="106.93670344352722">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin></Text>
+                              <Text fx:id="textDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" wrappingWidth="260.0" />
                            </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
                            <children>
@@ -87,7 +72,7 @@
                                     <Image url="@../../../images/location.png" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="textEventLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" wrappingWidth="262.13669443130493" />
+                              <Text fx:id="textEventLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" wrappingWidth="260.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
@@ -100,7 +85,7 @@
                                     <Image url="@../../../images/category.png" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="textEventCategory" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" wrappingWidth="264.53674924373627" />
+                              <Text fx:id="textEventCategory" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" wrappingWidth="260.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="13.0" prefWidth="411.0">
@@ -113,7 +98,7 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <Text fx:id="textShowEventDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="261.33672523498535" />
+                              <Text fx:id="textShowEventDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="260.0" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="26.0" prefWidth="409.0">
@@ -140,7 +125,7 @@
                      </cursor></Rectangle>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="createEventPane" prefHeight="650.0" prefWidth="416.0">
+            <AnchorPane fx:id="createEventPane" prefHeight="650.0" prefWidth="416.0" visible="false">
                <children>
                   <VBox fillWidth="false" layoutY="155.0" prefHeight="481.0" prefWidth="416.0" spacing="20.0" styleClass="event_box">
                      <children>
@@ -276,7 +261,7 @@
             </Button>
          </children>
       </HBox>
-      <Button fx:id="buttonSeeSubscribed" layoutX="73.0" layoutY="53.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subr" />
+      <Button fx:id="buttonSeeSubscribed" layoutX="73.0" layoutY="53.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subscribed" />
    </children>
    <stylesheets>
       <URL value="@../../../style/styleEvents.css" />

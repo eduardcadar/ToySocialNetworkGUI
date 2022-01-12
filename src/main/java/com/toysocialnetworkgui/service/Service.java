@@ -543,8 +543,8 @@ public class Service {
         eventService.unsubscribeUserFromEvent(eventId,userEmail);
     }
 
-    public List<Event> getEventsForUser(String userEmail) {
-        return eventService.getEventsForUser(userEmail);
+    public List<Event> getUserEvents(String userEmail) {
+        return eventService.getUserEvents(userEmail);
     }
 
     public int getEventsSize() {
@@ -556,7 +556,7 @@ public class Service {
     }
 
     public List<Event> getUserUpcomingEvents(String email) {
-        return eventService.getEventsForUser(email)
+        return eventService.getUserEvents(email)
                 .stream()
                 .filter(ev -> ev.getEnd().isAfter(LocalDate.now()))
                 .toList();
