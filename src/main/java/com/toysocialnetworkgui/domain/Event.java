@@ -27,6 +27,7 @@ public class Event {
     private String location;
     private String category;
     private String organizer;
+    private String photoPath;
 
     public Integer getId() {
         return id;
@@ -44,7 +45,7 @@ public class Event {
         this.organizer = organizer;
     }
 
-    public Event(String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end) {
+    public Event(String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end, String eventPath) {
         this.organizer = organizer;
         this.name = name;
         this.description = description;
@@ -52,10 +53,10 @@ public class Event {
         this.end = end;
         this.location = location;
         this.category = category;
+        this.photoPath = eventPath;
     }
 
-
-    public Event(Integer id, String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end) {
+    public Event(Integer id, String name, String organizer, String location, String category, String description, LocalDate start, LocalDate end, String photoPath) {
         this.id = id;
         this.organizer = organizer;
         this.name = name;
@@ -64,6 +65,7 @@ public class Event {
         this.end = end;
         this.location = location;
         this.category = category;
+        this.photoPath = photoPath;
     }
 
     public String getLocation() {
@@ -81,7 +83,6 @@ public class Event {
     public void setCategory(String category) {
         this.category = category;
     }
-
 
     /**
      * Two events are the same if they have the same name. Sorry for this eduard :(
@@ -143,4 +144,7 @@ public class Event {
         this.end = end;
     }
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
 }

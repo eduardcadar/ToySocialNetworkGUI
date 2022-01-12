@@ -1,0 +1,50 @@
+.button{
+    -fx-border-color: none;
+    -fx-background-radius: 10px 10px 10px 10px;
+    -fx-background-color: #862CE4;
+    -fx-border-style: none;
+    -fx-text-align: center;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+    -fx-border-radius: 3px;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.event_box{
+    -fx-border-color: #862CE4;
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-border-width: 2px;
+}
+.event_image{
+    -fx-cursor: hand;
+    -fx-border-width: 2px;
+    -fx-border-color: #862CE4;
+    -fx-border-radius: 10px 10px 10px 10px;
+}
+.date_field{
+    -fx-border-radius: 3px;
+
+}
+.event_short_field{
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
+    -fx-min-width: 265px;
+    -fx-max-width: 265px;
+    -fx-min-height: 25px;
+    -fx-max-height: 25px;
+}
+.event_description{
+    -fx-min-width: 265px;
+    -fx-max-width: 265px;
+    -fx-min-height: 100px;
+    -fx-max-height: 100px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+
+}
+.date-picker-popup > * > .spinner > .button {
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+}

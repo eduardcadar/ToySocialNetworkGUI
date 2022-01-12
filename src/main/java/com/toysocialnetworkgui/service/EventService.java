@@ -48,8 +48,8 @@ public class EventService {
         return null;
     }
 
-    public void saveEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate) {
-        eventRepo.save(new Event(name,creator,location,category, description, startDate, endDate));
+    public void saveEvent(String creator, String name, String category, String  location, String description, LocalDate startDate, LocalDate endDate, String eventPhotoPath) {
+        eventRepo.save(new Event(name,creator,location,category, description, startDate, endDate, eventPhotoPath));
     }
 
 
