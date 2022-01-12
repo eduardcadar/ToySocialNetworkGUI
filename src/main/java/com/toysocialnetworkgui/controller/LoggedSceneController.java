@@ -1,5 +1,6 @@
 package com.toysocialnetworkgui.controller;
 
+import com.toysocialnetworkgui.domain.EventWantedView;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
@@ -162,7 +163,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
         Parent dashboard = fxmlLoader.load();
         EventsController controller = fxmlLoader.getController();
-        controller.initialize(service, loggedUser, window);
+        controller.initialize(service, loggedUser, window, EventWantedView.ALL);
         rightPane.getChildren().setAll(dashboard);
     }
 
@@ -197,13 +198,16 @@ public class LoggedSceneController implements Observer {
      * + Show the events in a drop box maybe?
      */
     @FXML
-    public void clearNotificationImage() {
+    public void clearNotificationImage() throws IOException {
         System.out.print("Subscribed events: ");
         service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
         imageViewNotification.setImage(new Image("images/no_notification.png"));
-        // TODO
-        //  - Show only the subscribed events somewhere
 
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent dashboard = fxmlLoader.load();
+        EventsController controller = fxmlLoader.getController();
+        controller.initialize(service, loggedUser, window, EventWantedView.SUBSCRIBED);
+        rightPane.getChildren().setAll(dashboard);
     }
 
     @Override

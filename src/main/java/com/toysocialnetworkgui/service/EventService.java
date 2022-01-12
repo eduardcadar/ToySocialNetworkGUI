@@ -110,4 +110,8 @@ public class EventService {
     public void unsubscribeUserFromEvent(Integer eventId, String userEmail) {
         eventsSubscriptionRepo.removeSubscriber(eventId, userEmail);
     }
+
+    public boolean isSubscribed(String email, Integer id) {
+        return eventsSubscriptionRepo.isSubscribed(email,id);
+    }
 }

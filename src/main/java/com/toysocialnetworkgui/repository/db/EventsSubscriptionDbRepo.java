@@ -125,4 +125,21 @@ public class EventsSubscriptionDbRepo implements Observable {
         }
         return 0;
     }
+
+    public boolean isSubscribed(String email, Integer id) {
+        String sql = "SELECT * FROM " + tableName +
+                " WHERE user_email = ? AND event_id = ? ";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setInt(2, id);
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return true;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return false;
+
+    }
 }
