@@ -39,11 +39,11 @@
             <TableView fx:id="tableViewFriends" onMouseClicked="#handleTableClickEvent" prefHeight="272.0" prefWidth="558.0" stylesheets="@../../../style/styleConversation.css">
               <columns>
                   <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                <TableColumn fx:id="tableColumnFirstname" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="First name" />
-                <TableColumn fx:id="tableColumnLastname" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="Last name" />
-                  <TableColumn fx:id="tableColumnDate" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="Friends from" />
-                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
-                  <TableColumn fx:id="tableColumnMessage" editable="false" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
+                <TableColumn fx:id="tableColumnFirstname" maxWidth="155.0" minWidth="99.19998168945312" prefWidth="100.79995727539062" resizable="false" text="First name" />
+                <TableColumn fx:id="tableColumnLastname" maxWidth="211.20001220703125" minWidth="104.7999267578125" prefWidth="104.7999267578125" resizable="false" text="Last name" />
+                  <TableColumn fx:id="tableColumnDate" maxWidth="260.800048828125" minWidth="106.39996337890625" prefWidth="155.99993896484375" resizable="false" text="Friends from" />
+                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="200.800048828125" minWidth="45.0" prefWidth="96.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
+                  <TableColumn fx:id="tableColumnMessage" editable="false" maxWidth="129.5999755859375" minWidth="45.0" prefWidth="100.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
               </columns>
             </TableView>
             <HBox spacing="148.0">

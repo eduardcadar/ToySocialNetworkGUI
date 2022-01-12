@@ -133,7 +133,7 @@ public class FriendsController implements Observer {
                 ImageView imageView = new ImageView();
                 imageView.setFitHeight(30);
                 imageView.setFitWidth(30);
-                imageView.setImage(new Image("images/message.png"));
+                imageView.setImage(new Image("images/open_conv.png"));
                 Tooltip.install(imageView, new Tooltip("message"));
                 return imageView;
             }
