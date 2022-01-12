@@ -42,7 +42,7 @@
                 <TableColumn fx:id="tableColumnFirstname" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="First name" />
                 <TableColumn fx:id="tableColumnLastname" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="Last name" />
                   <TableColumn fx:id="tableColumnDate" maxWidth="155.0" minWidth="155.0" prefWidth="155.0" resizable="false" text="Friends from" />
-                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" text="Remove" />
+                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
                   <TableColumn fx:id="tableColumnMessage" editable="false" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
               </columns>
             </TableView>
