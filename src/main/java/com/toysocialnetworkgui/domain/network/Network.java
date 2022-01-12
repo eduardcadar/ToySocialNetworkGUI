@@ -32,7 +32,7 @@ public class Network {
 
     public void reload() {
         this.communitiesNr = countCommunities();
-        this.mfCom = new MostFriendlyCommunity(uRepo, fRepo, com, communitiesNr);
+        this.mfCom = new MostFriendlyCommunity(uRepo, fRepo);
     }
 
     /**
@@ -42,17 +42,17 @@ public class Network {
      */
     public Map<Integer, List<String>> getCommunities() {
         reload();
-        Map<Integer, List<String>> comms = new HashMap<>();
+        Map<Integer, List<String>> communities = new HashMap<>();
         for (int i = 1; i <= communitiesNr; i++)
-            comms.put(i, new ArrayList<String>());
+            communities.put(i, new ArrayList<>());
         for (User u : uRepo.getAll()) {
-            comms.get(com.get(u.getEmail())).add(u.getEmail());
+            communities.get(com.get(u.getEmail())).add(u.getEmail());
         }
-        return comms;
+        return communities;
     }
 
     /**
-     * Marks'true' all the friends of an user in used (a community)
+     * Marks 'true' all the friends of a user in used (a community)
      * @param e - the email of the user
      */
     private void dfs(String e, Integer c) {
@@ -63,7 +63,7 @@ public class Network {
         }
     }
 
-    public MostFriendlyCommunity getmfrCom() {
+    public MostFriendlyCommunity getMfCom() {
         return mfCom;
     }
 

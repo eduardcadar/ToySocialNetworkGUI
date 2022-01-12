@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" stylesheets="@../../../style/styleCreateAcc.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.CreateAccountController">
+   <children>
+      <VBox fillWidth="false" layoutX="137.0" layoutY="101.0" prefHeight="298.0" prefWidth="330.0">
+         <children>
+            <HBox prefHeight="66.0" prefWidth="330.0">
+               <children>
+                  <VBox prefHeight="70.0" prefWidth="330.0">
+                     <children>
+                        <Label text="First Name" />
+                        <TextField id="textField" fx:id="textFieldFirstname" alignment="CENTER" focusTraversable="false" prefHeight="26.0" prefWidth="150.0" promptText="John" styleClass="smallTextField">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="78.0" prefWidth="330.0">
+                     <children>
+                        <Label text="Last Name" />
+                        <TextField id="textField" fx:id="textFieldLastname" alignment="CENTER" focusTraversable="false" promptText="Doe" styleClass="smallTextField">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="120.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox prefWidth="330.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <VBox prefHeight="69.0" prefWidth="330.0">
+                     <children>
+                        <Label text="Email" />
+                        <TextField id="textField" fx:id="textFieldEmail" alignment="TOP_LEFT" focusTraversable="false" prefHeight="26.0" prefWidth="330.0" promptText="johndoe@example.com" styleClass="emailTextField">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="62.0" prefWidth="330.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Password">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin></Label>
+                        <PasswordField id="textField" fx:id="textFieldPassword" alignment="CENTER" focusTraversable="false" promptText="********" styleClass="smallTextField">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </PasswordField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Confirm Password" />
+                        <PasswordField id="textField" fx:id="textFieldPasswordConfirmation" alignment="CENTER" focusTraversable="false" prefHeight="12.0" prefWidth="512.0" promptText="********" styleClass="smallTextField">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </PasswordField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="120.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="62.0" prefWidth="330.0">
+               <children>
+                  <Button id="button" fx:id="buttonCancel" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="34.0" prefWidth="94.0" stylesheets="@../../../style/styleCreateAcc.css" text="Cancel" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button id="button" fx:id="buttonSubmit" focusTraversable="false" mnemonicParsing="false" onAction="#onSubmitButtonClick" prefHeight="34.0" prefWidth="100.0" text="Submit" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="120.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

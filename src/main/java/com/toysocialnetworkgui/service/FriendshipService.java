@@ -6,18 +6,24 @@ import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.repository.FriendshipRepository;
 import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
+import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
+import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
+import com.toysocialnetworkgui.utils.CommonFriendsDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipService {
-    FriendshipRepository friendshipRepository;
-    FriendshipRequestRepository requestRepository;
-    public FriendshipService(FriendshipRepository friendshipRepository, FriendshipRequestRepository requestRepository) {
+    private final FriendshipDbRepo friendshipRepository;
+    private final FriendshipRequestDbRepo requestRepository;
+    public FriendshipService(FriendshipDbRepo friendshipRepository, FriendshipRequestDbRepo requestRepository) {
         this.friendshipRepository = friendshipRepository;
         this.requestRepository = requestRepository;
-
     }
+
+    public FriendshipDbRepo getFriendshipRepository() { return friendshipRepository; }
+    public FriendshipRequestDbRepo getRequestRepository() { return requestRepository; }
 
     /**
      * @param email1 - String the email of the first user
@@ -34,8 +40,17 @@ public class FriendshipService {
      * @param email1 - the email of the first user
      * @param email2 - the email of the second user
      */
-    public void addFriendship(String email1, String email2) {
-        requestRepository.addRequest(new FriendshipRequest(email1, email2));
+    public void addFriendshipRequest(String email1, String email2) {
+        requestRepository.addRequest(new FriendshipRequest(email1, email2, LocalDate.now()));
+    }
+
+    /**
+     * Removes the request sent by email1 to email2
+     * @param email1
+     * @param email2
+     */
+    public void removeRequest(String email1, String email2){
+        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
     }
 
     /**
@@ -44,9 +59,10 @@ public class FriendshipService {
      * @param email2 - String - the email of the other user
      */
     public void removeFriendship(String email1, String email2) {
-        requestRepository.removeRequest(new FriendshipRequest(email1, email2));
+        if (requestRepository.getRequest(email1, email2) != null)
+            removeRequest(email1,email2);
         if (requestRepository.getRequest(email2, email1) != null)
-            requestRepository.removeRequest(new FriendshipRequest(email2, email1));
+            removeRequest(email2, email1);
         friendshipRepository.removeFriendship(new Friendship(email1, email2));
     }
 
@@ -85,7 +101,6 @@ public class FriendshipService {
      * @param email2 - String
      * @throws Exception - if there is no pending request in friendship
      */
-
     public void acceptFriendship(String email1, String email2) {
         FriendshipRequest request = requestRepository.getRequest(email1, email2);
         if (request == null) {
@@ -104,22 +119,23 @@ public class FriendshipService {
             }
         }
     }
-//         TODO
-//           - UI : - addFriendRequest()
-//                  - acceptFriendRequest()
-//                    - rejectFriendRequest()
-//                    - removeFriend()
-//
-    public void rejectFriendship(String email1, String email2){
+
+    /**
+     * Rejects a friend request between user1 with email1 and user2 with email2
+     * @param email1 - String
+     * @param email2 - String
+     * @throws Exception - if there is no pending request in friendship
+     */
+    public void rejectFriendship(String email1, String email2) {
         FriendshipRequest request = requestRepository.getRequest(email1, email2);
-        if( request == null){
+        if (request == null){
             throw new RepoException("There is no pending request between theses 2 users");
         }
         else {
             if (request.getState() == REQUESTSTATE.REJECTED) {
                 throw new RepoException("Friend request already rejected");
                 // i will never reach this
-                // beacuse if the other user rejected
+                // because if the other user rejected
                 // it means that i have already a row in db
                 // with email1,email2 and get
             }
@@ -142,11 +158,31 @@ public class FriendshipService {
     }
 
     /**
-     * @param email - String the email of the user
-     * @return list with the emails of a user's friends + friends requested
+     * Returns a list with the emails of the user's friends that contain 'pattern' in their names,
+     * skipping the first 'firstrow' ones and returning the next 'rowcount' ones
+     * @param email email of the user
+     * @param firstrow how many results to ignore
+     * @param rowcount how many results to return
+     * @param pattern what should the name of a user contain
+     * @return list with emails of the friends requested
      */
-    public List<String> getUserFriendsAll(String email) {
-        return friendshipRepository.getUserFriendsAll(email);
+    public List<String> getUserFriendsFilteredPage(String email, int firstrow, int rowcount, String pattern) {
+        return friendshipRepository.getUserFriendsFilteredPage(email, firstrow, rowcount, pattern);
+    }
+
+    /**
+     * Returns a list with the emails of the user's friends that contain 'pattern' in their names,
+     * have become friends in the month specified,
+     * skipping the first 'firstrow' ones and returning the next 'rowcount' ones
+     * @param email email of the user
+     * @param firstrow how many results to ignore
+     * @param rowcount how many results to return
+     * @param pattern what should the name of a user contain
+     * @param month the month in which the user became friends with the other users
+     * @return list with emails of the friends requested
+     */
+    public List<String> getUserFriendsMonthFilteredPage(String email, int firstrow, int rowcount, String pattern, int month) {
+        return friendshipRepository.getUserFriendsMonthFilteredPage(email, firstrow, rowcount, pattern, month);
     }
 
     /**
@@ -155,6 +191,32 @@ public class FriendshipService {
      * @return
      */
     public List<String> getUserFriendRequests(String email) {
-        return requestRepository.getUserFriendRequests(email);
+        return requestRepository.getPendingFriendRequestsReceived(email);
+    }
+
+    /**
+     * @return all the Requests saved in the repository
+     */
+    public List<FriendshipRequest> getAllFriendshipRequests() {
+        return requestRepository.getAll();
+    }
+
+    /**
+     * @param email the email of the user
+     * @param pattern string that friends of the user should have in their names
+     * @return number of friends that contain the pattern in their names
+     */
+    public int getUserFriendsFilteredSize(String email, String pattern) {
+        return friendshipRepository.getUserFriendsFilteredSize(email, pattern);
+    }
+
+    /**
+     * @param email the email of the user
+     * @param pattern string that friends should have in their names
+     * @param month friendships' month
+     * @return number of friends the user made in the specified month, that have the pattern in their names
+     */
+    public int getUserFriendsMonthFilteredSize(String email, String pattern, int month) {
+        return friendshipRepository.getUserFriendsMonthFilteredSize(email, pattern, month);
     }
 }

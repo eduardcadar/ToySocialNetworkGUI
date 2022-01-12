@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
+<AnchorPane prefHeight="650.0" prefWidth="800.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
    <children>
-      <TextField fx:id="textFieldFirstname" promptText="new first name" />
-      <TextField fx:id="textFieldLastname" promptText="new last name" />
-      <PasswordField fx:id="textFieldPassword" promptText="new password" />
-      <Button mnemonicParsing="false" onAction="#onUpdateButtonClick" text="Update" />
+      <VBox alignment="CENTER" layoutX="393.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="214.0" spacing="15.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="393.0" AnchorPane.rightAnchor="393.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <StackPane fx:id="profilePicturePicker" onMouseClicked="#onProfilePictureClick" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Circle fx:id="imagePlaceHolder" fill="WHITE" radius="40.0" stroke="BLACK" strokeType="INSIDE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+               </children>
+            </StackPane>
+            <TextField id="textFieldLogin" fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />
+            <TextField id="textFieldLogin" fx:id="textFieldLastname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New last name" styleClass="text-field" />
+            <PasswordField id="textFieldLogin" fx:id="textFieldOldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="Old password" styleClass="text-field" />
+            <PasswordField id="textFieldLogin" fx:id="textFieldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="150.0" promptText="New password" styleClass="text-field" stylesheets="@../../../style/style.css" />
+            <Button id="button" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0" prefWidth="150.0" text="Update" textFill="WHITE" />
+         </children>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

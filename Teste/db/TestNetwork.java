@@ -27,7 +27,7 @@ public class TestNetwork {
     private final User us3 = new User("maria", "lazar", "l.maria@gmail.com");
     private final User us4 = new User("gabriel", "andrei", "a.gabi@gmail.com");
     private final User us5 = new User("gabriel", "andrei", "ab.gabi@gmail.com");
-    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships");
+    private final FriendshipDbRepo fRepo = new FriendshipDbRepo(url, username, password, new FriendshipValidator(), "friendships", "users");
     private final Friendship f1 = new Friendship(us1, us2);
     private final Friendship f2 = new Friendship(us2, us3);
     private final Friendship f3 = new Friendship(us4, us5);
@@ -62,7 +62,7 @@ public class TestNetwork {
     @Test
     public void testMostFriendlyCommunity() {
         ntw.reload();
-        MostFriendlyCommunity mfc = ntw.getmfrCom();
+        MostFriendlyCommunity mfc = ntw.getMfCom();
         assertEquals(3, mfc.getNrUsers());
         List<User> users = ntw.getUsersMostFrCom();
         assertEquals(3, users.size());

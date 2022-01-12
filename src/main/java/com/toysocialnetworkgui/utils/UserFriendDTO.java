@@ -6,7 +6,8 @@ public class UserFriendDTO {
 
     private final String firstName, lastName, email;
     private final LocalDate date;
-    public  UserFriendDTO(String firstName, String lastName, String email, LocalDate date){
+
+    public UserFriendDTO(String firstName, String lastName, String email, LocalDate date){
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;

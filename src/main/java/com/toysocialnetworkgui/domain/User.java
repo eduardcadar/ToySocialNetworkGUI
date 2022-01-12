@@ -5,8 +5,10 @@ import com.toysocialnetworkgui.utils.PasswordEncryptor;
 import java.util.*;
 
 public class User {
-    private String firstName, lastName, email, password;
+    private String firstName, lastName, password;
+    private final String email;
 
+    private String profilePicturePath = "/profile/anonymous.png";
     /**
      * Creates an User object, with the attributes given as parameters
      * @param firstName - String
@@ -20,6 +22,7 @@ public class User {
         this.email = email;
         if (password.length() == 64) this.password = password;
         else this.password = PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(password));
+        profilePicturePath = "/profile/anonymous.png";
     }
 
     /**
@@ -33,6 +36,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = PasswordEncryptor.toHexString(PasswordEncryptor.getSHA("000000"));
+        profilePicturePath = "/profile/anonymous.png";
     }
 
     /**
@@ -65,6 +69,13 @@ public class User {
         return this;
     }
 
+    public User update(String firstname, String lastname, String password, String path) {
+        this.firstName = firstname;
+        this.lastName = lastname;
+        setPassword(password);
+        this.profilePicturePath = path;
+        return this;
+    }
     /**
      * Updates the user's first name and last name and returns the user
      * @param firstname - the new first name
@@ -106,6 +117,35 @@ public class User {
         this.password = PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(password));
 
     }
+
+    /**
+     *
+     * @return - a String to relative path of profile picture. Stored in src/main/resources/profile
+     */
+    public String getProfilePicturePath(){
+        return profilePicturePath;
+    }
+    public void setProfilePicturePath(String path){
+        this.profilePicturePath = path;
+    }
+
+    /**
+     * New constructor to get the profile picture path
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param password
+     * @param path
+     */
+    public User(String firstName, String lastName, String email, String password, String path) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        if (password.length() == 64) this.password = password;
+        else this.password = PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(password));
+        this.profilePicturePath = path;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(email);
