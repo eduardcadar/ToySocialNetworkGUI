@@ -114,9 +114,11 @@ public class Service {
     public User updateUser(String firstname, String lastname, String email, String password) {
         return userService.updateUser(firstname, lastname, email, password);
     }
+
     public User updateUser(String firstname, String lastname, String email, String password, String path) {
         return userService.updateUser(firstname, lastname, email, password, path);
     }
+
     /**
      * @return dictionary with the users of the communites - Map[Integer, List[String]]
      */
@@ -483,6 +485,9 @@ public class Service {
     public FriendshipDbRepo getFriendshipRepo() { return friendshipService.getFriendshipRepository(); }
     public FriendshipRequestDbRepo getRequestRepo() { return friendshipService.getRequestRepository(); }
     public MessageDbRepo getMessageRepo() { return messageService.getRepo(); }
+    public EventDbRepo getEventRepo() { return eventService.getEventRepo(); }
+    public EventsSubscriptionDbRepo getEventsSubscriptionRepo() { return eventService.getEventsSubscriptionRepo(); }
+    public ConversationService getConversationService() { return conversationService; }
 
     /**
      * Adds a new event into Social Network
@@ -498,6 +503,14 @@ public class Service {
 
     public List<Event> getAllEvents(){
         return eventService.getAllEvents();
+    }
+
+    public List<Event> getEventsPage(int pageNumber, int pageSize) {
+        return eventService.getEventsPage((pageNumber - 1) * pageSize, pageSize);
+    }
+
+    public List<Event> getUserEventsPage(String email, int pageNumber, int pageSize) {
+        return eventService.getUserEventsPage(email, (pageNumber - 1) * pageSize, pageSize);
     }
 
     /**
@@ -532,6 +545,14 @@ public class Service {
 
     public List<Event> getEventsForUser(String userEmail) {
         return eventService.getEventsForUser(userEmail);
+    }
+
+    public int getEventsSize() {
+        return eventService.getEventsSize();
+    }
+
+    public int getUserEventsSize(String email) {
+        return eventService.getUserEventsSize(email);
     }
 
     public List<Event> getUserUpcomingEvents(String email) {

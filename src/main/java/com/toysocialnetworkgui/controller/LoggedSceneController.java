@@ -1,22 +1,19 @@
 package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
-import com.toysocialnetworkgui.repository.RepoException;
-import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
+import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
+import com.toysocialnetworkgui.service.ConversationService;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
-import com.toysocialnetworkgui.utils.MyAlert;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -27,13 +24,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class LoggedSceneController {
+public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
     @FXML
@@ -41,7 +35,7 @@ public class LoggedSceneController {
     @FXML
     Text textUserFullName;
     @FXML
-    Text textNrMessages;
+    Text textNrConversations;
     @FXML
     Text textNrEvents;
     @FXML
@@ -76,6 +70,10 @@ public class LoggedSceneController {
         this.loggedUser = user;
         this.service = service;
 
+        service.getFriendshipRepo().addObserver(this);
+        service.getConversationParticipantsRepo().addObserver(this);
+        service.getConversationService().addObserver(this);
+
         setLoggedUser(user);
         int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
         if (numberOfNotification != 0) {
@@ -109,7 +107,7 @@ public class LoggedSceneController {
         textUserFullName.setText(firstName + " "+ lastName);
         textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
         textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
-        textNrMessages.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
+        textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
 
     @FXML
@@ -206,5 +204,12 @@ public class LoggedSceneController {
         // TODO
         //  - Show only the subscribed events somewhere
 
+    }
+
+    @Override
+    public void update(Object obj) {
+        if (obj instanceof FriendshipDbRepo) setLoggedUser(loggedUser);
+        if (obj instanceof EventsSubscriptionDbRepo) setLoggedUser(loggedUser);
+        if (obj instanceof ConversationService) setLoggedUser(loggedUser);
     }
 }

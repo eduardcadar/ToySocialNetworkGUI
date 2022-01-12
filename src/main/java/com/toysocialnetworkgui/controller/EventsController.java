@@ -8,10 +8,8 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.validator.ValidatorException;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -39,41 +36,29 @@ public class EventsController {
     private Stage window;
     @FXML
     protected Button buttonCreateEvent;
-
     @FXML
     protected Button buttonCancelEvent;
-
     @FXML
     protected TextField textFieldEventName;
-
-
     @FXML
     protected Text textEventName;
-
     @FXML
     protected TextField textFieldEventLocation;
-
     @FXML
     protected Text textEventLocation;
-
     @FXML
     protected TextArea textCreateEventDescription;
-
     @FXML
     protected Text textShowEventDescription;
-
     @FXML
     protected Text addEventPhotoText;
 
     @FXML
     protected DatePicker datePickerEventStart;
-
     @FXML
     protected Text textDateStart;
-
     @FXML
     protected DatePicker datePickerEventEnd;
-
     @FXML
     protected Text textDateEnd;
 
@@ -87,27 +72,21 @@ public class EventsController {
     protected TableColumn<Event, String> columnLocation;
     @FXML
     protected TableColumn<Event, String> columnDescription;
-
     @FXML
     protected ListView<Event> listEventsSubscribed;
-
     @FXML
     protected Button buttonSubscribeEvent;
     @FXML
     protected Button buttonUnsubscribeEvent;
-
     @FXML
     Rectangle rectangleImageEvent;
-
     @FXML
     Rectangle imageSavedEvent;
 
     @FXML
     protected TextField textFieldCategory;
-
     @FXML
     protected Text textEventCategory;
-
     @FXML
     protected Text textAddEventPhoto;
 
@@ -115,18 +94,21 @@ public class EventsController {
 
     String lastEventPicturePath = "";
     @FXML
-    AnchorPane  createEventPane;
-
+    AnchorPane createEventPane;
     @FXML
     AnchorPane showEventPane;
-
     @FXML
     Button buttonVisibleCreate;
-
     @FXML
     Button buttonSeeEvents;
 
+    @FXML
+    Button buttonPreviousEvent;
+    @FXML
+    Button buttonNextEvent;
 
+    private boolean onlySubscribedEvents;
+    private int pageNumber;
 
     public void initialize(Service service, User loggedUser, Stage window) {
         uploadedPhoto = false;
@@ -150,10 +132,10 @@ public class EventsController {
      *                                 ii) end date if you haven't picked a start date
      * @return - callback function
      */
-    Callback<DatePicker, DateCell> dontLetUserPickEarlyDate(){
+    Callback<DatePicker, DateCell> dontLetUserPickEarlyDate() {
         return new Callback<>() {
             @Override
-            public DateCell call(final DatePicker param) {
+            public DateCell call (final DatePicker param) {
                 return new DateCell() {
                     @Override
                     public void updateItem(LocalDate item, boolean empty) {
@@ -192,8 +174,7 @@ public class EventsController {
     }
 
     @FXML
-    protected void onCancelEventClick(ActionEvent event) throws IOException {
-
+    protected void onCancelEventClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
@@ -202,8 +183,8 @@ public class EventsController {
         window.setScene(scene);
     }
 
-    public void onButtonCreateClick(ActionEvent event) throws IOException {
-        if(!uploadedPhoto || lastEventPicturePath.isEmpty()){
+    public void onButtonCreateClick() {
+        if (!uploadedPhoto || lastEventPicturePath.isEmpty()) {
             MyAlert.StartAlert("Error", "Please upload a photo!", Alert.AlertType.ERROR);
             return;
         }
@@ -214,10 +195,10 @@ public class EventsController {
         String category = textFieldCategory.getText();
         String description = textCreateEventDescription.getText();
         String creator = loggedUser.getEmail();
-        try{
+        try {
             service.addEvent(name,creator,location,category, description, startDate, endDate, lastEventPicturePath);
         }
-        catch (ValidatorException | DbException | RepoException e){
+        catch (ValidatorException | DbException | RepoException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
         }
         // TODO
@@ -226,7 +207,7 @@ public class EventsController {
     }
 
     @FXML
-    protected void onSubscribeClick(){
+    protected void onSubscribeClick() {
         Event event = tableViewEvents.getSelectionModel().getSelectedItem();
         try {
             if (event != null){
@@ -263,7 +244,7 @@ public class EventsController {
         rectangle.setFill(new ImagePattern(im));
     }
 
-    public void onEventImageClick(MouseEvent mouseEvent) {
+    public void onEventImageClick() {
         textAddEventPhoto.setVisible(false);
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -285,19 +266,50 @@ public class EventsController {
             putImagePathInRectangle(rectangleImageEvent, pathToFile);
             lastEventPicturePath = pathToFile;
             uploadedPhoto = true;
-        }
-        else if(lastEventPicturePath.isEmpty()){
+        } else if (lastEventPicturePath.isEmpty()){
             textAddEventPhoto.setVisible(true);
         }
-
     }
-    public void onButtonSeeEvents(ActionEvent event){
+
+    public void onButtonSeeEvents() {
         showEventPane.setVisible(true);
         createEventPane.setVisible(false);
-        populateSavedEvent(service.getAllEvents().get(0));
-
+        onlySubscribedEvents = true;
+        pageNumber = 1;
+        reloadEvent();
     }
-    public void onButtonVisibleCreate(ActionEvent event){
+
+    public void reloadEvent() {
+        buttonPreviousEvent.setVisible(pageNumber != 1);
+        buttonNextEvent.setVisible(pageNumber != getLastPageNumber());
+        if (onlySubscribedEvents)
+            populateSavedEvent(service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0));
+        else
+            populateSavedEvent(service.getEventsPage(pageNumber, 1).get(0));
+    }
+
+    @FXML
+    protected void onButtonPreviousEventClick() {
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadEvent();
+    }
+
+    @FXML
+    protected void onButtonNextEventClick() {
+        if (pageNumber == getLastPageNumber())
+            return;
+        pageNumber++;
+        reloadEvent();
+    }
+
+    private int getLastPageNumber() {
+        if (onlySubscribedEvents) return service.getUserEventsSize(loggedUser.getEmail());
+        return service.getAllEvents().size();
+    }
+
+    public void onButtonVisibleCreate() {
         showEventPane.setVisible(false);
         createEventPane.setVisible(true);
     }
@@ -306,7 +318,7 @@ public class EventsController {
      * Place the details of the event in Anchor pane
      * @param event
      */
-    public void populateSavedEvent(Event event){
+    public void populateSavedEvent(Event event) {
         textEventName.setText(event.getName());
         textDateStart.setText(event.getStart().toString());
         textDateEnd.setText(event.getEnd().toString());
@@ -314,6 +326,5 @@ public class EventsController {
         textEventCategory.setText(event.getCategory());
         textShowEventDescription.setText(event.getDescription());
         putImagePathInRectangle(imageSavedEvent, event.getPhotoPath());
-
     }
 }

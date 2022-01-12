@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendshipDbRepo extends Observable implements FriendshipRepository {
+public class FriendshipDbRepo implements Observable, FriendshipRepository {
     private final String url;
     private final String username;
     private final String password;
@@ -60,7 +60,7 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
             ps.setString(2, f.getSecond());
             ps.setString(3, f.getDate().toString());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -112,7 +112,7 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
             ps.setString(3, f.getFirst());
             ps.setString(4, f.getSecond());
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -226,7 +226,7 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -379,7 +379,7 @@ public class FriendshipDbRepo extends Observable implements FriendshipRepository
             ps.setString(1, email);
             ps.setString(2, email);
             ps.executeUpdate();
-            super.notifyObservers();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

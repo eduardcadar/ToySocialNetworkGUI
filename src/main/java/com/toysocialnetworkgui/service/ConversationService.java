@@ -4,11 +4,12 @@ import com.toysocialnetworkgui.domain.Conversation;
 import com.toysocialnetworkgui.domain.ConversationParticipant;
 import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.utils.ConversationDTO;
 
 import java.util.*;
 
-public class ConversationService {
+public class ConversationService implements Observable {
     private final ConversationDbRepo conversationRepo;
     private final ConversationParticipantDbRepo participantsRepo;
 
@@ -65,6 +66,7 @@ public class ConversationService {
         conv = conversationRepo.save(new Conversation());
         conv.setParticipants(participants);
         participants.forEach(x -> addConversationParticipant(conv.getID(), x));
+        notifyObservers();
         return conv;
     }
 
