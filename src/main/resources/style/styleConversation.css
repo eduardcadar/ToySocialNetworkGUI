@@ -60,19 +60,6 @@ Something with selection goes wrong here???
 .image-view{
     -fx-cursor: hand;
 }
-.image_wrapper{
-    -fx-color: -fx-base ;
-    -fx-background-color: transparent;
-    -fx-background-insets: 0 ;
-    -fx-background-radius: 0 ;
-    -fx-padding: 0 ;
-    -fx-text-fill: #a8a5a5 ;
-    -fx-alignment: center;
-    -fx-min-width: 30px;
-    -fx-max-width: 30px;
-    -fx-min-height: 30px;
-    -fx-max-height: 30px;
-}
 
 .image_wrapper:selected, .image_wrapper:selected:focused,.image_wrapper:hover {
     -fx-background-color: transparent;

@@ -27,6 +27,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -99,6 +100,13 @@ public class ConversationController implements Observer {
                     reloadMessages();
             }, 10, 10, TimeUnit.SECONDS);
         });
+    }
+
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane, String convUser) {
+        initialize(service, loggedUser, rightPane);
+        idConversation = service.getConversation(List.of(loggedUser.getEmail(), convUser)).getID();
+        pageNumber = getLastPageNumber();
+        reloadMessages();
     }
 
     private void setConversationTitle() {
@@ -216,6 +224,13 @@ public class ConversationController implements Observer {
     }
 
     private void reloadMessages() {
+        if (idConversation == 0)
+            return;
+
+        int lastPage = getLastPageNumber();
+        buttonPreviousPage.setVisible(pageNumber != 1);
+        buttonNextPage.setVisible(pageNumber != lastPage);
+
         this.lastConvSize = service.getConversationSize(idConversation);
         tableViewMessages.setItems(getMessages());
     }
