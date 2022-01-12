@@ -50,11 +50,7 @@ public class LoggedSceneController {
     @FXML
     Button buttonFriends;
     @FXML
-    Button buttonRemoveFriend = new Button();
-    @FXML
     Button buttonFriendRequest;
-    @FXML
-    Button buttonAddFriend;
     @FXML
     Button buttonFriendReport;
     @FXML
@@ -160,15 +156,6 @@ public class LoggedSceneController {
         Parent root = loader.load();
         ConversationController controller = loader.getController();
         controller.initialize(service, loggedUser, rightPane);
-        rightPane.getChildren().setAll(root);
-    }
-
-    @FXML
-    protected void onAddFriendButtonClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
-        Parent root = fxmlLoader.load();
-        AddFriendController controller = fxmlLoader.getController();
-        controller.initialize(service, loggedUser, window);
         rightPane.getChildren().setAll(root);
     }
 
