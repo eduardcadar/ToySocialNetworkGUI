@@ -171,7 +171,7 @@ public class EventDbRepo implements EventRepository {
 
     @Override
     public List<Event> getAll()  {
-        ArrayList<Event> arrayList = new ArrayList<>();
+        ArrayList<Event> events = new ArrayList<>();
         String sql = "SELECT * FROM " + eventTable;
         try(Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -186,12 +186,12 @@ public class EventDbRepo implements EventRepository {
                 LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 String photoPath = resultSet.getString("photo_path");
-                arrayList.add( new Event(id, nameEv, creator, location, category, description, startDate, endDate,photoPath));
+                events.add( new Event(id, nameEv, creator, location, category, description, startDate, endDate,photoPath));
           }
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }
-        return arrayList;
+        return events;
     }
 
     @Override
@@ -204,6 +204,38 @@ public class EventDbRepo implements EventRepository {
         // TODO LATER
         //  - if you want to update dont ask for all fields, in this case we can rework the save method
         //   as it would update fields
+    }
 
+    /**
+     * Returns a page with events
+     * @param firstrow how many events to skip
+     * @param rowcount how many events to return
+     * @return list of events
+     */
+    public List<Event> getEventsPage(int firstrow, int rowcount) {
+        List<Event> events = new ArrayList<>();
+        String sql = "SELECT * FROM " + eventTable +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, firstrow);
+            ps.setInt(2, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                Integer id = res.getInt("id");
+                String creator = res.getString("creator");
+                String name = res.getString("name");
+                String description = res.getString("description");
+                String location = res.getString("location");
+                String category = res.getString("category");
+                LocalDate startDate = LocalDate.parse(res.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate endDate = LocalDate.parse(res.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String photoPath = res.getString("photo_path");
+                events.add(new Event(id, name, creator, location, category, description, startDate, endDate,photoPath));
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return events;
     }
 }

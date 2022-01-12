@@ -25,7 +25,15 @@ public class EventService {
         this.eventsSubscriptionRepo = eventsSubscriptionDbRepo;
     }
 
-
+    /**
+     * Returns a page with events
+     * @param firstrow how many events to skip
+     * @param rowcount how many events to return
+     * @return list of events
+     */
+    public List<Event> getEventsPage(int firstrow, int rowcount) {
+        return eventRepo.getEventsPage(firstrow, rowcount);
+    }
 
     public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
     }

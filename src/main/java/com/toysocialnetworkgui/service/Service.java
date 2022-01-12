@@ -503,6 +503,10 @@ public class Service {
         return eventService.getAllEvents();
     }
 
+    public List<Event> getEventsPage(int pageNumber, int pageSize) {
+        return eventService.getEventsPage((pageNumber - 1) * pageSize, pageSize);
+    }
+
     /**
      * Removes the event
      * @param name - String
