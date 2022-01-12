@@ -1,265 +1,215 @@
 package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.User;
-import com.toysocialnetworkgui.repository.RepoException;
-import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
+import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
+import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observer;
+import com.toysocialnetworkgui.service.ConversationService;
 import com.toysocialnetworkgui.service.Service;
-import com.toysocialnetworkgui.utils.UserFriendDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import com.toysocialnetworkgui.utils.CONSTANTS;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class LoggedSceneController {
+public class LoggedSceneController implements Observer {
     @FXML
     Button buttonShowConversation;
-  
     @FXML
-    Button buttonRemoveFriend = new Button();
+    AnchorPane rightPane;
     @FXML
-    Button buttonFriendRequest = new Button();
+    Text textUserFullName;
     @FXML
-    Button buttonAddFriend;
+    Text textNrConversations;
+    @FXML
+    Text textNrEvents;
+    @FXML
+    Text textNrFriends;
 
     @FXML
-    ComboBox<String> comboBoxMonth;
+    Button buttonFriends;
+    @FXML
+    Button buttonFriendRequest;
+    @FXML
+    Button buttonFriendReport;
+    @FXML
+    Button buttonActivitiesReport;
     @FXML
     Button buttonUpdateUser;
     @FXML
-    Button buttonSendMessage;
+    Button buttonLogout;
     @FXML
-    private Label labelLoggedUser;
+    Circle imagePlaceHolder;
+
     @FXML
-    TableView<UserFriendDTO> tableViewFriends;
+    Button buttonEvents;
     @FXML
-    TableColumn<UserFriendDTO, String> tableColumnEmail;
-    @FXML
-    TableColumn<UserFriendDTO, String> tableColumnFirstname;
-    @FXML
-    TableColumn<UserFriendDTO, String> tableColumnLastname;
-    @FXML
-    TableColumn<UserFriendDTO, Date> tableColumnDate;
+    ImageView imageViewNotification = new ImageView();
 
     private User loggedUser;
     private Service service;
+    private Stage window;
 
-    public void setService(Service service) {
+    public void initialize(Service service, User user, Stage window) {
+        this.window = window;
+        this.loggedUser = user;
         this.service = service;
+
+        service.getFriendshipRepo().addObserver(this);
+        service.getConversationParticipantsRepo().addObserver(this);
+        service.getConversationService().addObserver(this);
+
+        setLoggedUser(user);
+        int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
+        if (numberOfNotification != 0) {
+            imageViewNotification.setImage(new Image("images/active_notification.png"));
+        } else {
+            imageViewNotification.setImage(new Image("images/no_notification.png"));
+        }
+        setupProfilePicture();
+
+        ((ScheduledExecutorService)window.getUserData())
+                .scheduleAtFixedRate(() -> {
+            if (!service.getUserUpcomingEvents(loggedUser.getEmail()).isEmpty())
+                if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
+                    imageViewNotification.setImage(new Image("images/active_notification.png"));
+        }, 5, 60, TimeUnit.SECONDS);
     }
 
-    public void initialize(User user) {
-        setLoggedUser(user);
-        initializeFriendsList();
-        tableViewFriends.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        comboBoxMonth.setItems(getMonths());
+    private void setupProfilePicture() {
+        imagePlaceHolder.setStroke(Color.web("#862CE4"));
+        Image im = new Image(loggedUser.getProfilePicturePath());
+        imagePlaceHolder.setFill(new ImagePattern(im));
     }
 
     private void setLoggedUser(User user) {
         loggedUser = user;
-        labelLoggedUser.setText("Logged user: " + user);
-    }
+        String firstName = user.getFirstName();
+        firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
+        String lastName = user.getLastName();
+        lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
 
-    private ObservableList<String> getMonths() {
-        return FXCollections.observableArrayList(Arrays.asList(
-                "any month",
-                "january", "february", "march", "april",
-                "may", "june", "july", "august",
-                "september", "october", "november", "december"));
-    }
-
-    @FXML
-    protected void onSelectMonth() {
-        String month = comboBoxMonth.getValue();
-        int monthNr;
-        if (month == null)
-            month = "any month";
-        switch (month) {
-            case "january" -> monthNr = 1;
-            case "february" -> monthNr = 2;
-            case "march" -> monthNr = 3;
-            case "april" -> monthNr = 4;
-            case "may" -> monthNr = 5;
-            case "june" -> monthNr = 6;
-            case "july" -> monthNr = 7;
-            case "august" -> monthNr = 8;
-            case "september" -> monthNr = 9;
-            case "october" -> monthNr = 10;
-            case "november" -> monthNr = 11;
-            case "december" -> monthNr = 12;
-            default -> monthNr = 0;
-        }
-        if (monthNr == 0)
-            setFriendsList(getFriends());
-        else
-            setFriendsList(getFriends().
-                    filtered(x -> x.getDate().getMonthValue() == monthNr));
-    }
-
-    private void reloadFriends() {
-        onSelectMonth(); // ??
-    }
-
-    private ObservableList<UserFriendDTO> getFriends() {
-        return FXCollections.observableArrayList(service
-                .getFriendshipsDTO(loggedUser.getEmail()));
-    }
-
-    private void setFriendsList(ObservableList<UserFriendDTO> friends) {
-        tableViewFriends.setItems(friends);
-    }
-
-    private void initializeFriendsList() {
-        tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        setFriendsList(getFriends());
+        textUserFullName.setText(firstName + " "+ lastName);
+        textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
+        textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
+        textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
 
     @FXML
-    protected void onUpdateButtonClick(ActionEvent event) throws IOException {
+    protected void onButtonFriendsClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends.fxml"));
+        Parent root = loader.load();
+        FriendsController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    protected void onButtonActivitiesReportClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReportChooseDate.fxml"));
+        Parent root = loader.load();
+        ActivitiesReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    protected void onButtonFriendReportClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
+        Parent root = loader.load();
+        FriendReportChooseDateController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    protected void onUpdateButtonClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("updateUser.fxml"));
         Parent root = loader.load();
         UpdateUserController controller = loader.getController();
-        controller.setService(service);
-        controller.initialize(loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Update user information");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        controller.initialize(loggedUser, window, service);
+        rightPane.getChildren().setAll(root);
 
         setLoggedUser(service.getUser(loggedUser.getEmail()));
     }
 
     @FXML
-    protected void onShowConversationButtonClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().isEmpty())
-            return;
-        User otherUser = service.getUser(tableViewFriends.
-                getSelectionModel().getSelectedItem().getEmail());
-
+    protected void onShowConversationButtonClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, otherUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.setTitle("Conversation with " + otherUser);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
     }
 
     @FXML
-    protected void onSendMessageButtonClick(ActionEvent event) throws IOException {
-        if (tableViewFriends.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No friends selected");
-            alert.setHeaderText(null);
-            alert.setContentText("Select at least one friend!");
-            alert.showAndWait();
-            return;
-        }
-        List<String> receivers = new ArrayList<>();
-        tableViewFriends.getSelectionModel().getSelectedItems()
-                .forEach(x -> receivers.add(x.getEmail()));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sendMessage.fxml"));
-        Parent root = loader.load();
-        SendMessageController controller = loader.getController();
-        controller.initialize(service, receivers, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.setTitle("Send message");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-    }
-
-    @FXML
-    protected void onAddFriendButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("addFriend.fxml"));
-        Parent root = loader.load();
-        AddFriendController controller = loader.getController();
-        controller.initialize(service, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-        stage.setTitle("Add friend");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-    }
-
-    @FXML
-    protected void onRemoveFriendButtonClick() {
-        if (tableViewFriends.getSelectionModel().isEmpty())
-            return;
-        UserFriendDTO friend = tableViewFriends.getSelectionModel().getSelectedItem();
-        try {
-            service.removeFriendship(loggedUser.getEmail(), friend.getEmail());
-        } catch (RepoException | DbException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-        reloadFriends();
+    protected void onEventsClick() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent dashboard = fxmlLoader.load();
+        EventsController controller = fxmlLoader.getController();
+        controller.initialize(service, loggedUser, window);
+        rightPane.getChildren().setAll(dashboard);
     }
 
     /**
      * Opens a new Stage to handle user interactions with friend requests
-     * @param event - the event that triggered the function
      * @throws IOException - from load
      */
     @FXML
-    protected void onFriendRequestClick(ActionEvent event) throws IOException {
+    protected void onFriendRequestClick() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
-        Parent root = loader.load();
+        Parent dashboard = loader.load();
         RequestsController controller = loader.getController();
         controller.initialize(service, loggedUser);
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-        stage.setTitle("Requests interface");
-        stage.setScene( new Scene(root));
-        stage.showAndWait();
+        rightPane.getChildren().setAll(dashboard);
+    }
 
-        // TODO
-        //  Refresh the friend list after requests menu ??
-        //  Rather notify this LoggedScene to update his friendListTable
-        //  at the signal made by onButtonClickAccept
-        reloadFriends();
+    @FXML
+    protected void onLogoutButtonClick() throws IOException {
+        showLoginScene();
+    }
+
+    private void showLoginScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginScene.fxml"));
+        Parent root = loader.load();
+        LoginSceneController controller = loader.getController();
+        controller.initialize(service, window);
+        window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
     }
 
     /**
-     * Press R to  refresh table
-     * Might delete later ?? doesn't refresh when 2 instances work
-     * @param keyEvent - the event that triggered the function
+     * Changes the image for the notification to the no_notification. Customize it late
+     * + Show the events in a drop box maybe?
      */
-    public void onRefreshFriends(KeyEvent keyEvent) {
-        System.out.println(keyEvent.getCode());
-        if(keyEvent.isAltDown()){
-            if(keyEvent.getCode().equals(KeyCode.R)) {
-                reloadFriends();
-            }
-        }
+    @FXML
+    public void clearNotificationImage() {
+        System.out.print("Subscribed events: ");
+        service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
+        imageViewNotification.setImage(new Image("images/no_notification.png"));
+        // TODO
+        //  - Show only the subscribed events somewhere
+
+    }
+
+    @Override
+    public void update(Object obj) {
+        if (obj instanceof FriendshipDbRepo) setLoggedUser(loggedUser);
+        if (obj instanceof EventsSubscriptionDbRepo) setLoggedUser(loggedUser);
+        if (obj instanceof ConversationService) setLoggedUser(loggedUser);
     }
 }

@@ -3,3 +3,6 @@
 /build/
 /build/classes/java/main/
 /build/classes/java/test/
+.idea/workspace.xml
+*.iws
+.idea

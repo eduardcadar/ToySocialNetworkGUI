@@ -9,6 +9,8 @@ import java.util.List;
 public class UserService {
     UserRepository repo;
 
+    public UserRepository getRepo() { return repo; }
+
     public UserService(UserRepository repo) {
         this.repo = repo;
     }
@@ -26,6 +28,7 @@ public class UserService {
         if(password.length() <= 5)
             throw new ValidatorException("The password must contain at least 6 characters");
         repo.save(new User(firstname, lastname, email, password));
+
     }
 
     /**
@@ -43,8 +46,12 @@ public class UserService {
      * @param email - the email of the user to be updated
      * @param password - the new password of the user
      */
-    public void updateUser(String firstname, String lastname, String email, String password) {
-        repo.update(new User(firstname, lastname, email, password));
+    public User updateUser(String firstname, String lastname, String email, String password) {
+        return repo.update(new User(firstname, lastname, email, password));
+    }
+
+    public User updateUser(String firstname, String lastname, String email, String password, String path) {
+        return repo.update(new User(firstname, lastname, email, password, path));
     }
 
     /**
@@ -59,7 +66,7 @@ public class UserService {
     /**
      * @return all the users saved in the repository
      */
-    public List<User> getUsers() {
+    public List<User> getAllUsers() {
         return repo.getAll();
     }
 

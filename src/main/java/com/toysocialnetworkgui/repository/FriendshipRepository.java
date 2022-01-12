@@ -15,8 +15,6 @@ public interface FriendshipRepository {
 
     List<String> getUserFriends(String email);
 
-    List<String> getUserFriendsAll(String email);
-
     void removeUserFships(String email);
 
     Friendship getFriendship(String email1, String email2);

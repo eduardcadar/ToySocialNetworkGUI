@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="650.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.EventsController">
+   <children>
+      <VBox layoutX="624.0" layoutY="66.0" prefHeight="482.0" prefWidth="264.0">
+         <children>
+            <ListView fx:id="listEventsSubscribed" prefHeight="200.0" prefWidth="234.0" />
+            <Button fx:id="buttonUnsubscribeEvent" mnemonicParsing="false" onAction="#onUnsubscribeButtonClick" text="Unsubscribe" />
+            <TableView fx:id="tableViewEvents" focusTraversable="false" prefHeight="174.0" prefWidth="420.0">
+              <columns>
+                <TableColumn fx:id="columnOrganizer" prefWidth="75.0" text="C1" />
+                <TableColumn fx:id="columnName" prefWidth="75.0" text="C2" />
+                  <TableColumn fx:id="columnLocation" prefWidth="75.0" text="Column X" />
+                  <TableColumn fx:id="columnDescription" prefWidth="75.0" text="Column X" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <StackPane layoutX="208.0">
+         <children>
+            <AnchorPane fx:id="showEventPane" prefHeight="650.0" prefWidth="416.0" visible="false">
+               <children>
+                  <VBox fillWidth="false" layoutY="155.0" prefHeight="481.0" prefWidth="416.0" spacing="20.0" styleClass="event_box">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="202.0">
+                           <VBox.margin>
+                              <Insets left="103.0" />
+                           </VBox.margin>
+                           <children>
+                              <Text fx:id="textEventName" strokeType="OUTSIDE" strokeWidth="0.0" text="Event name" textAlignment="CENTER" wrappingWidth="202.13672018051147" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="28.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/clock.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Text fx:id="textDateStart" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" wrappingWidth="94.13672018051147" />
+                              <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" textAlignment="CENTER" wrappingWidth="20.0">
+                                 <HBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="textDateEnd" strokeType="OUTSIDE" strokeWidth="0.0" text="End" wrappingWidth="106.93670344352722" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../../images/location.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="textEventLocation" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" wrappingWidth="262.13669443130493" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../../images/category.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="textEventCategory" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" wrappingWidth="264.53674924373627" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="13.0" prefWidth="411.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/description.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Text fx:id="textShowEventDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="261.33672523498535" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="410.0">
+                           <children>
+                              <Button fx:id="buttonSubscribeEvent" mnemonicParsing="false" onAction="#onSubscribeClick" prefHeight="26.0" prefWidth="488.0" text="Subscribe" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="55.0" />
+                     </padding>
+                  </VBox>
+                  <Rectangle fx:id="imageSavedEvent" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" layoutX="108.0" layoutY="18.0" onMouseClicked="#onEventImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="createEventPane" prefHeight="650.0" prefWidth="416.0">
+               <children>
+                  <VBox fillWidth="false" layoutY="155.0" prefHeight="481.0" prefWidth="416.0" spacing="20.0" styleClass="event_box">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="202.0">
+                           <VBox.margin>
+                              <Insets left="103.0" />
+                           </VBox.margin>
+                           <children>
+                              <TextField id="textField" fx:id="textFieldEventName" alignment="TOP_LEFT" focusTraversable="false" prefHeight="26.0" prefWidth="223.0" promptText="Event Name" styleClass="emailTextField">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="28.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/clock.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <DatePicker fx:id="datePickerEventStart" focusTraversable="false" prefHeight="26.0" prefWidth="98.0" promptText="Start Date" styleClass="date_field" />
+                              <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" textAlignment="CENTER" wrappingWidth="20.0">
+                                 <HBox.margin>
+                                    <Insets left="20.0" right="20.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </Text>
+                              <DatePicker fx:id="datePickerEventEnd" focusTraversable="false" prefHeight="26.0" prefWidth="106.0" promptText="End Date" styleClass="date_field">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </DatePicker>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../../images/location.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="textFieldEventLocation" focusTraversable="false" maxHeight="26.0" maxWidth="265.0" prefHeight="26.0" prefWidth="265.0" promptText="Location" styleClass="event_short_field" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../../images/category.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="textFieldCategory" focusTraversable="false" prefHeight="26.0" prefWidth="139.0" promptText="Category" styleClass="event_short_field" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="414.0">
+                           <children>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/description.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <TextArea fx:id="textCreateEventDescription" prefHeight="200.0" prefWidth="200.0" promptText="Description" styleClass="event_description" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="410.0">
+                           <children>
+                              <Button fx:id="buttonCreateEvent" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonCreateClick" prefHeight="23.0" prefWidth="100.0" text="Create">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="55.0" />
+                     </padding>
+                  </VBox>
+                  <StackPane layoutX="108.0" layoutY="18.0">
+                     <children>
+                        <Rectangle fx:id="rectangleImageEvent" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" onMouseClicked="#onEventImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
+                        <Text fx:id="textAddEventPhoto" fill="#862ce4" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" text="+ Add Event Photo" wrappingWidth="104.53669261932373" />
+                     </children>
+                  </StackPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+      <Button fx:id="buttonSeeEvents" layoutX="73.0" layoutY="54.0" mnemonicParsing="false" onAction="#onButtonSeeEvents" prefHeight="26.0" prefWidth="94.0" text="See events" />
+      <Button fx:id="buttonVisibleCreate" layoutX="73.0" layoutY="112.0" mnemonicParsing="false" onAction="#onButtonVisibleCreate" prefHeight="26.0" prefWidth="94.0" text="Create event" />
+      <Button fx:id="buttonCancelEvent" focusTraversable="false" layoutX="73.0" layoutY="177.0" mnemonicParsing="false" onAction="#onCancelEventClick" prefHeight="26.0" prefWidth="94.0" text="Cancel" />
+      <HBox layoutX="170.0" layoutY="579.0" spacing="430.0">
+         <children>
+            <Button fx:id="buttonPreviousEvent" mnemonicParsing="false" onAction="#onButtonPreviousEventClick" styleClass="image_wrapper" text="Previous page">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/prev_page.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="buttonNextEvent" mnemonicParsing="false" onAction="#onButtonNextEventClick" styleClass="image_wrapper" text="Next page">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/next_page.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../../style/styleEvents.css" />
+      <URL value="@../../../style/style.css" />
+   </stylesheets>
+</AnchorPane>

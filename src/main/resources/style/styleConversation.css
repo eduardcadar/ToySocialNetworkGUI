@@ -1,0 +1,100 @@
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #862CE4;
+
+    -fx-border-width: 1px;
+}
+.column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+
+
+}
+.column-header {
+    -fx-background-color: transparent;
+    -fx-border-width: 0px;
+    /*
+    - aici se adauga css pt headere, nu putem pastra borderul din cauza ultimei coloane
+    care nu are nume, e cea cu cancel-ul
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+*/
+}
+.table-cell{
+    -fx-border-color: transparent;
+    -fx-text-fill: black;
+}
+/*
+Something with selection goes wrong here???
+.table-row-cell:odd:selected,
+*/
+
+
+.table-row-cell:odd{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.table-row-cell:even {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+
+.image-view{
+    -fx-cursor: hand;
+}
+
+.image_wrapper:selected, .image_wrapper:selected:focused,.image_wrapper:hover {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 ;
+    -fx-background-radius: 0 ;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-border-color: #862CE4;
+    -fx-border-width: 1px;
+}
+.list-cell{
+    -fx-background-color: white;
+    -fx-padding: 0.25em;
+    -fx-start-margin: 3px;
+    -fx-end-margin: 3px;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+
+.text-field {
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+.text-field:focused{
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #862CE4;
+}

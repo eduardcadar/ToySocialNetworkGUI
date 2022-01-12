@@ -3,13 +3,14 @@ package com.toysocialnetworkgui.repository.db;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDbRepo implements UserRepository {
+public class UserDbRepo implements Observable, UserRepository {
     private final String url, username, password, usersTable;
     private final Validator<User> validator;
 
@@ -29,15 +30,22 @@ public class UserDbRepo implements UserRepository {
         String updateTable = "ALTER TABLE " + usersTable +
                 " ADD COLUMN IF NOT EXISTS password varchar DEFAULT '000000'";
 
-        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        String updateTableAddProfilePicture = "ALTER TABLE " + usersTable +
+                " ADD COLUMN IF NOT EXISTS profile_path varchar DEFAULT '/profile/anonymous.png'";
+
+        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
+             PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeUpdate();
             PreparedStatement updateStatement = connection.prepareStatement(updateTable);
             updateStatement.executeUpdate();
+
+            PreparedStatement updateStatementAddProfile = connection.prepareStatement(updateTableAddProfilePicture);
+            updateStatementAddProfile.executeUpdate();
+
+
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
-
     }
 
     /**
@@ -49,14 +57,16 @@ public class UserDbRepo implements UserRepository {
         validator.validate(u);
         if (getUser(u.getEmail()) != null)
             throw new RepoException("There is already a user with same email");
-        String sql = "INSERT INTO " + usersTable + " (firstname, lastname, email, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO " + usersTable + " (firstname, lastname, email, password, profile_path) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, u.getFirstName());
             ps.setString(2, u.getLastName());
             ps.setString(3, u.getEmail());
             ps.setString(4, u.getPassword());
+            ps.setString(5, u.getProfilePicturePath());
             ps.executeUpdate();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -77,7 +87,7 @@ public class UserDbRepo implements UserRepository {
             ResultSet res = ps.executeQuery();
             if (!res.next())
                 return null;
-            us = new User(res.getString("firstname"), res.getString("lastname"), res.getString("email"), res.getString("password"));
+            us = new User(res.getString("firstname"), res.getString("lastname"), res.getString("email"), res.getString("password"), res.getString("profile_path"));
             return us;
         }
         catch (SQLException e) {
@@ -97,6 +107,7 @@ public class UserDbRepo implements UserRepository {
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -129,6 +140,7 @@ public class UserDbRepo implements UserRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -144,12 +156,13 @@ public class UserDbRepo implements UserRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
             PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet res = ps.executeQuery();
-            //DE CONTINUAT
             while (res.next()) {
                 String firstname = res.getString("firstname");
                 String lastname = res.getString("lastname");
                 String email = res.getString("email");
-                users.add(new User(firstname, lastname, email));
+                String password = res.getString("password");
+                String profile_path = res.getString("profile_path");
+                users.add(new User(firstname, lastname, email, password, profile_path));
             }
             return users;
         } catch (SQLException e) {
@@ -170,19 +183,23 @@ public class UserDbRepo implements UserRepository {
      * @param user - the user with the new attributes
      */
     @Override
-    public void update(User user) {
+    public User update(User user) {
+        validator.validate(user);
         if (getUser(user.getEmail()) == null)
             throw new RepoException("Update failed");
-        String sql = "UPDATE " + usersTable + " SET firstname = ?, lastname = ?, password = ? WHERE email = ?";
+        String sql = "UPDATE " + usersTable + " SET firstname = ?, lastname = ?, password = ?, profile_path = ? WHERE email = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getPassword());
-            ps.setString(4, user.getEmail());
+            ps.setString(4, user.getProfilePicturePath());
+            ps.setString(5, user.getEmail());
             ps.executeUpdate();
+            notifyObservers();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
+        return user;
     }
 }

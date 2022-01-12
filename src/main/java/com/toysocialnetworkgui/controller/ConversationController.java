@@ -2,127 +2,242 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
+import com.toysocialnetworkgui.repository.db.MessageDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
-import com.toysocialnetworkgui.utils.MessageDTO;
+import com.toysocialnetworkgui.utils.ConversationDTO;
+import com.toysocialnetworkgui.utils.MyAlert;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
-public class ConversationController {
+public class ConversationController implements Observer {
     private Service service;
-    private User loggedUser, otherUser;
+    private User loggedUser;
+    private int idConversation;
+    private int lastConvSize;
+    private int pageNumber;
+    private int pageSize;
+    private ScheduledExecutorService exec;
+    private ScheduledFuture<?> task;
+    private AnchorPane rightPane;
 
+    @FXML
+    Label conversationTitle;
+
+    @FXML
+    Button buttonPreviousPage;
+    @FXML
+    Button buttonNextPage;
+    @FXML
+    Button buttonRefresh;
     @FXML
     TextField textFieldMessage;
     @FXML
-    Button buttonReplyToSender;
+    Button buttonSendMessage;
     @FXML
-    Button buttonReplyToAll;
+    TableView<Message> tableViewMessages;
     @FXML
-    TableView<MessageDTO> tableViewMessages;
+    TableColumn<Message, Integer> tableColumnID;
     @FXML
-    TableColumn<MessageDTO, Integer> tableColumnID;
+    TableColumn<Message, Circle> tableColumnSender;
     @FXML
-    TableColumn<MessageDTO, String> tableColumnSender;
+    TableColumn<Message, String> tableColumnMessage;
     @FXML
-    TableColumn<MessageDTO, List<String>> tableColumnReceivers;
+    TableColumn<Message, String> tableColumnDate;
     @FXML
-    TableColumn<MessageDTO, String> tableColumnMessageRepliedTo;
+    ListView<ConversationDTO> listConversations;
     @FXML
-    TableColumn<MessageDTO, String> tableColumnMessage;
-    @FXML
-    TableColumn<MessageDTO, LocalDateTime> tableColumnDate;
+    Button buttonCreateConversation;
 
-    @FXML
-    public void onReplyToSenderButtonClick() {
-        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
-            return;
-        String messageText = textFieldMessage.getText();
-        Message msgRepliedTo = service.getMessage(tableViewMessages.getSelectionModel().getSelectedItem().getID());
-        if (checkMessageSender(msgRepliedTo.getSender())) return;
-        service.save(loggedUser.getEmail(), List.of(msgRepliedTo.getSender()), messageText, msgRepliedTo.getID());
-        reloadMessages();
-        textFieldMessage.clear();
-    }
-
-    @FXML
-    public void onReplyToAllButtonClick() {
-        if (tableViewMessages.getSelectionModel().isEmpty() || textFieldMessage.getLength() == 0)
-            return;
-        String messageText = textFieldMessage.getText();
-        MessageDTO msgRepliedTo = tableViewMessages.getSelectionModel().getSelectedItem();
-        if (checkMessageSender(msgRepliedTo.getSender()))
-            return;
-        List<String> receivers = new ArrayList<>();
-        receivers.add(msgRepliedTo.getSender());
-        msgRepliedTo.getReceivers()
-                .forEach(receiver -> {
-                    if (!receiver.equals(loggedUser.getEmail()))
-                        receivers.add(receiver);
-                });
-        service.save(loggedUser.getEmail(), receivers, messageText, msgRepliedTo.getID());
-        List<User> notFriends = new ArrayList<>();
-        List<User> friends = service.getUserFriends(loggedUser.getEmail());
-        receivers.forEach(receiverEmail -> {
-            User rec = service.getUser(receiverEmail);
-            if (!friends.contains(rec))
-                notFriends.add(rec);
-        });
-        reloadMessages();
-        textFieldMessage.clear();
-        if (!notFriends.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Not sent to all");
-            alert.setHeaderText(null);
-            String warningMessage = "You are not friends with the following users: ";
-            for (User u : notFriends)
-                warningMessage = warningMessage.concat("\n" + u);
-            alert.setContentText(warningMessage);
-            alert.showAndWait();
-        }
-    }
-
-    private boolean checkMessageSender(String sender) {
-        if (sender.equals(loggedUser.getEmail())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("You cannot reply to your message");
-            alert.showAndWait();
-            return true;
-        }
-        return false;
-    }
-
-    public void initialize(Service service, User user, User otherUser) {
+    public void initialize(Service service, User user, AnchorPane rightPane) {
+        tableViewMessages.setPlaceholder(new Label("No messages"));
+        listConversations.setPlaceholder(new Label("You have no conversations"));
+        this.pageSize = 9;
         this.service = service;
         this.loggedUser = user;
-        this.otherUser = otherUser;
+        this.rightPane = rightPane;
+        this.idConversation = 0;
+        this.exec = (ScheduledExecutorService)rightPane.getParent().getScene().getWindow().getUserData();
+        reloadConversationsList();
         initializeMessages();
+        service.getConversationParticipantsRepo().addObserver(this);
+        service.getMessageRepo().addObserver(this);
+        listConversations.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            stopTask();
+
+            if (listConversations.getSelectionModel().isEmpty())
+                return;
+            setIdConversation(listConversations.getSelectionModel().getSelectedItem().getId());
+            pageNumber = getLastPageNumber();
+            setConversationTitle();
+            reloadMessages();
+
+            task = exec.scheduleAtFixedRate(() -> {
+                if (service.getConversationSize(idConversation) != lastConvSize)
+                    pageNumber = getLastPageNumber();
+                    reloadMessages();
+            }, 10, 10, TimeUnit.SECONDS);
+        });
     }
 
-    private ObservableList<MessageDTO> getMessages() {
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane, String convUser) {
+        initialize(service, loggedUser, rightPane);
+        idConversation = service.getConversation(List.of(loggedUser.getEmail(), convUser)).getID();
+        pageNumber = getLastPageNumber();
+        reloadMessages();
+    }
+
+    private void setConversationTitle() {
+     /*   List<User> participants = listConversations.getSelectionModel().getSelectedItem().getParticipants();
+        StringBuilder title = new StringBuilder();
+        for(User u : participants)
+            title.append(u.getFirstName()).append(" ").append(u.getLastName()).append(", ");
+       */
+        conversationTitle.setText(listConversations.getSelectionModel().getSelectedItem().toString());
+    }
+
+    public void setIdConversation(int idConversation) {
+        this.idConversation = idConversation;
+    }
+
+    private void stopTask() {
+        if (task != null)
+            if (!task.isCancelled())
+                task.cancel(true);
+    }
+
+    private void reloadConversationsList() {
+        listConversations.getItems().setAll(service.getUserConversationDTOs(loggedUser.getEmail()));
+    }
+
+    @FXML
+    protected void onCreateConversationButtonClick() throws IOException {
+        stopTask();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("createConversation.fxml"));
+        Parent root = loader.load();
+        CreateConversationController controller = loader.getController();
+        controller.initialize(service, loggedUser, rightPane);
+        rightPane.getChildren().setAll(root);
+    }
+
+    @FXML
+    protected void onRefreshButtonClick() {
+        this.pageNumber = getLastPageNumber();
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onPreviousPageButtonClick() {
+        if (idConversation == 0) return;
+        if (pageNumber == 1)
+            return;
+        pageNumber--;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onNextPageButtonClick() {
+        if (idConversation == 0) return;
+        if (pageNumber == getLastPageNumber())
+            return;
+        pageNumber++;
+        reloadMessages();
+    }
+
+    @FXML
+    protected void onSendMessageButtonClick() {
+        if (textFieldMessage.getLength() == 0)
+            return;
+        if (idConversation == 0) {
+            MyAlert.StartAlert("No conversation selected", "Select a conversation!", Alert.AlertType.WARNING);
+            return;
+        }
+        String messageText = textFieldMessage.getText();
+        service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
+        textFieldMessage.clear();
+        pageNumber = getLastPageNumber();
+        reloadMessages();
+    }
+
+    private int getLastPageNumber() {
+        return ((service.getConversation(idConversation).getMessages().size() - 1) / pageSize) + 1;
+    }
+  
+    private ObservableList<Message> getMessages() {
         return FXCollections.observableArrayList(service
-                .getConversationDTOs(loggedUser.getEmail(), otherUser.getEmail()));
+                .getConversationPage(idConversation, pageNumber, pageSize).getMessages());
     }
 
     private void initializeMessages() {
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        tableColumnSender.setCellValueFactory(new PropertyValueFactory<>("sender"));
-        tableColumnReceivers.setCellValueFactory(new PropertyValueFactory<>("receivers"));
-        tableColumnMessageRepliedTo.setCellValueFactory(new PropertyValueFactory<>("msgRepliedTo"));
+        tableColumnSender.setStyle("-fx-alignment: CENTER");
+        tableColumnSender.setCellValueFactory(param -> new ObservableValue<>() {
+            @Override
+            public void addListener(ChangeListener<? super Circle> listener) {}
+
+            @Override
+            public void removeListener(ChangeListener<? super Circle> listener) {}
+
+            @Override
+            public Circle getValue() {
+                Circle imagePlaceHolder = new Circle();
+                imagePlaceHolder.setRadius(20);
+                imagePlaceHolder.setStroke(Color.web("#862CE4"));
+                User u = service.getUser(param.getValue().getSender());
+                Image im = new Image(u.getProfilePicturePath());
+                imagePlaceHolder.setFill(new ImagePattern(im));
+                Tooltip.install(imagePlaceHolder, new Tooltip(u.toString()));
+                return imagePlaceHolder;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {}
+
+            @Override
+            public void removeListener(InvalidationListener listener) {}
+        });
         tableColumnMessage.setCellValueFactory(new PropertyValueFactory<>("message"));
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        reloadMessages();
+        tableColumnDate.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd / HH:mm"))));
     }
 
     private void reloadMessages() {
+        if (idConversation == 0)
+            return;
+
+        int lastPage = getLastPageNumber();
+        buttonPreviousPage.setVisible(pageNumber != 1);
+        buttonNextPage.setVisible(pageNumber != lastPage);
+
+        this.lastConvSize = service.getConversationSize(idConversation);
         tableViewMessages.setItems(getMessages());
+    }
+
+    @Override
+    public void update(Object obj) {
+        if (obj instanceof MessageDbRepo) reloadMessages();
+        if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
     }
 }
