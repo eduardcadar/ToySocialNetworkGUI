@@ -147,16 +147,17 @@ public class EventDbRepo implements EventRepository {
 
     @Override
     public int size() {
-        String sql = "SELECT COUNT(*) FROM " + eventTable;
-        try(Connection connection = DriverManager.getConnection(url,username, password)){
+        String sql = "SELECT COUNT(*) as size FROM " + eventTable;
+        try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps =  connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
             resultSet.next();
-            return resultSet.getInt(1);
-
+            if (resultSet.next())
+                return resultSet.getInt("size");
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
+        return 0;
     }
 
     public void clear() {

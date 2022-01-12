@@ -80,17 +80,49 @@ public class EventsSubscriptionDbRepo implements Observable {
 
     public List<Integer> getEventsForUser(String userEmail) {
         List<Integer> eventsId = new ArrayList<>();
-        String sql = " SELECT event_id FROM "+ tableName + " WHERE user_email = ?";
+        String sql = "SELECT event_id FROM "+ tableName + " WHERE user_email = ?";
         try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1,userEmail);
             ResultSet resultSet = ps.executeQuery();
-            while(resultSet.next()){
+            while(resultSet.next())
                 eventsId.add(resultSet.getInt("event_id"));
-            }
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
         return eventsId;
+    }
+
+    public List<Integer> getUserEventsPage(String email, int firstrow, int rowcount) {
+        List<Integer> eventsIds = new ArrayList<>();
+        String sql = "SELECT event_id FROM " + tableName + " WHERE user_email = ?" +
+                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setInt(2, firstrow);
+            ps.setInt(3, rowcount);
+            ResultSet res = ps.executeQuery();
+            while (res.next())
+                eventsIds.add(res.getInt("event_id"));
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return eventsIds;
+    }
+
+    public int getUserEventsSize(String email) {
+        String sql = "SELECT COUNT(*) AS size FROM " + tableName +
+                " WHERE user_email = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
     }
 }

@@ -25,6 +25,14 @@ public class EventService {
         this.eventsSubscriptionRepo = eventsSubscriptionDbRepo;
     }
 
+    public int getEventsSize() {
+        return eventRepo.size();
+    }
+
+    public int getUserEventsSize(String email) {
+        return eventsSubscriptionRepo.getUserEventsSize(email);
+    }
+
     /**
      * Returns a page with events
      * @param firstrow how many events to skip
@@ -33,6 +41,19 @@ public class EventService {
      */
     public List<Event> getEventsPage(int firstrow, int rowcount) {
         return eventRepo.getEventsPage(firstrow, rowcount);
+    }
+
+    /**
+     * Returns a page with events a user is subscribed to
+     * @param firstrow how many events to skip
+     * @param rowcount how many events to return
+     * @return list of subscribed events
+     */
+    public List<Event> getUserEventsPage(String email, int firstrow, int rowcount) {
+        List<Event> events = new ArrayList<>();
+        List<Integer> eventsIds = eventsSubscriptionRepo.getUserEventsPage(email, firstrow, rowcount);
+        eventsIds.forEach(id -> events.add(eventRepo.getEvent(id)));
+        return events;
     }
 
     public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {

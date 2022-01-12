@@ -107,6 +107,7 @@ public class EventsController {
     @FXML
     Button buttonNextEvent;
 
+    private boolean onlySubscribedEvents;
     private int pageNumber;
 
     public void initialize(Service service, User loggedUser, Stage window) {
@@ -273,6 +274,7 @@ public class EventsController {
     public void onButtonSeeEvents() {
         showEventPane.setVisible(true);
         createEventPane.setVisible(false);
+        onlySubscribedEvents = true;
         pageNumber = 1;
         reloadEvent();
     }
@@ -280,7 +282,10 @@ public class EventsController {
     public void reloadEvent() {
         buttonPreviousEvent.setVisible(pageNumber != 1);
         buttonNextEvent.setVisible(pageNumber != getLastPageNumber());
-        populateSavedEvent(service.getEventsPage(pageNumber, 1).get(0));
+        if (onlySubscribedEvents)
+            populateSavedEvent(service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0));
+        else
+            populateSavedEvent(service.getEventsPage(pageNumber, 1).get(0));
     }
 
     @FXML
@@ -300,6 +305,7 @@ public class EventsController {
     }
 
     private int getLastPageNumber() {
+        if (onlySubscribedEvents) return service.getUserEventsSize(loggedUser.getEmail());
         return service.getAllEvents().size();
     }
 

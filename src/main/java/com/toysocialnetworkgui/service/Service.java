@@ -114,9 +114,11 @@ public class Service {
     public User updateUser(String firstname, String lastname, String email, String password) {
         return userService.updateUser(firstname, lastname, email, password);
     }
+
     public User updateUser(String firstname, String lastname, String email, String password, String path) {
         return userService.updateUser(firstname, lastname, email, password, path);
     }
+
     /**
      * @return dictionary with the users of the communites - Map[Integer, List[String]]
      */
@@ -507,6 +509,10 @@ public class Service {
         return eventService.getEventsPage((pageNumber - 1) * pageSize, pageSize);
     }
 
+    public List<Event> getUserEventsPage(String email, int pageNumber, int pageSize) {
+        return eventService.getUserEventsPage(email, (pageNumber - 1) * pageSize, pageSize);
+    }
+
     /**
      * Removes the event
      * @param name - String
@@ -539,6 +545,14 @@ public class Service {
 
     public List<Event> getEventsForUser(String userEmail) {
         return eventService.getEventsForUser(userEmail);
+    }
+
+    public int getEventsSize() {
+        return eventService.getEventsSize();
+    }
+
+    public int getUserEventsSize(String email) {
+        return eventService.getUserEventsSize(email);
     }
 
     public List<Event> getUserUpcomingEvents(String email) {
