@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
@@ -24,7 +25,6 @@
       <VBox layoutX="624.0" layoutY="66.0" prefHeight="482.0" prefWidth="264.0">
          <children>
             <ListView fx:id="listEventsSubscribed" prefHeight="200.0" prefWidth="234.0" />
-            <Button fx:id="buttonUnsubscribeEvent" mnemonicParsing="false" onAction="#onUnsubscribeButtonClick" text="Unsubscribe" />
             <TableView fx:id="tableViewEvents" focusTraversable="false" prefHeight="174.0" prefWidth="420.0">
               <columns>
                 <TableColumn fx:id="columnOrganizer" prefWidth="75.0" text="C1" />
@@ -60,7 +60,7 @@
                                  </HBox.margin>
                               </ImageView>
                               <Text fx:id="textDateStart" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" wrappingWidth="94.13672018051147" />
-                              <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" textAlignment="CENTER" wrappingWidth="20.0">
+                              <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" wrappingWidth="31.20001220703125">
                                  <HBox.margin>
                                     <Insets left="20.0" right="20.0" />
                                  </HBox.margin>
@@ -68,7 +68,10 @@
                                     <Font size="19.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="textDateEnd" strokeType="OUTSIDE" strokeWidth="0.0" text="End" wrappingWidth="106.93670344352722" />
+                              <Text fx:id="textDateEnd" strokeType="OUTSIDE" strokeWidth="0.0" text="End" wrappingWidth="106.93670344352722">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin></Text>
                            </children>
                            <VBox.margin>
                               <Insets />
@@ -113,20 +116,28 @@
                               <Text fx:id="textShowEventDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="261.33672523498535" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="410.0">
-                           <children>
-                              <Button fx:id="buttonSubscribeEvent" mnemonicParsing="false" onAction="#onSubscribeClick" prefHeight="26.0" prefWidth="488.0" text="Subscribe" />
-                           </children>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="409.0">
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="75.0" />
                            </VBox.margin>
+                           <children>
+                              <StackPane prefHeight="26.0" prefWidth="426.0">
+                                 <children>
+                                    <Button fx:id="buttonSubscribeEvent" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSubscribeClick" prefHeight="26.0" prefWidth="488.0" text="Subscribe" StackPane.alignment="CENTER" />
+                                    <Button fx:id="buttonUnsubscribeEvent" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onUnsubscribeButtonClick" prefHeight="26.0" prefWidth="488.0" text="Unsubscribe" StackPane.alignment="CENTER" />
+                                 </children>
+                              </StackPane>
+                           </children>
                         </HBox>
                      </children>
                      <padding>
                         <Insets top="55.0" />
                      </padding>
                   </VBox>
-                  <Rectangle fx:id="imageSavedEvent" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" layoutX="108.0" layoutY="18.0" onMouseClicked="#onEventImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
+                  <Rectangle fx:id="rectangleShowSavedImage" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" layoutX="108.0" layoutY="18.0" stroke="#862ce4" strokeType="INSIDE" style="-fx-cursor: DEFAULT;" styleClass="event_image" width="200.0">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor></Rectangle>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="createEventPane" prefHeight="650.0" prefWidth="416.0">
@@ -232,7 +243,7 @@
                   </VBox>
                   <StackPane layoutX="108.0" layoutY="18.0">
                      <children>
-                        <Rectangle fx:id="rectangleImageEvent" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" onMouseClicked="#onEventImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
+                        <Rectangle fx:id="rectangleEnterImage" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" onMouseClicked="#onRectangleUploadImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
                         <Text fx:id="textAddEventPhoto" fill="#862ce4" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" text="+ Add Event Photo" wrappingWidth="104.53669261932373" />
                      </children>
                   </StackPane>
@@ -240,9 +251,9 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <Button fx:id="buttonSeeEvents" layoutX="73.0" layoutY="54.0" mnemonicParsing="false" onAction="#onButtonSeeEvents" prefHeight="26.0" prefWidth="94.0" text="See events" />
-      <Button fx:id="buttonVisibleCreate" layoutX="73.0" layoutY="112.0" mnemonicParsing="false" onAction="#onButtonVisibleCreate" prefHeight="26.0" prefWidth="94.0" text="Create event" />
-      <Button fx:id="buttonCancelEvent" focusTraversable="false" layoutX="73.0" layoutY="177.0" mnemonicParsing="false" onAction="#onCancelEventClick" prefHeight="26.0" prefWidth="94.0" text="Cancel" />
+      <Button fx:id="buttonSeeEvents" layoutX="73.0" layoutY="108.0" mnemonicParsing="false" onAction="#onButtonSeeAllEvents" prefHeight="26.0" prefWidth="94.0" text="All" />
+      <Button fx:id="buttonVisibleCreate" layoutX="73.0" layoutY="174.0" mnemonicParsing="false" onAction="#onButtonVisibleCreate" prefHeight="26.0" prefWidth="94.0" text="Create event" />
+      <Button fx:id="buttonCancelEvent" focusTraversable="false" layoutX="73.0" layoutY="381.0" mnemonicParsing="false" onAction="#onCancelEventClick" prefHeight="26.0" prefWidth="94.0" text="Cancel" />
       <HBox layoutX="170.0" layoutY="579.0" spacing="430.0">
          <children>
             <Button fx:id="buttonPreviousEvent" mnemonicParsing="false" onAction="#onButtonPreviousEventClick" styleClass="image_wrapper" text="Previous page">
@@ -265,6 +276,7 @@
             </Button>
          </children>
       </HBox>
+      <Button fx:id="buttonSeeSubscribed" layoutX="73.0" layoutY="53.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subr" />
    </children>
    <stylesheets>
       <URL value="@../../../style/styleEvents.css" />
