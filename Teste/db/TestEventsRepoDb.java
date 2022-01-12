@@ -41,8 +41,8 @@ public class TestEventsRepoDb {
         userRepo.save(new User("miruna", "lazar", "d@d.d"));
 
 
-        eventRepo.save(new Event(1, "Ziua izabelei", "Izabela", "Acasa", "Zi de nastere ","cel mai mare PArty", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 15)));
-        eventRepo.save(new Event(2, "Antold", "BOC ","CLuj napoca", "Festival","MD cu apa", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 25)));
+        eventRepo.save(new Event(1, "Ziua izabelei", "Izabela", "Acasa", "Zi de nastere ","cel mai mare PArty", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 15), "images/error.png"));
+        eventRepo.save(new Event(2, "Antold", "BOC ","CLuj napoca", "Festival","MD cu apa", LocalDate.of(2021, 8, 15), LocalDate.of(2021, 8, 25), "images/error.png"));
 
 
     }
@@ -55,10 +55,10 @@ public class TestEventsRepoDb {
     }
     @Test
     void testSave() throws SQLException {
-        eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate));
+        eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate, "images/error.png"));
         assertEquals(3, eventRepo.size());
         try{
-            eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate));
+            eventRepo.save(new Event(3,"ev1", "tester","loc1", "meetup", "desc1", startDate, endDate, "images/error.png"));
             fail();
         }
         catch (RepoException e){

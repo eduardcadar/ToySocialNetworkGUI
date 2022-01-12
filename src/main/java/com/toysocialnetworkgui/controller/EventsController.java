@@ -7,6 +7,8 @@ import com.toysocialnetworkgui.repository.db.DbException;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
+import com.toysocialnetworkgui.validator.ValidatorException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,9 +18,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -35,16 +46,36 @@ public class EventsController {
     @FXML
     protected TextField textFieldEventName;
 
+
+    @FXML
+    protected Text textEventName;
+
     @FXML
     protected TextField textFieldEventLocation;
+
     @FXML
-    protected TextField textFieldEventDescription;
+    protected Text textEventLocation;
+
+    @FXML
+    protected TextArea textCreateEventDescription;
+
+    @FXML
+    protected Text textShowEventDescription;
+
+    @FXML
+    protected Text addEventPhotoText;
 
     @FXML
     protected DatePicker datePickerEventStart;
 
     @FXML
+    protected Text textDateStart;
+
+    @FXML
     protected DatePicker datePickerEventEnd;
+
+    @FXML
+    protected Text textDateEnd;
 
     @FXML
     protected TableView<Event> tableViewEvents;
@@ -65,7 +96,41 @@ public class EventsController {
     @FXML
     protected Button buttonUnsubscribeEvent;
 
+    @FXML
+    Rectangle rectangleImageEvent;
+
+    @FXML
+    Rectangle imageSavedEvent;
+
+    @FXML
+    protected TextField textFieldCategory;
+
+    @FXML
+    protected Text textEventCategory;
+
+    @FXML
+    protected Text textAddEventPhoto;
+
+    boolean uploadedPhoto = false;
+
+    String lastEventPicturePath = "";
+    @FXML
+    AnchorPane  createEventPane;
+
+    @FXML
+    AnchorPane showEventPane;
+
+    @FXML
+    Button buttonVisibleCreate;
+
+    @FXML
+    Button buttonSeeEvents;
+
+
+
     public void initialize(Service service, User loggedUser, Stage window) {
+        uploadedPhoto = false;
+        lastEventPicturePath = "";
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
@@ -75,6 +140,9 @@ public class EventsController {
         Callback<DatePicker, DateCell> dontLetUserPickEarlyDate =dontLetUserPickEarlyDate();
 
         datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyDate);
+
+        showEventPane.setVisible(false);
+        createEventPane.setVisible(true);
     }
 
     /**
@@ -124,8 +192,8 @@ public class EventsController {
     }
 
     @FXML
-    protected void onCancelEventClick() throws IOException {
-        System.out.println("cancel");
+    protected void onCancelEventClick(ActionEvent event) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
@@ -135,15 +203,23 @@ public class EventsController {
     }
 
     public void onButtonCreateClick(ActionEvent event) throws IOException {
-        System.out.println("Create clicked");
+        if(!uploadedPhoto || lastEventPicturePath.isEmpty()){
+            MyAlert.StartAlert("Error", "Please upload a photo!", Alert.AlertType.ERROR);
+            return;
+        }
         String name = textFieldEventName.getText();
-        String location = textFieldEventLocation.getText();
-        String description = textFieldEventDescription.getText();
         LocalDate startDate = datePickerEventStart.getValue();
         LocalDate endDate = datePickerEventEnd.getValue();
+        String location = textFieldEventLocation.getText();
+        String category = textFieldCategory.getText();
+        String description = textCreateEventDescription.getText();
         String creator = loggedUser.getEmail();
-        String category = "test category";
-        service.addEvent(name,creator,location,category, description, startDate, endDate);
+        try{
+            service.addEvent(name,creator,location,category, description, startDate, endDate, lastEventPicturePath);
+        }
+        catch (ValidatorException | DbException | RepoException e){
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
+        }
         // TODO
         //  - do some notify observer here?
         setEventList(getEvents());
@@ -173,5 +249,75 @@ public class EventsController {
             initList();
         } else
             MyAlert.StartAlert("Error", "You didn't select any event!", Alert.AlertType.WARNING);
+    }
+
+    /**
+     * Renders in rectangle the image indicated by path
+     * @param rectangle
+     * @param path
+     */
+    public void putImagePathInRectangle(Rectangle rectangle, String path){
+        rectangle.setStroke(Color.web("#862CE4"));
+        rectangle.setStrokeWidth(2);
+        Image im = new Image(path);
+        rectangle.setFill(new ImagePattern(im));
+    }
+
+    public void onEventImageClick(MouseEvent mouseEvent) {
+        textAddEventPhoto.setVisible(false);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image", "*.jpg", "*.png", "*.jpeg")
+        );
+
+        fileChooser.setInitialDirectory(new File(".\\src\\main\\resources\\events"));
+        fileChooser.setTitle("Pick an image from this folder, please!");
+        File selectedFile = fileChooser.showOpenDialog(window);
+        if (selectedFile != null) {
+            String fullPath = selectedFile.getAbsolutePath();
+            String[] args = fullPath.split("resources");
+            if (args.length != 2 || !fullPath.contains("events")) {
+                MyAlert.StartAlert("Error", "Pick an image from this profile folder, please!", Alert.AlertType.ERROR);
+                return;
+            }
+            String pathToFile = args[1];
+            pathToFile = pathToFile.replace("\\", "/");
+            putImagePathInRectangle(rectangleImageEvent, pathToFile);
+            lastEventPicturePath = pathToFile;
+            uploadedPhoto = true;
+        }
+        else if(lastEventPicturePath.isEmpty()){
+            textAddEventPhoto.setVisible(true);
+        }
+
+    }
+    public void onButtonSeeEvents(ActionEvent event){
+        showEventPane.setVisible(true);
+        createEventPane.setVisible(false);
+        ///
+        populateSavedEvent(service.getAllEvents().get(0));
+        ///
+
+
+
+    }
+    public void onButtonVisibleCreate(ActionEvent event){
+        showEventPane.setVisible(false);
+        createEventPane.setVisible(true);
+    }
+
+    /**
+     * Place the details of the event in Anchor pane
+     * @param event
+     */
+    public void populateSavedEvent(Event event){
+        textEventName.setText(event.getName());
+        textDateStart.setText(event.getStart().toString());
+        textDateEnd.setText(event.getEnd().toString());
+        textEventLocation.setText(event.getLocation());
+        textEventCategory.setText(event.getCategory());
+        textShowEventDescription.setText(event.getDescription());
+        putImagePathInRectangle(imageSavedEvent, event.getPhotoPath());
+
     }
 }
