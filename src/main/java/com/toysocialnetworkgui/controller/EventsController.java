@@ -9,16 +9,12 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.validator.ValidatorException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -62,18 +58,7 @@ public class EventsController {
     @FXML
     protected DatePicker datePickerEventEnd;
 
-    @FXML
-    protected TableView<Event> tableViewEvents;
-    @FXML
-    protected TableColumn<Event, String> columnOrganizer;
-    @FXML
-    protected TableColumn<Event, String> columnName;
-    @FXML
-    protected TableColumn<Event, String> columnLocation;
-    @FXML
-    protected TableColumn<Event, String> columnDescription;
-    @FXML
-    protected ListView<Event> listEventsSubscribed;
+
     @FXML
     protected Button buttonSubscribeEvent;
     @FXML
@@ -121,9 +106,10 @@ public class EventsController {
         this.loggedUser = loggedUser;
         this.window = window;
         this.eventWantedView = view;
-        initTable();
-        initList();
-
+        if(eventWantedView == EventWantedView.SUBSCRIBED && service.getUserEventsSize(loggedUser.getEmail()) == 0) {
+            MyAlert.StartAlert("Alert!", "You didn't subscribe to any event", Alert.AlertType.INFORMATION);
+            return;
+        }
         switch (eventWantedView) {
             case ALL -> initializeAllEvents();
             case SUBSCRIBED -> initializeSubscribedEvents();
@@ -139,9 +125,12 @@ public class EventsController {
         buttonSeeSubscribed.setEffect(null);
         buttonVisibleCreate.setEffect(new DropShadow());
         showCreateView();
-        Callback<DatePicker, DateCell> dontLetUserPickEarlyDate = dontLetUserPickEarlyDate();
-        datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyDate);
+        Callback<DatePicker, DateCell> dontLetUserPickEarlyEnd = dontLetUserPickEarlyDateThanStart();
+        datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyEnd);
+        Callback<DatePicker, DateCell> dontLetUserPickEarlyStart = dontLetUserPickEarlyDateThanToday();
+        datePickerEventStart.setDayCellFactory(dontLetUserPickEarlyStart);
     }
+
 
     /**
      * Initialize subscribed events: Hide create view, Show pane for event printing
@@ -169,11 +158,33 @@ public class EventsController {
     }
 
     /**
+     * Don't let user enter a date before localDate.now()
+     * @return - callback
+     */
+    private Callback<DatePicker, DateCell> dontLetUserPickEarlyDateThanToday() {
+        return new Callback<>() {
+            @Override
+            public DateCell call (final DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        LocalDate today = LocalDate.now();
+                        setDisable(empty || item.compareTo(today) < 0);
+                    }
+
+                };
+            }
+        };
+
+    }
+
+    /**
      * Callback to not let user enter: i) end date before a start date
      *                                 ii) end date if you haven't picked a start date
      * @return - callback function
      */
-    Callback<DatePicker, DateCell> dontLetUserPickEarlyDate() {
+    Callback<DatePicker, DateCell> dontLetUserPickEarlyDateThanStart() {
         return new Callback<>() {
             @Override
             public DateCell call (final DatePicker param) {
@@ -191,27 +202,6 @@ public class EventsController {
                 };
             }
         };
-    }
-
-    private void initList() {
-        listEventsSubscribed.getItems().setAll(service.getUserEvents(loggedUser.getEmail()));
-    }
-
-    private void initTable() {
-        columnOrganizer.setCellValueFactory(new PropertyValueFactory<>("organizer"));
-        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-        columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        setEventList(getEvents());
-    }
-
-    private ObservableList<Event> getEvents() {
-        return FXCollections.observableArrayList(service
-                .getAllEvents());
-    }
-
-    private void setEventList(ObservableList<Event> events) {
-        tableViewEvents.setItems(events);
     }
 
     @FXML
@@ -242,9 +232,6 @@ public class EventsController {
         catch (ValidatorException | DbException | RepoException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
         }
-        // TODO
-        //  - do some notify observer here?
-        setEventList(getEvents());
         initialize(service, loggedUser, window, EventWantedView.ALL);
     }
 
@@ -256,7 +243,7 @@ public class EventsController {
         try {
             service.subscribeUserToEvent(currentEventId, loggedUser.getEmail());
             loadEvent();
-            initList();
+
         } catch (RepoException | DbException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }
@@ -269,7 +256,7 @@ public class EventsController {
         service.unsubscribeUserFromEvent(currentEventId, loggedUser.getEmail());
         if (pageNumber > 1) pageNumber--;
         loadEvent();
-        initList();
+
     }
 
     /**
@@ -329,9 +316,9 @@ public class EventsController {
     public void loadEvent() {
         int lastPage = getLastPageNumber();
         if (lastPage < 1) {
-            MyAlert.StartAlert("Error", "No events!", Alert.AlertType.WARNING);
             if (service.getEventsSize() == 0) initialize(service, loggedUser, window, EventWantedView.CREATE);
             else initialize(service, loggedUser, window, EventWantedView.ALL);
+          //  MyAlert.StartAlert("Error", "No events!", Alert.AlertType.WARNING);
             return;
         }
         buttonPreviousEvent.setVisible(pageNumber != 1);

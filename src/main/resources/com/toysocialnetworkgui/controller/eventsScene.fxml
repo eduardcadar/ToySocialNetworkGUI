@@ -5,9 +5,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -22,19 +19,6 @@
 
 <AnchorPane prefHeight="650.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.EventsController">
    <children>
-      <VBox layoutX="624.0" layoutY="66.0" prefHeight="482.0" prefWidth="264.0">
-         <children>
-            <ListView fx:id="listEventsSubscribed" prefHeight="200.0" prefWidth="234.0" />
-            <TableView fx:id="tableViewEvents" focusTraversable="false" prefHeight="174.0" prefWidth="420.0">
-              <columns>
-                <TableColumn fx:id="columnOrganizer" prefWidth="75.0" text="C1" />
-                <TableColumn fx:id="columnName" prefWidth="75.0" text="C2" />
-                  <TableColumn fx:id="columnLocation" prefWidth="75.0" text="Column X" />
-                  <TableColumn fx:id="columnDescription" prefWidth="75.0" text="Column X" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
       <StackPane layoutX="208.0">
          <children>
             <AnchorPane fx:id="showEventPane" prefHeight="650.0" prefWidth="416.0">
@@ -229,7 +213,7 @@
                   <StackPane layoutX="108.0" layoutY="18.0">
                      <children>
                         <Rectangle fx:id="rectangleEnterImage" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="182.0" onMouseClicked="#onRectangleUploadImageClick" stroke="#862ce4" strokeType="INSIDE" styleClass="event_image" width="200.0" />
-                        <Text fx:id="textAddEventPhoto" fill="#862ce4" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" text="+ Add Event Photo" wrappingWidth="104.53669261932373" />
+                        <Text fx:id="textAddEventPhoto" fill="#862ce4" onMouseClicked="#onRectangleUploadImageClick" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-cursor: hand;" text="+ Add Event Photo" wrappingWidth="104.53669261932373" />
                      </children>
                   </StackPane>
                </children>

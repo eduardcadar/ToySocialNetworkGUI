@@ -111,6 +111,11 @@ public class EventsSubscriptionDbRepo implements Observable {
         return eventsIds;
     }
 
+    /**
+     * Return the number of events that user are subscribed to it
+     * @param email
+     * @return
+     */
     public int getUserEventsSize(String email) {
         String sql = "SELECT COUNT(*) AS size FROM " + tableName +
                 " WHERE user_email = ?";
