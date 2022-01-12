@@ -13,7 +13,7 @@
                 <Label text="Choose report period" />
                 <DatePicker fx:id="datePickerFrom" promptText="From" />
                 <DatePicker fx:id="datePickerUntil" promptText="Until" />
-                <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#onButtonGenerateClick" text="Generate report" />
+                <Button fx:id="buttonGenerate" alignment="CENTER" mnemonicParsing="false" onAction="#onButtonGenerateClick" text="Generate report" textFill="WHITE" />
             </children>
         </VBox>
     </children>

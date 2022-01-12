@@ -252,7 +252,13 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
             while (res.next()) {
                 String email1 = res.getString("email1");
                 String email2 = res.getString("email2");
-                fships.add(new Friendship(email1, email2));
+                String date = res.getString("date");// 2021-12-15
+                String[] args = date.split("-");
+                int year = Integer.parseInt(args[0]);
+                int month = Integer.parseInt(args[1]);
+                int day = Integer.parseInt(args[2]);
+                LocalDate localDate = LocalDate.of(year,month,day);
+                fships.add(new Friendship(email1, email2,localDate));
             }
             return fships;
         } catch (SQLException e) {

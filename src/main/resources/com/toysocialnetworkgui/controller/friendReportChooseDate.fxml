@@ -15,7 +15,7 @@
             <Label text="Choose period for messages" />
             <DatePicker fx:id="datePickerFrom" promptText="From" />
             <DatePicker fx:id="datePickerUntil" promptText="Until" />
-            <Button fx:id="buttonGenerate" mnemonicParsing="false" onAction="#onButtonGenerateClick" text="Generate report" />
+            <Button fx:id="buttonGenerate" alignment="CENTER" mnemonicParsing="false" onAction="#onButtonGenerateClick" text="Generate report" textFill="WHITE" />
          </children>
       </VBox>
       <ListView fx:id="listViewFriends" prefHeight="320.0" prefWidth="259.0" />
