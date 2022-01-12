@@ -151,7 +151,6 @@ public class EventDbRepo implements EventRepository {
         try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps =  connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-            resultSet.next();
             if (resultSet.next())
                 return resultSet.getInt("size");
         } catch (SQLException throwables) {

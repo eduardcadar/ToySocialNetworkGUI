@@ -330,7 +330,8 @@ public class EventsController {
         int lastPage = getLastPageNumber();
         if (lastPage < 1) {
             MyAlert.StartAlert("Error", "No events!", Alert.AlertType.WARNING);
-            initialize(service, loggedUser, window, EventWantedView.ALL);
+            if (service.getEventsSize() == 0) initialize(service, loggedUser, window, EventWantedView.CREATE);
+            else initialize(service, loggedUser, window, EventWantedView.ALL);
             return;
         }
         buttonPreviousEvent.setVisible(pageNumber != 1);
