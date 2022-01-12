@@ -220,9 +220,9 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <Button fx:id="buttonSeeEvents" layoutX="73.0" layoutY="108.0" mnemonicParsing="false" onAction="#onButtonSeeAllEvents" prefHeight="26.0" prefWidth="94.0" text="All" />
-      <Button fx:id="buttonVisibleCreate" layoutX="73.0" layoutY="174.0" mnemonicParsing="false" onAction="#onButtonVisibleCreate" prefHeight="26.0" prefWidth="94.0" text="Create event" />
-      <Button fx:id="buttonCancelEvent" focusTraversable="false" layoutX="73.0" layoutY="381.0" mnemonicParsing="false" onAction="#onCancelEventClick" prefHeight="26.0" prefWidth="94.0" text="Cancel" />
+      <Button fx:id="buttonSeeEvents" layoutX="153.0" layoutY="38.0" mnemonicParsing="false" onAction="#onButtonSeeAllEvents" prefHeight="26.0" prefWidth="94.0" text="All" />
+      <Button fx:id="buttonVisibleCreate" layoutX="669.0" layoutY="38.0" mnemonicParsing="false" onAction="#onButtonVisibleCreate" prefHeight="26.0" prefWidth="94.0" text="Create event" />
+      <Button fx:id="buttonCancelEvent" focusTraversable="false" layoutX="28.0" layoutY="581.0" mnemonicParsing="false" onAction="#onCancelEventClick" prefHeight="26.0" prefWidth="94.0" text="Cancel" />
       <HBox layoutX="170.0" layoutY="579.0" spacing="430.0">
          <children>
             <Button fx:id="buttonPreviousEvent" mnemonicParsing="false" onAction="#onButtonPreviousEventClick" styleClass="image_wrapper" text="Previous page">
@@ -245,7 +245,7 @@
             </Button>
          </children>
       </HBox>
-      <Button fx:id="buttonSeeSubscribed" layoutX="73.0" layoutY="53.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subscribed" />
+      <Button fx:id="buttonSeeSubscribed" layoutX="28.0" layoutY="38.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subscribed" />
    </children>
    <stylesheets>
       <URL value="@../../../style/styleEvents.css" />
