@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportController">
+<AnchorPane prefHeight="682.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportController">
    <children>
-      <HBox prefHeight="390.0" prefWidth="783.0" spacing="10.0">
+      <HBox layoutX="87.0" layoutY="12.0" prefHeight="390.0" prefWidth="683.0" spacing="10.0">
          <children>
             <VBox alignment="CENTER" prefHeight="390.0" prefWidth="238.0">
                <children>
@@ -28,13 +28,31 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="TOP_RIGHT" layoutX="401.0" layoutY="390.0" spacing="10.0">
+      <HBox alignment="TOP_RIGHT" layoutX="516.0" layoutY="402.0" spacing="10.0">
          <children>
             <TextField fx:id="textFieldFilename" promptText="file name" />
             <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to pdf" textFill="WHITE" />
          </children>
       </HBox>
-      <PieChart fx:id="pieChartActivities" layoutX="14.0" layoutY="436.0" prefHeight="200.0" prefWidth="225.0" title="All Time New Friends" />
-      <PieChart layoutX="347.0" layoutY="436.0" prefHeight="200.0" prefWidth="246.0" title="Top People Conversation With" />
+      <VBox alignment="CENTER" layoutX="87.0" layoutY="434.0">
+         <children>
+            <PieChart fx:id="pieChartFriendships" prefHeight="200.0" prefWidth="225.0" title="All Time New Friends" />
+            <Label fx:id="captionFriendships" text="Hover slice to get detailed statistics!">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="448.0" layoutY="436.0">
+         <children>
+            <PieChart fx:id="pieChartMessages" prefHeight="200.0" prefWidth="246.0" title="Top People Conversation With" />
+            <Label fx:id="captionMessages" text="Hover slice to get detailed statistics!">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

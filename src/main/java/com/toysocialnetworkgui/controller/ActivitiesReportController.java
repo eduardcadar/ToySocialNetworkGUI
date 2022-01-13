@@ -1,15 +1,11 @@
 package com.toysocialnetworkgui.controller;
 
-import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
 import com.toysocialnetworkgui.utils.UserMessageDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
@@ -19,7 +15,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -28,12 +23,12 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class ActivitiesReportController {
     @FXML
@@ -50,7 +45,16 @@ public class ActivitiesReportController {
     private AnchorPane rightPane;
 
     @FXML
-    protected PieChart pieChartActivities;
+    protected PieChart pieChartFriendships;
+
+    @FXML
+    protected PieChart pieChartMessages;
+
+    @FXML
+    protected Label captionFriendships;
+
+    @FXML
+    protected Label captionMessages;
 
     public void initialize(Service service, User loggedUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
@@ -60,51 +64,87 @@ public class ActivitiesReportController {
         loadMessages(dateFrom, dateUntil);
 
         populateAllTimeFriendStatistics();
+        populateAllTimeMessagesStatistics();
+    }
+
+    private void populateAllTimeMessagesStatistics() {
+        HashMap<String, Integer> convFrq =  new HashMap<>();
+        service.getUserMessageDTOs(loggedUser.getEmail()).forEach(
+                        p ->{
+                            String sender = p.getSender().getFirstName() + " " + p.getSender().getLastName();
+                            if(convFrq.get(sender) == null)
+                                convFrq.put(sender, 1);
+                            else{
+                                int frqOld = convFrq.get(sender);
+                                convFrq.put(sender, frqOld + 1);
+                            }
+                        }
+                );
+            for(Map.Entry<String, Integer> senderFr : convFrq.entrySet()){
+                pieChartMessages.getData().add(new PieChart.Data(senderFr.getKey(), senderFr.getValue() ));
+            }
+        for (final PieChart.Data data : pieChartMessages.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    e -> {
+                        String label = String.valueOf(Math.round(data.getPieValue()));
+                        if( Math.round(data.getPieValue()) == 1)
+                             label += " message from " + data.getName();
+                        else
+                            label += " messages from " + data.getName().toLowerCase(Locale.ROOT);
+                            captionMessages.setText(label);
+                    });
+            data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+                    e -> {
+                        String label = "Hover slice to get detailed statistics!";
+                        captionMessages.setText(label);
+                    });
+
+        }
+
+        pieChartMessages.setLabelsVisible(true);
+        pieChartMessages.setLabelLineLength(10);
+        pieChartMessages.setLegendSide(Side.BOTTOM);
 
     }
 
     private void populateAllTimeFriendStatistics() {
-        HashMap<Month, Integer> months_number= new HashMap<>();
+        HashMap<Month, Integer> monthsFrq = new HashMap<>();
         Month[] months = Month.values();
         for(Month m : months)
-            months_number.put(m, 0);
+            monthsFrq.put(m, 0);
         service.getFriendshipsDTO(loggedUser.getEmail())
                 .forEach( p -> {
                     LocalDate date = p.getDate();
                     Month month = date.getMonth();
-                    Integer frq = months_number.get(month);
-                    months_number.put(month, frq + 1);
+                    Integer frq = monthsFrq.get(month);
+                    monthsFrq.put(month, frq + 1);
                 });
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                        new PieChart.Data("January", months_number.get(Month.JANUARY)),
-                        new PieChart.Data("February", months_number.get(Month.FEBRUARY)),
-                        new PieChart.Data("March", months_number.get(Month.MARCH)),
-                        new PieChart.Data("April", months_number.get(Month.APRIL)),
-                        new PieChart.Data("May", months_number.get(Month.MAY)),
-                        new PieChart.Data("June", months_number.get(Month.JUNE)),
-                        new PieChart.Data("July", months_number.get(Month.JULY)),
-                        new PieChart.Data("August", months_number.get(Month.AUGUST)),
-                        new PieChart.Data("September", months_number.get(Month.SEPTEMBER)),
-                        new PieChart.Data("October", months_number.get(Month.OCTOBER)),
-                        new PieChart.Data("November", months_number.get(Month.NOVEMBER)),
-                        new PieChart.Data("December", months_number.get(Month.DECEMBER)));
-        pieChartActivities.setData(pieChartData);
-        pieChartActivities.setLabelLineLength(10);
-        pieChartActivities.setLegendSide(Side.LEFT);
+        for(Map.Entry<Month, Integer> monthFr : monthsFrq.entrySet()){
+            pieChartFriendships.getData().add(new PieChart.Data(monthFr.getKey().toString(), monthFr.getValue() ));
+        }
 
+        pieChartFriendships.setLabelsVisible(true);
+        pieChartFriendships.setLabelLineLength(10);
+        pieChartFriendships.setLegendSide(Side.LEFT);
 
-        final Label caption = new Label("");
-        caption.setTextFill(Color.DARKORANGE);
-        caption.setStyle("-fx-font: 24 arial;");
-
-        for (final PieChart.Data data : pieChartActivities.getData()) {
-            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+        System.out.println(pieChartFriendships.getData());
+        for (final PieChart.Data data : pieChartFriendships.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
                     e -> {
-                        caption.setTranslateX(e.getSceneX());
-                        caption.setTranslateY(e.getSceneY());
-                        caption.setText(data.getPieValue() + "%");
+
+                        String label = data.getName().toLowerCase() + " : " + Math.round(data.getPieValue());
+                        if( Math.round(data.getPieValue()) == 1)
+                            label += " friendship";
+                        else
+                            label += " friendships";
+                        captionFriendships.setText(label);
                     });
+            data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+                    e -> {
+                        String label = "Hover slice to get detailed statistics!";
+                        captionFriendships.setText(label);
+                    });
+
         }
     }
 
