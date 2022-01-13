@@ -12,14 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRepository {
-    private final String url, username, password, tableName;
+    private final String url, username, password, requestsTable, friendshipsTable;
 
-    public FriendshipRequestDbRepo(String url, String username, String password, String tableName){
+    public FriendshipRequestDbRepo(String url, String username, String password, String requestsTable, String friendshipsTable) {
         this.url = url;
         this.username = username;
         this.password = password;
-        this.tableName = tableName;
-        String sql = "CREATE TABLE IF NOT EXISTS " + tableName +
+        this.requestsTable = requestsTable;
+        this.friendshipsTable = friendshipsTable;
+        String sql = "CREATE TABLE IF NOT EXISTS " + requestsTable +
                 "(email1 varchar," +
                 " email2 varchar," +
                 " requeststate varchar DEFAULT 'PENDING'," +
@@ -27,7 +28,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
                 " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
                 " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
                 ")";
-        String updateTableAddSendDate = "ALTER TABLE " + tableName +
+        String updateTableAddSendDate = "ALTER TABLE " + requestsTable +
                 " ADD COLUMN IF NOT EXISTS sendDate varchar DEFAULT '0001-01-01' ";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -44,7 +45,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
         if (getRequest(request.getFirst(), request.getSecond()) != null) {
             throw new RepoException("There is already a request sent by user");
         }
-        String sql = "INSERT INTO " + tableName + " (email1, email2, requeststate, sendDate) values (?, ?, ?,?) ";
+        String sql = "INSERT INTO " + requestsTable + " (email1, email2, requeststate, sendDate) values (?, ?, ?,?) ";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, request.getFirst());
@@ -60,7 +61,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
     }
 
     public void clear() {
-        String sql = "DELETE FROM " + tableName;
+        String sql = "DELETE FROM " + requestsTable;
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
@@ -76,7 +77,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
 
     public List<FriendshipRequest> getAll() {
         ArrayList<FriendshipRequest> friendshipRequests = new ArrayList<>();
-        String sql = "SELECT * FROM " + tableName;
+        String sql = "SELECT * FROM " + requestsTable;
         try (Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
@@ -94,7 +95,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
     }
 
     public FriendshipRequest getRequest(String email1, String email2) {
-        String sql = "SELECT * FROM " + tableName + " WHERE (email1 = ? AND email2 = ?)";
+        String sql = "SELECT * FROM " + requestsTable + " WHERE (email1 = ? AND email2 = ?)";
         try (Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, email1);
@@ -119,7 +120,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
     public void removeRequest(FriendshipRequest friendshipRequest) {
         if (getRequest(friendshipRequest.getFirst(),friendshipRequest.getSecond()) == null)
             throw new RepoException("Friendship request doesn't exists");
-        String sql = "DELETE FROM " + tableName + " WHERE (email1 = ? AND email2 = ?) ";
+        String sql = "DELETE FROM " + requestsTable + " WHERE (email1 = ? AND email2 = ?) ";
         try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, friendshipRequest.getFirst());
@@ -137,16 +138,21 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
 
     @Override
     public void update(FriendshipRequest request) {
-        String sql = "UPDATE " + tableName +
+        String sql = "UPDATE " + requestsTable +
                 " SET requeststate = ?" +
                 " WHERE (email1 = ? AND email2 = ?)";
-        try (Connection connection = DriverManager.getConnection(url,username,password)) {
-            PreparedStatement ps = connection.prepareStatement(sql);
+        String sql2 = "INSERT INTO " + friendshipsTable + " (email1, email2, date) VALUES (?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(url,username,password);
+        PreparedStatement ps = connection.prepareStatement(sql);
+        PreparedStatement ps2 = connection.prepareStatement(sql2)) {
             ps.setString(1, request.getState().toString());
             ps.setString(2, request.getFirst());
             ps.setString(3, request.getSecond());
             ps.executeUpdate();
-            notifyObservers();
+            ps2.setString(1, request.getFirst());
+            ps2.setString(2, request.getSecond());
+            ps2.setString(3, LocalDate.now().toString());
+            ps2.executeUpdate();
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -160,7 +166,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
     @Override
     public List<String> getPendingFriendRequestsReceived(String email) {
         ArrayList<String> friends = new ArrayList<>();
-        String sql = "SELECT * FROM " + tableName + " WHERE email2 = ? AND requeststate = ?";
+        String sql = "SELECT * FROM " + requestsTable + " WHERE email2 = ? AND requeststate = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);

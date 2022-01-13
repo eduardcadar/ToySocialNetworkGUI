@@ -24,7 +24,7 @@ public class TestFriendshipRequestRepoDb {
     private final User us2 = new User("alex", "popescu", "two@gmail.com");
     private final User us3 = new User("maria", "lazar", "three@gmail.com");
     private final User us4 = new User("gabriel", "andrei", "for@gmail.com");
-    private final FriendshipRequestDbRepo friendshipRequestDbRepo = new FriendshipRequestDbRepo(url, username, password, "requests");
+    private final FriendshipRequestDbRepo friendshipRequestDbRepo = new FriendshipRequestDbRepo(url, username, password, "requests", "friendships");
     private final FriendshipRequest f1 = new FriendshipRequest(us1, us2);
     private final FriendshipRequest f2 = new FriendshipRequest(us1, us3);
     private final FriendshipRequest f3 = new FriendshipRequest(us2, us4);

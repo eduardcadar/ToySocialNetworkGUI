@@ -8,6 +8,7 @@ import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
+import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.utils.CommonFriendsDTO;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipService {
+
     private final FriendshipDbRepo friendshipRepository;
     private final FriendshipRequestDbRepo requestRepository;
     public FriendshipService(FriendshipDbRepo friendshipRepository, FriendshipRequestDbRepo requestRepository) {
@@ -115,7 +117,9 @@ public class FriendshipService {
             if (request.getState() == REQUESTSTATE.PENDING) {
                 request.setState(REQUESTSTATE.APPROVED);
                 requestRepository.update(request);
-                friendshipRepository.addFriendship(new Friendship(email1, email2, LocalDate.now()));
+//                friendshipRepository.addFriendship(new Friendship(email1, email2, LocalDate.now()));
+                requestRepository.notifyObservers();
+                friendshipRepository.notifyObservers();
             }
         }
     }
