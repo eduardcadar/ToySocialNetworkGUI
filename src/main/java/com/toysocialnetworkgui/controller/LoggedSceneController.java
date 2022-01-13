@@ -93,8 +93,6 @@ public class LoggedSceneController implements Observer {
         }
         setupProfilePicture();
 
-        buttonStartNotifications.setVisible(false);
-        buttonStopNotifications.setVisible(true);
         startTask();
     }
 
@@ -104,8 +102,7 @@ public class LoggedSceneController implements Observer {
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
-        Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
-        window.setScene(scene);
+        window.getScene().setRoot(root);
     }
 
     @FXML
