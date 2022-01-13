@@ -8,9 +8,12 @@ import com.toysocialnetworkgui.utils.UserMessageDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -21,7 +24,11 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class ActivitiesReportController {
     @FXML
@@ -37,12 +44,106 @@ public class ActivitiesReportController {
     private User loggedUser;
     private AnchorPane rightPane;
 
+    @FXML
+    protected PieChart pieChartFriendships;
+
+    @FXML
+    protected PieChart pieChartMessages;
+
+    @FXML
+    protected Label captionFriendships;
+
+    @FXML
+    protected Label captionMessages;
+
     public void initialize(Service service, User loggedUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.rightPane = rightPane;
         loadFriends(dateFrom, dateUntil);
         loadMessages(dateFrom, dateUntil);
+
+        populateAllTimeFriendStatistics();
+        populateAllTimeMessagesStatistics();
+    }
+
+    private void populateAllTimeMessagesStatistics() {
+        HashMap<String, Integer> convFrq =  new HashMap<>();
+        service.getUserMessageDTOs(loggedUser.getEmail()).forEach(
+                        p ->{
+                            String sender = p.getSender().getFirstName() + " " + p.getSender().getLastName();
+                            if(convFrq.get(sender) == null)
+                                convFrq.put(sender, 1);
+                            else{
+                                int frqOld = convFrq.get(sender);
+                                convFrq.put(sender, frqOld + 1);
+                            }
+                        }
+                );
+            for(Map.Entry<String, Integer> senderFr : convFrq.entrySet()){
+                pieChartMessages.getData().add(new PieChart.Data(senderFr.getKey(), senderFr.getValue() ));
+            }
+        for (final PieChart.Data data : pieChartMessages.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    e -> {
+                        String label = String.valueOf(Math.round(data.getPieValue()));
+                        if( Math.round(data.getPieValue()) == 1)
+                             label += " message from " + data.getName();
+                        else
+                            label += " messages from " + data.getName().toLowerCase(Locale.ROOT);
+                            captionMessages.setText(label);
+                    });
+            data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+                    e -> {
+                        String label = "Hover slice to get detailed statistics!";
+                        captionMessages.setText(label);
+                    });
+
+        }
+        pieChartMessages.setAnimated(true);
+        pieChartMessages.setLabelsVisible(true);
+        pieChartMessages.setLabelLineLength(10);
+        pieChartMessages.setLegendSide(Side.BOTTOM);
+
+    }
+
+    private void populateAllTimeFriendStatistics() {
+        HashMap<Month, Integer> monthsFrq = new HashMap<>();
+        Month[] months = Month.values();
+        for(Month m : months)
+            monthsFrq.put(m, 0);
+        service.getFriendshipsDTO(loggedUser.getEmail())
+                .forEach( p -> {
+                    LocalDate date = p.getDate();
+                    Month month = date.getMonth();
+                    Integer frq = monthsFrq.get(month);
+                    monthsFrq.put(month, frq + 1);
+                });
+        for(Map.Entry<Month, Integer> monthFr : monthsFrq.entrySet()){
+            pieChartFriendships.getData().add(new PieChart.Data(monthFr.getKey().toString(), monthFr.getValue() ));
+        }
+        pieChartFriendships.setAnimated(true);
+        pieChartFriendships.setLabelsVisible(true);
+        pieChartFriendships.setLabelLineLength(10);
+        pieChartFriendships.setLegendSide(Side.LEFT);
+        for (final PieChart.Data data : pieChartFriendships.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
+                    e -> {
+
+                        String label = data.getName().toLowerCase() + " : " + Math.round(data.getPieValue());
+                        if( Math.round(data.getPieValue()) == 1)
+                            label += " friendship";
+                        else
+                            label += " friendships";
+                        captionFriendships.setText(label);
+                    });
+            data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+                    e -> {
+                        String label = "Hover slice to get detailed statistics!";
+                        captionFriendships.setText(label);
+                    });
+
+        }
     }
 
     private void loadFriends(LocalDate dateFrom, LocalDate dateUntil) {
@@ -63,11 +164,17 @@ public class ActivitiesReportController {
 
     @FXML
     protected void onButtonExportClick(ActionEvent event) throws IOException {
-        if (textFieldFilename.getText().isBlank())
+        if (textFieldFilename.getText().isBlank()) {
+            MyAlert.StartAlert("Error!", "Please choose a file name!", Alert.AlertType.ERROR);
             return;
+        }
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Save location");
         File selectedDirectory = chooser.showDialog(((Node)event.getSource()).getScene().getWindow());
+        if(selectedDirectory == null){
+            MyAlert.StartAlert("Error!", "Please choose a directory!", Alert.AlertType.ERROR);
+            return;
+        }
         String path = selectedDirectory.getAbsolutePath();
         path = path.concat("\\" + textFieldFilename.getText() + ".pdf");
         try {

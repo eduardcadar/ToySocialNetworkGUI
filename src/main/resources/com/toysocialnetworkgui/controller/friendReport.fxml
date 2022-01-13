@@ -19,7 +19,7 @@
       <HBox alignment="TOP_RIGHT" spacing="10.0">
          <children>
             <TextField fx:id="textFieldFilename" prefHeight="26.0" prefWidth="251.0" promptText="file name" />
-            <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to PDF" />
+            <Button fx:id="buttonExport" alignment="CENTER" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to PDF" textFill="WHITE" />
          </children>
       </HBox>
    </children>
