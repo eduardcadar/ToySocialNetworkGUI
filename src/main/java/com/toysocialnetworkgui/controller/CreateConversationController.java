@@ -108,12 +108,12 @@ public class CreateConversationController {
         List<String> participantsEmails = new ArrayList<>();
         participantsEmails.add(loggedUser.getEmail());
         listConversationFriends.getItems().forEach(f -> participantsEmails.add(f.getEmail()));
-        service.getConversation(participantsEmails);
+        int convId = service.getConversation(participantsEmails).getID();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("conversationScene.fxml"));
         Parent root = loader.load();
         ConversationController controller = loader.getController();
-        controller.initialize(service, loggedUser, rightPane);
+        controller.initialize(service, loggedUser, rightPane, convId);
         rightPane.getChildren().setAll(root);
     }
 }
