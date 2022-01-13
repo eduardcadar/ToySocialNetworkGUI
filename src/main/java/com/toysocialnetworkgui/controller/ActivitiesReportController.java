@@ -100,7 +100,7 @@ public class ActivitiesReportController {
                     });
 
         }
-
+        pieChartMessages.setAnimated(true);
         pieChartMessages.setLabelsVisible(true);
         pieChartMessages.setLabelLineLength(10);
         pieChartMessages.setLegendSide(Side.BOTTOM);
@@ -122,12 +122,10 @@ public class ActivitiesReportController {
         for(Map.Entry<Month, Integer> monthFr : monthsFrq.entrySet()){
             pieChartFriendships.getData().add(new PieChart.Data(monthFr.getKey().toString(), monthFr.getValue() ));
         }
-
+        pieChartFriendships.setAnimated(true);
         pieChartFriendships.setLabelsVisible(true);
         pieChartFriendships.setLabelLineLength(10);
         pieChartFriendships.setLegendSide(Side.LEFT);
-
-        System.out.println(pieChartFriendships.getData());
         for (final PieChart.Data data : pieChartFriendships.getData()) {
             data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
                     e -> {

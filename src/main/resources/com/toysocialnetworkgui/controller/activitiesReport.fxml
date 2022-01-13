@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="682.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportController">
    <children>
       <HBox layoutX="87.0" layoutY="12.0" prefHeight="390.0" prefWidth="683.0" spacing="10.0">
          <children>
@@ -36,7 +36,7 @@
       </HBox>
       <VBox alignment="CENTER" layoutX="87.0" layoutY="434.0">
          <children>
-            <PieChart fx:id="pieChartFriendships" prefHeight="200.0" prefWidth="225.0" title="All Time New Friends" />
+            <PieChart fx:id="pieChartFriendships" prefHeight="98.0" prefWidth="238.0" title="All Time New Friends" />
             <Label fx:id="captionFriendships" text="Hover slice to get detailed statistics!">
                <font>
                   <Font size="15.0" />
@@ -46,7 +46,7 @@
       </VBox>
       <VBox alignment="CENTER" layoutX="448.0" layoutY="436.0">
          <children>
-            <PieChart fx:id="pieChartMessages" prefHeight="200.0" prefWidth="246.0" title="Top People Conversation With" />
+            <PieChart fx:id="pieChartMessages" prefHeight="125.0" prefWidth="246.0" title="Top People Conversation With" />
             <Label fx:id="captionMessages" text="Hover slice to get detailed statistics!">
                <font>
                   <Font size="15.0" />
