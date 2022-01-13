@@ -246,6 +246,20 @@
          </children>
       </HBox>
       <Button fx:id="buttonSeeSubscribed" layoutX="28.0" layoutY="38.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subscribed" />
+      <HBox layoutX="28.0" layoutY="99.0" spacing="5.0">
+         <children>
+            <TextField fx:id="textFieldSearch" prefHeight="26.0" prefWidth="193.0" promptText="Search event" />
+            <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchClick" styleClass="image_wrapper" text="Search">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/magnifier.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <stylesheets>
       <URL value="@../../../style/styleEvents.css" />

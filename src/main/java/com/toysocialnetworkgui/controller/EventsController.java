@@ -58,7 +58,6 @@ public class EventsController {
     @FXML
     protected DatePicker datePickerEventEnd;
 
-
     @FXML
     protected Button buttonSubscribeEvent;
     @FXML
@@ -94,10 +93,15 @@ public class EventsController {
     Button buttonPreviousEvent;
     @FXML
     Button buttonNextEvent;
+    @FXML
+    TextField textFieldSearch;
+    @FXML
+    Button buttonSearch;
 
     private int pageNumber;
     private EventWantedView eventWantedView;
     private int currentEventId;
+    private String currentPattern;
 
     public void initialize(Service service, User loggedUser, Stage window, EventWantedView view) {
         uploadedPhoto = false;
@@ -105,11 +109,13 @@ public class EventsController {
         this.service = service;
         this.loggedUser = loggedUser;
         this.window = window;
-        this.eventWantedView = view;
-        if(eventWantedView == EventWantedView.SUBSCRIBED && service.getUserEventsSize(loggedUser.getEmail()) == 0) {
+        if (view == EventWantedView.SUBSCRIBED && service.getFilteredUserEventsSize(loggedUser.getEmail(), "") == 0) {
             MyAlert.StartAlert("Alert!", "You didn't subscribe to any event", Alert.AlertType.INFORMATION);
             return;
         }
+        textFieldSearch.clear();
+        this.currentPattern = "";
+        this.eventWantedView = view;
         switch (eventWantedView) {
             case ALL -> initializeAllEvents();
             case SUBSCRIBED -> initializeSubscribedEvents();
@@ -318,16 +324,15 @@ public class EventsController {
         if (lastPage < 1) {
             if (service.getEventsSize() == 0) initialize(service, loggedUser, window, EventWantedView.CREATE);
             else initialize(service, loggedUser, window, EventWantedView.ALL);
-          //  MyAlert.StartAlert("Error", "No events!", Alert.AlertType.WARNING);
             return;
         }
         buttonPreviousEvent.setVisible(pageNumber != 1);
         buttonNextEvent.setVisible(pageNumber != lastPage);
         Event event;
         if (eventWantedView == EventWantedView.SUBSCRIBED)
-            event = service.getUserEventsPage(loggedUser.getEmail(), pageNumber, 1).get(0);
+            event = service.getFilteredUserEventsPage(loggedUser.getEmail(), pageNumber, 1, currentPattern).get(0);
         else if (eventWantedView == EventWantedView.ALL)
-            event = service.getEventsPage(pageNumber, 1).get(0);
+            event = service.getFilteredEventsPage(pageNumber, 1, currentPattern).get(0);
         else {
             MyAlert.StartAlert("Error", "Error on loading event", Alert.AlertType.WARNING);
             return;
@@ -337,6 +342,13 @@ public class EventsController {
         buttonUnsubscribeEvent.setVisible(isSubscribedToCurrentEvent);
         buttonSubscribeEvent.setVisible(!isSubscribedToCurrentEvent);
         populateSavedEvent(event);
+    }
+
+    @FXML
+    protected void onButtonSearchClick() {
+        currentPattern = textFieldSearch.getText();
+        pageNumber = 1;
+        loadEvent();
     }
 
     @FXML
@@ -356,8 +368,8 @@ public class EventsController {
     }
 
     private int getLastPageNumber() {
-        if (eventWantedView == EventWantedView.SUBSCRIBED) return service.getUserEventsSize(loggedUser.getEmail());
-        if (eventWantedView == EventWantedView.ALL) return service.getAllEvents().size();
+        if (eventWantedView == EventWantedView.SUBSCRIBED) return service.getFilteredUserEventsSize(loggedUser.getEmail(), currentPattern);
+        if (eventWantedView == EventWantedView.ALL) return service.getFilteredEventsSize(currentPattern);
         return 0;
     }
 
