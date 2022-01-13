@@ -1,18 +1,19 @@
 package com.toysocialnetworkgui.controller;
 
+import com.toysocialnetworkgui.domain.EventWantedView;
 import com.toysocialnetworkgui.domain.User;
-import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
-import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.ConversationService;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
+import com.toysocialnetworkgui.utils.MyAlert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -105,7 +106,7 @@ public class LoggedSceneController implements Observer {
         lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
 
         textUserFullName.setText(firstName + " "+ lastName);
-        textNrEvents.setText(String.valueOf(service.getEventsForUser(loggedUser.getEmail()).size()));
+        textNrEvents.setText(String.valueOf(service.getUserEvents(loggedUser.getEmail()).size()));
         textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
         textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
     }
@@ -162,7 +163,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
         Parent dashboard = fxmlLoader.load();
         EventsController controller = fxmlLoader.getController();
-        controller.initialize(service, loggedUser, window);
+        controller.initialize(service, loggedUser, window, EventWantedView.ALL);
         rightPane.getChildren().setAll(dashboard);
     }
 
@@ -197,13 +198,18 @@ public class LoggedSceneController implements Observer {
      * + Show the events in a drop box maybe?
      */
     @FXML
-    public void clearNotificationImage() {
-        System.out.print("Subscribed events: ");
-        service.getUserUpcomingEvents(loggedUser.getEmail()).forEach(System.out::println);
-        imageViewNotification.setImage(new Image("images/no_notification.png"));
-        // TODO
-        //  - Show only the subscribed events somewhere
+    public void clearNotificationImage() throws IOException {
+        if (service.getUserEventsSize(loggedUser.getEmail()) == 0) {
+            MyAlert.StartAlert("Alert!", "You didn't subscribe to any event", Alert.AlertType.INFORMATION);
+            return;
+        }
 
+        imageViewNotification.setImage(new Image("images/no_notification.png"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("eventsScene.fxml"));
+        Parent dashboard = fxmlLoader.load();
+        EventsController controller = fxmlLoader.getController();
+        controller.initialize(service, loggedUser, window, EventWantedView.SUBSCRIBED);
+        rightPane.getChildren().setAll(dashboard);
     }
 
     @Override
