@@ -393,7 +393,6 @@ public class RequestsController implements Observer {
     public void handleReceivedClickEvent() {
         if (tableReceivedRequestsView.getSelectionModel() != null) {
             if (tableReceivedRequestsView.getSelectionModel().getSelectedCells().size() > 0){
-                System.out.println("Clicked on " + (tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
                 if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4)
                     onButtonAcceptClick();
                 else if ((tableReceivedRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 5)
@@ -405,7 +404,6 @@ public class RequestsController implements Observer {
     public void handleSentClickEvent() {
         if (tableSentRequestsView.getSelectionModel() != null) {
             if (tableSentRequestsView.getSelectionModel().getSelectedCells().size() > 0) {
-                System.out.println("Clicked on " + (tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn());
                 if ((tableSentRequestsView.getSelectionModel().getSelectedCells().get(0)).getColumn() == 4)
                     onButtonCancelClick();
             }
@@ -415,7 +413,6 @@ public class RequestsController implements Observer {
     public void handleAddFriendClickEvent() {
         if (tableAddFriend.getSelectionModel() != null) {
             if (tableAddFriend.getSelectionModel().getSelectedCells().size() > 0) {
-                System.out.println("Clicked on " + (tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() ) ;
                 if ((tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() == 3) {
                     sentFriendRequest();
                     setSentRequestsList(getSentRequests());

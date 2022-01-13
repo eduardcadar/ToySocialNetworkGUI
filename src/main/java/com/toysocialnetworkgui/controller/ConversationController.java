@@ -105,16 +105,13 @@ public class ConversationController implements Observer {
     public void initialize(Service service, User loggedUser, AnchorPane rightPane, String convUser) {
         initialize(service, loggedUser, rightPane);
         idConversation = service.getConversation(List.of(loggedUser.getEmail(), convUser)).getID();
-        pageNumber = getLastPageNumber();
-        reloadMessages();
+        reloadConversationsList();
+        ConversationDTO conv = listConversations.getItems()
+                        .stream().filter(c -> c.getId() == idConversation).toList().get(0);
+        listConversations.getSelectionModel().select(conv);
     }
 
     private void setConversationTitle() {
-     /*   List<User> participants = listConversations.getSelectionModel().getSelectedItem().getParticipants();
-        StringBuilder title = new StringBuilder();
-        for(User u : participants)
-            title.append(u.getFirstName()).append(" ").append(u.getLastName()).append(", ");
-       */
         conversationTitle.setText(listConversations.getSelectionModel().getSelectedItem().toString());
     }
 
