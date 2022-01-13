@@ -22,15 +22,26 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #862CE4;">
          <children>
-            <VBox layoutX="52.0" layoutY="33.0" prefHeight="343.0" prefWidth="118.0" spacing="10.0">
+            <VBox layoutX="21.0" layoutY="33.0" prefHeight="343.0" prefWidth="118.0" spacing="10.0">
                <children>
                   <VBox prefHeight="49.0" prefWidth="62.0">
                      <children>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Join the club" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Join our exclusive club" wrappingWidth="183.013671875">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font></Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription of 5 RON/Year">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Text>
                      </children>
                   </VBox>
 
-                  <HBox spacing="2.0">
+                  <HBox prefHeight="0.0" prefWidth="180.0" spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -42,32 +53,32 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                            <children>
-                              <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Community&#10;" wrappingWidth="76.55938720703125">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Community" wrappingWidth="82.29412841796875">
                                  <font>
-                                    <Font name="System Bold" size="12.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Meet new people" wrappingWidth="123.15704345703125" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox spacing="2.0">
+                  <HBox prefHeight="0.0" prefWidth="180.0" spacing="2.0">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../images/community.png" />
                            </image>
                         </ImageView>
-                        <VBox>
+                        <VBox prefHeight="50.0" prefWidth="118.0">
                            <children>
 
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends" wrappingWidth="76.55938720703125">
                                  <font>
-                                    <Font name="System Bold" size="12.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Keep up with your friends" textAlignment="CENTER" wrappingWidth="138.3570556640625" />
                            </children>
                            <HBox.margin>
                               <Insets left="10.0" />
@@ -86,18 +97,14 @@
                            </image>
                         </ImageView>
 
-                        <VBox prefHeight="48.0" prefWidth="75.0">
+                        <VBox prefHeight="70.0" prefWidth="142.0">
                            <children>
-                              <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Events&#10;" wrappingWidth="76.55938720703125">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
                                  <font>
-                                    <Font name="System Bold" size="12.0" />
+                                    <Font name="System Bold" size="14.0" />
                                  </font>
-
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
                               </Text>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Blabla" textAlignment="CENTER" wrappingWidth="79.15704345703125" />
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Find popular events" wrappingWidth="132.75701904296875" />
                            </children>
                            <HBox.margin>
                               <Insets left="10.0" />
