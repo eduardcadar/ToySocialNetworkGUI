@@ -1,0 +1,14 @@
+
+.list-cell:selected, list-view:focused{
+    -fx-text-fill: white;
+    -fx-border-width: 0px;
+    -fx-background-color: #862CE4;
+}
+.list-view{
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+}
+.list-view:selected{
+    -fx-border-color: transparent;
+
+}

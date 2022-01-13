@@ -55,3 +55,9 @@
     -fx-padding: 0px 10px 5px 10px;
 }
 
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+}
