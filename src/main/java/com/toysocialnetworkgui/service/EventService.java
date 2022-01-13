@@ -2,9 +2,11 @@ package com.toysocialnetworkgui.service;
 
 import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.EventRepository;
 import com.toysocialnetworkgui.repository.db.EventDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,21 +44,6 @@ public class EventService {
     }
 
     /**
-     * Returns a filtered page of events
-     * @param firstrow how many events to skip
-     * @param rowcount how many events to return
-     * @param pattern the string the name of the event has to start with
-     * @return list of events
-     */
-    public List<Event> getFilteredEventsPage(int firstrow, int rowcount, String pattern) {
-        return eventRepo.getFilteredEventsPage(firstrow, rowcount, pattern);
-    }
-
-    public int getFilteredEventsSize(String pattern) {
-        return eventRepo.getFilteredEventsSize(pattern);
-    }
-
-    /**
      * Returns a page with events a user is subscribed to
      * @param firstrow how many events to skip
      * @param rowcount how many events to return
@@ -69,17 +56,6 @@ public class EventService {
         return events;
     }
 
-    public List<Event> getFilteredUserEventsPage(String email, int firstrow, int rowcount, String pattern) {
-        List<Event> events = new ArrayList<>();
-        List<Integer> eventsIds = eventsSubscriptionRepo.getFilteredUserEventsPage(email, firstrow, rowcount, pattern);
-        eventsIds.forEach(id -> events.add(eventRepo.getEvent(id)));
-        return events;
-    }
-
-    public int getFilteredUserEventsSize(String email, String pattern) {
-        return eventsSubscriptionRepo.getFilteredUserEventsSize(email, pattern);
-    }
-
     public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
     }
 
@@ -89,7 +65,7 @@ public class EventService {
         return eventRepo.getAll();
     }
 
-    public List<Event> getUserEvents(String userEmail) {
+    public List<Event> getEventsForUser(String userEmail) {
         List<Integer> eventsId = eventsSubscriptionRepo.getEventsForUser(userEmail);
         List<Event> events = new ArrayList<>();
         eventsId.forEach(id -> {
@@ -133,9 +109,5 @@ public class EventService {
 
     public void unsubscribeUserFromEvent(Integer eventId, String userEmail) {
         eventsSubscriptionRepo.removeSubscriber(eventId, userEmail);
-    }
-
-    public boolean isSubscribed(String email, Integer id) {
-        return eventsSubscriptionRepo.isSubscribed(email,id);
     }
 }

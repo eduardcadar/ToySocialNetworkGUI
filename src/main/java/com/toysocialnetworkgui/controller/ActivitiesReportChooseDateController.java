@@ -11,11 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -36,29 +34,6 @@ public class ActivitiesReportChooseDateController {
         this.service = service;
         this.loggedUser = loggedUser;
         this.rightPane = rightPane;
-        Callback<DatePicker, DateCell> dontLetUserPickEarlyEnd = dontLetUserPickEarlyDateThanStart();
-        datePickerUntil.setDayCellFactory(dontLetUserPickEarlyEnd);
-
-    }
-
-    Callback<DatePicker, DateCell> dontLetUserPickEarlyDateThanStart() {
-        return new Callback<>() {
-            @Override
-            public DateCell call (final DatePicker param) {
-                return new DateCell() {
-                    @Override
-                    public void updateItem(LocalDate item, boolean empty) {
-                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
-                        LocalDate startDate = datePickerFrom.getValue();
-                        if (startDate != null)
-                            setDisable(empty || item.compareTo(startDate) < 0);
-                        else
-                            setDisable(true);
-                    }
-
-                };
-            }
-        };
     }
 
     @FXML
