@@ -46,7 +46,7 @@ public class TestServiceDb {
     private final Network ntw = new Network(uRepo, fRepo);
 
     private final EventDbRepo eventDbRepo = new EventDbRepo(url, username, password, "events");
-    private final EventsSubscriptionDbRepo eventsSubscriptionDbRepo = new EventsSubscriptionDbRepo(url, username, password, "events_subscription");
+    private final EventsSubscriptionDbRepo eventsSubscriptionDbRepo = new EventsSubscriptionDbRepo(url, username, password, "events_subscription", "events");
     private final EventService eventService = new EventService(eventDbRepo,eventsSubscriptionDbRepo);
     private final Service service = new Service(uSrv, fSrv, mSrv, mrSrv, ntw,eventService );
 
