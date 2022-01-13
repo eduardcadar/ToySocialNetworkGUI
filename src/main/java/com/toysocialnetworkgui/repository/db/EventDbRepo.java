@@ -23,14 +23,14 @@ public class EventDbRepo implements EventRepository {
         this.password = password;
         this.eventTable = eventTable;
         String sql = "CREATE TABLE IF NOT EXISTS " + eventTable +
-                "(id serial, "+
-                " name varchar NOT NULL," +
-                " creator varchar NOT NULL," +
-                " description varchar NOT NULL," +
-                " category varchar NOT NULL," +
-                " location varchar NOT NULL," +
-                " date_start varchar NOT NULL," +
-                " date_end varchar NOT NULL," +
+                "( id serial, "+
+                " name varchar NOT NULL, " +
+                " creator varchar NOT NULL, " +
+                " description varchar NOT NULL, " +
+                " category varchar NOT NULL, " +
+                " location varchar NOT NULL, " +
+                " date_start varchar NOT NULL, " +
+                " date_end varchar NOT NULL, " +
                 " PRIMARY KEY(id)" +
                 ")";
         String updateTableAddPhoto = "ALTER TABLE " + eventTable +
@@ -135,7 +135,7 @@ public class EventDbRepo implements EventRepository {
         // TODO
         //  - you can remove an event if its start date is before localDate.now() ??s
         String sql = "DELETE FROM " + eventTable + " WHERE name = ?";
-        try (Connection connection = DriverManager.getConnection(url,username,password)) {
+        try(Connection connection = DriverManager.getConnection(url,username,password)){
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, name);
             ps.executeUpdate();
@@ -151,6 +151,7 @@ public class EventDbRepo implements EventRepository {
         try (Connection connection = DriverManager.getConnection(url,username, password)) {
             PreparedStatement ps =  connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
             if (resultSet.next())
                 return resultSet.getInt("size");
         } catch (SQLException throwables) {
@@ -171,12 +172,23 @@ public class EventDbRepo implements EventRepository {
 
     @Override
     public List<Event> getAll()  {
-        List<Event> events;
+        ArrayList<Event> events = new ArrayList<>();
         String sql = "SELECT * FROM " + eventTable;
-        try (Connection connection = DriverManager.getConnection(url,username,password)) {
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
             ResultSet resultSet = ps.executeQuery();
-            events = getEventsList(resultSet);
+            while (resultSet.next()){
+                Integer id = resultSet.getInt("id");
+                String creator = resultSet.getString("creator");
+                String nameEv = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                String category = resultSet.getString("category");
+                LocalDate startDate = LocalDate.parse(resultSet.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate endDate = LocalDate.parse(resultSet.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String photoPath = resultSet.getString("photo_path");
+                events.add( new Event(id, nameEv, creator, location, category, description, startDate, endDate,photoPath));
+          }
         }catch (SQLException e){
             throw new DbException(e.getMessage());
         }
@@ -202,7 +214,7 @@ public class EventDbRepo implements EventRepository {
      * @return list of events
      */
     public List<Event> getEventsPage(int firstrow, int rowcount) {
-        List<Event> events;
+        List<Event> events = new ArrayList<>();
         String sql = "SELECT * FROM " + eventTable +
                 " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (Connection connection = DriverManager.getConnection(url, username, password);
@@ -210,66 +222,20 @@ public class EventDbRepo implements EventRepository {
             ps.setInt(1, firstrow);
             ps.setInt(2, rowcount);
             ResultSet res = ps.executeQuery();
-            events = getEventsList(res);
+            while (res.next()) {
+                Integer id = res.getInt("id");
+                String creator = res.getString("creator");
+                String name = res.getString("name");
+                String description = res.getString("description");
+                String location = res.getString("location");
+                String category = res.getString("category");
+                LocalDate startDate = LocalDate.parse(res.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                LocalDate endDate = LocalDate.parse(res.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String photoPath = res.getString("photo_path");
+                events.add(new Event(id, name, creator, location, category, description, startDate, endDate,photoPath));
+            }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        return events;
-    }
-
-    /**
-     * Returns a filtered page of events
-     * @param firstrow how many events to skip
-     * @param rowcount how many events to return
-     * @param pattern the string the name of the event has to start with
-     * @return list of events
-     */
-    public List<Event> getFilteredEventsPage(int firstrow, int rowcount, String pattern) {
-        List<Event> events;
-        String sql = "SELECT * FROM " + eventTable +
-                " WHERE LOWER(name) LIKE ?" +
-                " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-        PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, pattern + "%");
-            ps.setInt(2, firstrow);
-            ps.setInt(3, rowcount);
-            ResultSet res = ps.executeQuery();
-            events = getEventsList(res);
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
-        return events;
-    }
-
-    public int getFilteredEventsSize(String pattern) {
-        String sql = "SELECT COUNT(*) AS size FROM " + eventTable +
-                " WHERE LOWER(name) LIKE ?";
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-        PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, pattern + "%");
-            ResultSet res = ps.executeQuery();
-            if (res.next())
-                return res.getInt("size");
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
-        return 0;
-    }
-
-    private List<Event> getEventsList(ResultSet res) throws SQLException {
-        List<Event> events = new ArrayList<>();
-        while (res.next()) {
-            Integer id = res.getInt("id");
-            String creator = res.getString("creator");
-            String name = res.getString("name");
-            String description = res.getString("description");
-            String location = res.getString("location");
-            String category = res.getString("category");
-            LocalDate startDate = LocalDate.parse(res.getString("date_start"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalDate endDate = LocalDate.parse(res.getString("date_end"), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            String photoPath = res.getString("photo_path");
-            events.add(new Event(id, name, creator, location, category, description, startDate, endDate,photoPath));
         }
         return events;
     }

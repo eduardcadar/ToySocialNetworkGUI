@@ -271,7 +271,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
      */
     public List<String> getUserFriendsFilteredPage(String email, int firstrow, int rowcount, String pattern) {
         List<String> friends = new ArrayList<>();
-        String sql = "SELECT email1, email2 FROM" +
+        String sql = "SELECT email1, email2 FROM " +
                 " (SELECT email1, email2 FROM " + fshipsTable +
                 " WHERE email1 = ? OR email2 = ?) fr" +
                 " INNER JOIN " + usersTable +

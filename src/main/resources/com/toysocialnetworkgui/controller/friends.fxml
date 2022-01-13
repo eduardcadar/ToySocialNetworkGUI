@@ -15,7 +15,7 @@
 
 <AnchorPane prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.FriendsController">
    <children>
-      <VBox layoutX="121.0" layoutY="149.0" prefHeight="351.0" prefWidth="540.0" spacing="10.0">
+      <VBox layoutX="121.0" layoutY="149.0" prefHeight="351.0" prefWidth="558.0" spacing="10.0">
          <children>
             <HBox spacing="5.0">
                <children>
@@ -36,14 +36,14 @@
                   </HBox>
                </children>
             </HBox>
-            <TableView fx:id="tableViewFriends" onMouseClicked="#handleTableClickEvent" prefHeight="272.0" prefWidth="540.0" stylesheets="@../../../style/styleConversation.css">
+            <TableView fx:id="tableViewFriends" onMouseClicked="#handleTableClickEvent" prefHeight="272.0" prefWidth="558.0" stylesheets="@../../../style/styleConversation.css">
               <columns>
                   <TableColumn fx:id="tableColumnEmail" prefWidth="75.0" text="email" visible="false" />
-                <TableColumn fx:id="tableColumnFirstname" maxWidth="152.0" minWidth="152.0" prefWidth="152.0" resizable="false" text="First name" />
-                <TableColumn fx:id="tableColumnLastname" maxWidth="152.0" minWidth="152.0" prefWidth="152.0" resizable="false" text="Last name" />
-                  <TableColumn fx:id="tableColumnDate" maxWidth="152.0" minWidth="152.0" prefWidth="152.0" resizable="false" text="Friends from" />
-                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="47.0" minWidth="47.0" prefWidth="47.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
-                  <TableColumn fx:id="tableColumnMessage" editable="false" maxWidth="47.0" minWidth="47.0" prefWidth="47.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
+                <TableColumn fx:id="tableColumnFirstname" maxWidth="155.0" minWidth="99.19998168945312" prefWidth="100.79995727539062" resizable="false" text="First name" />
+                <TableColumn fx:id="tableColumnLastname" maxWidth="211.20001220703125" minWidth="104.7999267578125" prefWidth="104.7999267578125" resizable="false" text="Last name" />
+                  <TableColumn fx:id="tableColumnDate" maxWidth="260.800048828125" minWidth="106.39996337890625" prefWidth="155.99993896484375" resizable="false" text="Friends from" />
+                  <TableColumn fx:id="tableColumnRemove" editable="false" maxWidth="200.800048828125" minWidth="45.0" prefWidth="96.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
+                  <TableColumn fx:id="tableColumnMessage" editable="false" maxWidth="129.5999755859375" minWidth="45.0" prefWidth="100.0" resizable="false" sortable="false" style="-fx-cursor: hand; -fx-alignment: center;" />
               </columns>
             </TableView>
             <HBox spacing="148.0">
