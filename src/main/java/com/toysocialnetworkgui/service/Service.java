@@ -201,13 +201,13 @@ public class Service {
     public List<UserFriendDTO> getFriendshipsDTO(String email){
         List<UserFriendDTO> userFriendDTOS  = new ArrayList<>();
         List<String> friendsEmail = friendshipService.getUserFriends(email);
-        for(String friendEmail : friendsEmail){
+        for (String friendEmail : friendsEmail) {
             Friendship friendship = friendshipService.getFriendship(email, friendEmail);
             User friend;
-            if(email.equals(friendship.getFirst())) {
+            if (email.equals(friendship.getFirst())) {
                  friend = userService.getUser(friendship.getSecond());
             }
-            else{
+            else {
                  friend = userService.getUser(friendship.getFirst());
             }
             UserFriendDTO userFriendDTO = new UserFriendDTO(friend.getFirstName(), friend.getLastName(), friend.getEmail(), friendship.getDate());
@@ -509,8 +509,24 @@ public class Service {
         return eventService.getEventsPage((pageNumber - 1) * pageSize, pageSize);
     }
 
+    public List<Event> getFilteredEventsPage(int pageNumber, int pageSize, String pattern) {
+        return eventService.getFilteredEventsPage((pageNumber - 1) * pageSize, pageSize, pattern);
+    }
+
+    public int getFilteredEventsSize(String pattern) {
+        return eventService.getFilteredEventsSize(pattern);
+    }
+
     public List<Event> getUserEventsPage(String email, int pageNumber, int pageSize) {
         return eventService.getUserEventsPage(email, (pageNumber - 1) * pageSize, pageSize);
+    }
+
+    public List<Event> getFilteredUserEventsPage(String email, int pageNumber, int pageSize, String pattern) {
+        return eventService.getFilteredUserEventsPage(email, (pageNumber - 1) * pageSize, pageSize, pattern);
+    }
+
+    public int getFilteredUserEventsSize(String email, String pattern) {
+        return eventService.getFilteredUserEventsSize(email, pattern);
     }
 
     /**
@@ -543,8 +559,8 @@ public class Service {
         eventService.unsubscribeUserFromEvent(eventId,userEmail);
     }
 
-    public List<Event> getEventsForUser(String userEmail) {
-        return eventService.getEventsForUser(userEmail);
+    public List<Event> getUserEvents(String userEmail) {
+        return eventService.getUserEvents(userEmail);
     }
 
     public int getEventsSize() {
@@ -556,7 +572,7 @@ public class Service {
     }
 
     public List<Event> getUserUpcomingEvents(String email) {
-        return eventService.getEventsForUser(email)
+        return eventService.getUserEvents(email)
                 .stream()
                 .filter(ev -> ev.getEnd().isAfter(LocalDate.now()))
                 .toList();
@@ -591,4 +607,14 @@ public class Service {
                 .toList();
     }
 
+    /**
+     * Search to see if user is subscribed to event
+     * @param email user id
+     * @param id event id
+     * @return true if is subscribed
+     * false if not or if (email/id does not exist)
+     */
+    public boolean isSubscribed(String email, Integer id) {
+        return eventService.isSubscribed(email,id);
+    }
 }
