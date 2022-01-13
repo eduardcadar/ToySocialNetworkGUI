@@ -72,7 +72,7 @@
                               </ImageView>
                               <StackPane prefHeight="30.0" prefWidth="118.0">
                                  <children>
-                                    <Button fx:id="buttonStartNotifications" mnemonicParsing="false" onAction="#onButtonStartNotifications" styleClass="category" text="Start notifications">
+                                    <Button fx:id="buttonStartNotifications" mnemonicParsing="false" onAction="#onButtonStartNotifications" styleClass="category" text="Start notifications" visible="false">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
@@ -90,6 +90,15 @@
                   </VBox>
                   <VBox prefHeight="371.0" prefWidth="256.0" spacing="5.0">
                      <children>
+                        <Button fx:id="buttonHome" mnemonicParsing="false" onAction="#onButtonHomeClick" styleClass="category" text="Home">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../images/home.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <Button fx:id="buttonUpdateUser" focusTraversable="false" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="26.0" prefWidth="98.0" styleClass="category" text="Update user" textFill="WHITE">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />

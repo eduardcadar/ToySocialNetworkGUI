@@ -62,6 +62,8 @@ public class LoggedSceneController implements Observer {
     Button buttonStartNotifications;
     @FXML
     Button buttonStopNotifications;
+    @FXML
+    Button buttonHome;
 
     @FXML
     Button buttonEvents;
@@ -94,6 +96,16 @@ public class LoggedSceneController implements Observer {
         buttonStartNotifications.setVisible(false);
         buttonStopNotifications.setVisible(true);
         startTask();
+    }
+
+    @FXML
+    protected void onButtonHomeClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
+        Parent root = loader.load();
+        LoggedSceneController controller = loader.getController();
+        controller.initialize(service, loggedUser, window);
+        Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
+        window.setScene(scene);
     }
 
     @FXML
