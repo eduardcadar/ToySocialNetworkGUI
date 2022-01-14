@@ -219,10 +219,15 @@ public class ActivitiesReportController {
         document.addPage(page);
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
         contentStream.beginText();
-        contentStream.newLineAtOffset(25, 700);
 
+        contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
+        contentStream.newLineAtOffset(25, 20);
+        contentStream.showText("Report made on: " + LocalDate.now());
+
+        contentStream.newLineAtOffset(0, 700);
         contentStream.setFont(PDType1Font.TIMES_ROMAN, 18);
         contentStream.showText("User: " + loggedUser);
+
         contentStream.newLineAtOffset(0, -50);
         contentStream.showText("NEW FRIENDS");
         contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
