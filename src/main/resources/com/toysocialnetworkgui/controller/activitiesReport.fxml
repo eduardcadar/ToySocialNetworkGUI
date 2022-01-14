@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -28,31 +30,45 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="TOP_RIGHT" layoutX="516.0" layoutY="402.0" spacing="10.0">
+      <HBox alignment="TOP_RIGHT" layoutX="466.0" layoutY="402.0" spacing="10.0">
          <children>
-            <TextField fx:id="textFieldFilename" promptText="file name" />
+            <TextField fx:id="textFieldFilename" promptText="file name" styleClass="my-text-field" />
             <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to pdf" textFill="WHITE" />
          </children>
       </HBox>
-      <VBox alignment="CENTER" layoutX="87.0" layoutY="434.0">
+      <StackPane layoutX="87.0" layoutY="434.0">
          <children>
-            <PieChart fx:id="pieChartFriendships" prefHeight="98.0" prefWidth="238.0" title="All Time New Friends" />
-            <Label fx:id="captionFriendships" text="Hover slice to get detailed statistics!">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <Label fx:id="notEnoughFriends" text="No friends :(" />
+            <VBox fx:id="vboxFriendshipChart" alignment="CENTER">
+               <children>
+                  <PieChart fx:id="pieChartFriendships" prefHeight="98.0" prefWidth="238.0" title="All Time New Friends" />
+                  <Label fx:id="captionFriendships" text="Hover slice to get detailed statistics!">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
          </children>
-      </VBox>
-      <VBox alignment="CENTER" layoutX="448.0" layoutY="436.0">
+      </StackPane>
+      <StackPane layoutX="448.0" layoutY="436.0">
          <children>
-            <PieChart fx:id="pieChartMessages" prefHeight="125.0" prefWidth="246.0" title="Top People Conversation With" />
-            <Label fx:id="captionMessages" text="Hover slice to get detailed statistics!">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <Label fx:id="notEnoughMessages" alignment="CENTER" prefHeight="18.0" prefWidth="89.0" text="No messages" textAlignment="CENTER" />
+            <VBox fx:id="vboxMessagesChart" alignment="CENTER">
+               <children>
+                  <PieChart fx:id="pieChartMessages" prefHeight="125.0" prefWidth="246.0" title="Top People Conversation With" />
+                  <Label fx:id="captionMessages" text="Hover slice to get detailed statistics!">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
          </children>
-      </VBox>
+      </StackPane>
    </children>
+   <stylesheets>
+      <URL value="@../../../style/styleReports.css" />
+      <URL value="@../../../style/style.css" />
+   </stylesheets>
 </AnchorPane>

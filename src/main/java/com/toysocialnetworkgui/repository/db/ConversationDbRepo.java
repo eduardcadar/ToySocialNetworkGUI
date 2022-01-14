@@ -52,10 +52,10 @@ public class ConversationDbRepo implements Observable {
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, String.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
-            notifyObservers();
             ResultSet res = ps.getGeneratedKeys();
             if (res.next())
                 conversation.setID(res.getInt(1));
+            notifyObservers();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }

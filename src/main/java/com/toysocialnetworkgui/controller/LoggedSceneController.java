@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class LoggedSceneController implements Observer {
@@ -56,12 +58,22 @@ public class LoggedSceneController implements Observer {
     Button buttonLogout;
     @FXML
     Circle imagePlaceHolder;
+    @FXML
+    SplitPane splitPane;
+
+    @FXML
+    Button buttonStartNotifications;
+    @FXML
+    Button buttonStopNotifications;
+    @FXML
+    Button buttonHome;
 
     @FXML
     Button buttonEvents;
     @FXML
     ImageView imageViewNotification = new ImageView();
 
+    private ScheduledFuture<?> task;
     private User loggedUser;
     private Service service;
     private Stage window;
@@ -72,7 +84,7 @@ public class LoggedSceneController implements Observer {
         this.service = service;
 
         service.getFriendshipRepo().addObserver(this);
-        service.getConversationParticipantsRepo().addObserver(this);
+        service.getEventsSubscriptionRepo().addObserver(this);
         service.getConversationService().addObserver(this);
 
         setLoggedUser(user);
@@ -84,12 +96,46 @@ public class LoggedSceneController implements Observer {
         }
         setupProfilePicture();
 
-        ((ScheduledExecutorService)window.getUserData())
+        startTask();
+    }
+
+    @FXML
+    protected void onButtonHomeClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
+        Parent root = loader.load();
+        LoggedSceneController controller = loader.getController();
+        controller.initialize(service, loggedUser, window);
+        window.getScene().setRoot(root);
+    }
+
+    @FXML
+    protected void onButtonStopNotifications() {
+        imageViewNotification.setVisible(false);
+        buttonStartNotifications.setVisible(true);
+        buttonStopNotifications.setVisible(false);
+        stopTask();
+    }
+
+    @FXML
+    protected void onButtonStartNotifications() {
+        imageViewNotification.setVisible(true);
+        buttonStartNotifications.setVisible(false);
+        buttonStopNotifications.setVisible(true);
+        startTask();
+    }
+
+    private void startTask() {
+        task = ((ScheduledExecutorService)window.getUserData())
                 .scheduleAtFixedRate(() -> {
-            if (!service.getUserUpcomingEvents(loggedUser.getEmail()).isEmpty())
-                if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
-                    imageViewNotification.setImage(new Image("images/active_notification.png"));
-        }, 5, 60, TimeUnit.SECONDS);
+                    if (!service.getUserUpcomingEvents(loggedUser.getEmail()).isEmpty())
+                        if (!imageViewNotification.getImage().getUrl().equals("images/no_notification.png"))
+                            imageViewNotification.setImage(new Image("images/active_notification.png"));
+                }, 5, 10, TimeUnit.SECONDS);
+    }
+
+    private void stopTask() {
+        if (!task.isCancelled())
+            task.cancel(true);
     }
 
     private void setupProfilePicture() {

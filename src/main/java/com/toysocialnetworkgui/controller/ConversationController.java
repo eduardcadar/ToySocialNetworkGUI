@@ -2,6 +2,7 @@ package com.toysocialnetworkgui.controller;
 
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
+import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
@@ -28,6 +29,7 @@ import javafx.scene.shape.Circle;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -82,7 +84,7 @@ public class ConversationController implements Observer {
         this.exec = (ScheduledExecutorService)rightPane.getParent().getScene().getWindow().getUserData();
         reloadConversationsList();
         initializeMessages();
-        service.getConversationParticipantsRepo().addObserver(this);
+        service.getConversationRepo().addObserver(this);
         service.getMessageRepo().addObserver(this);
         listConversations.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             stopTask();
@@ -103,11 +105,19 @@ public class ConversationController implements Observer {
     }
 
     public void initialize(Service service, User loggedUser, AnchorPane rightPane, String convUser) {
+        int convId = service.getConversation(List.of(loggedUser.getEmail(), convUser)).getID();
         initialize(service, loggedUser, rightPane);
-        idConversation = service.getConversation(List.of(loggedUser.getEmail(), convUser)).getID();
-        reloadConversationsList();
+        idConversation = convId;
         ConversationDTO conv = listConversations.getItems()
                         .stream().filter(c -> c.getId() == idConversation).toList().get(0);
+        listConversations.getSelectionModel().select(conv);
+    }
+
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane, Integer convId) {
+        initialize(service, loggedUser, rightPane);
+        idConversation = convId;
+        ConversationDTO conv = listConversations
+                .getItems().stream().filter(c -> Objects.equals(c.getId(), convId)).toList().get(0);
         listConversations.getSelectionModel().select(conv);
     }
 
@@ -142,6 +152,10 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onRefreshButtonClick() {
+        if (idConversation == 0) {
+            MyAlert.StartAlert("Error", "Choose a conversation", Alert.AlertType.ERROR);
+            return;
+        }
         this.pageNumber = getLastPageNumber();
         reloadMessages();
     }
@@ -235,6 +249,6 @@ public class ConversationController implements Observer {
     @Override
     public void update(Object obj) {
         if (obj instanceof MessageDbRepo) reloadMessages();
-        if (obj instanceof ConversationParticipantDbRepo) reloadConversationsList();
+        if (obj instanceof ConversationDbRepo) reloadConversationsList();
     }
 }

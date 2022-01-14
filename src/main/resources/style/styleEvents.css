@@ -24,27 +24,145 @@
 }
 .date_field{
     -fx-border-radius: 3px;
+}
+.date_field:focused{
+    -fx-border-color:#862CE4;
+    -fx-border-width: 2px;
+}
+
+/*.text-field{*/
+/*    -fx-border-radius: 10px 10px 10px 10px;*/
+/*;*/
+/*}*/
+/*.text-field:focused {*/
+/*    -fx-border-color: #862CE4;*/
+/*    -fx-border-width: 2px;*/
+/*    -fx-border-radius: 10px 10px 10px 10px;*/
+/*}*/
+
+/*.event_short_field{*/
+/*    -fx-border-width: 2px;*/
+/*    -fx-border-radius: 10px 10px 10px 10px;*/
+/*    -fx-min-width: 265px;*/
+/*    -fx-max-width: 265px;*/
+/*    -fx-min-height: 25px;*/
+/*    -fx-max-height: 25px;*/
+/*}*/
+/*.event_short_field:focused{*/
+/*    -fx-border-color: red;*/
+/*    -fx-border-radius: 10px 10px 10px 10px;*/
+
+/*}*/
+.text-field-picker{
+    -fx-border-color: none;
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
 
 }
-.event_short_field{
+
+.my-text-field {
+    -fx-border-color: none;
+    -fx-background-radius: 10px 10px 10px 10px;
+    -fx-padding: 0px 10px 5px 10px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+ }
+
+.my-text-field:focused {
+    -fx-border-color: #862CE4;
     -fx-border-width: 2px;
-    -fx-border-radius: 3px;
-    -fx-min-width: 265px;
-    -fx-max-width: 265px;
-    -fx-min-height: 25px;
-    -fx-max-height: 25px;
+    -fx-border-radius: 10px 10px 10px 10px;
 }
+
 .event_description{
     -fx-min-width: 265px;
     -fx-max-width: 265px;
     -fx-min-height: 100px;
     -fx-max-height: 100px;
     -fx-border-width: 2px;
-    -fx-border-radius: 10px;
-
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
 }
+.event_description:focused{
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px 10px 10px 10px;
+}
+.text-area{
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+
 .date-picker-popup > * > .spinner > .button {
     -fx-text-fill: black;
     -fx-background-color: transparent;
     -fx-background-radius: 0;
+}
+.date-picker .arrow-button {
+     -fx-background-color: #862CE4;
+     -fx-background-radius: 0;
+    -fx-border-radius: 10px 10px 10px 10px;
+
+}
+.date-picker:focused{
+    -fx-border-color: #862CE4;
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-border-width: 2px;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white;
+
+  }
+.date-picker .cell {
+    -fx-background-color: white;
+}
+.date-picker .cell:hover {
+    -fx-background-color:#862CE4;
+    -fx-text-fill: white;
+
+
+}
+.date-picker .cell:focused {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker .selected {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker .selected:focused {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker-popup  {
+    -fx-border-color: transparent;
+}
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #862CE4;
+}
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: white;
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: white;
+}
+
+.image_wrapper {
+    -fx-color: -fx-base ;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 ;
+    -fx-background-radius: 0 ;
+    -fx-padding: 0 ;
+    -fx-text-fill: #a8a5a5 ;
+    -fx-alignment: center;
+    -fx-min-width: 30px;
+    -fx-max-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
 }

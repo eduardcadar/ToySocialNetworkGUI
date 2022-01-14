@@ -77,6 +77,6 @@ public class CreateAccountController {
         Parent root = loader.load();
         LoginSceneController controller = loader.getController();
         controller.initialize(service, window);
-        window.setScene(new Scene(root, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT));
+        window.getScene().setRoot(root);
     }
 }

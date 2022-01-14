@@ -2,15 +2,14 @@
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: #862CE4;
-
     -fx-border-width: 1px;
 }
+
 .column-header-background {
     -fx-background-color: transparent;
     -fx-border-width: 0px;
-
-
 }
+
 .column-header {
     -fx-background-color: transparent;
     -fx-border-width: 0px;
@@ -21,24 +20,26 @@
     -fx-border-width: 2px;
 */
 }
-.table-cell{
+
+.table-cell {
     -fx-border-color: transparent;
     -fx-text-fill: black;
 }
+
 /*
 Something with selection goes wrong here???
 .table-row-cell:odd:selected,
 */
-
-
-.table-row-cell:odd{
+.table-row-cell:odd {
     -fx-background-color: white;
     -fx-text-fill: black;
 }
+
 .table-row-cell:even {
     -fx-background-color: white;
     -fx-text-fill: black;
 }
+
 .table-view *.scroll-bar:horizontal *.increment-button,
 .table-view *.scroll-bar:horizontal *.decrement-button {
     -fx-background-color: null;
@@ -56,8 +57,7 @@ Something with selection goes wrong here???
     -fx-shape: null;
 }
 
-
-.image-view{
+.image-view {
     -fx-cursor: hand;
 }
 
@@ -73,7 +73,8 @@ Something with selection goes wrong here???
     -fx-border-color: #862CE4;
     -fx-border-width: 1px;
 }
-.list-cell{
+
+.list-cell {
     -fx-background-color: white;
     -fx-padding: 0.25em;
     -fx-start-margin: 3px;
@@ -93,7 +94,8 @@ Something with selection goes wrong here???
     -fx-focus-color: -fx-control-inner-background ;
     -fx-faint-focus-color: -fx-control-inner-background ;
 }
-.text-field:focused{
+
+.text-field:focused {
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
     -fx-border-color: #862CE4;

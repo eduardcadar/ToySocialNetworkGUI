@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -70,7 +71,7 @@ public class FriendsController implements Observer {
         this.loggedUser = loggedUser;
         currentMonthFilter = 0;
         pageNumber = 1;
-        pageSize = 2;
+        pageSize = 5;
         currentSearchPattern = "";
         service.getFriendshipRepo().addObserver(this);
         comboBoxMonth.setItems(getMonths());
@@ -93,6 +94,10 @@ public class FriendsController implements Observer {
     }
 
     private void initializeFriendsList() {
+        tableViewFriends.setPlaceholder(new Text("No friends :("));
+        // To not let user re-arrange columns
+        // We need this because of icons, they should stay at a constant position
+        tableViewFriends.getColumns().forEach(e -> e.setReorderable(false));
         tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));

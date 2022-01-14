@@ -11,6 +11,7 @@ import com.toysocialnetworkgui.validator.MessageValidator;
 import com.toysocialnetworkgui.validator.UserValidator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -30,10 +31,9 @@ public class ToySocialNetworkApp extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loginScene.fxml"));
-
         initialize();
 
-        loginScene = new Scene(fxmlLogin.load(), CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT);
+        loginScene = new Scene(fxmlLogin.load());//, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT);
         loginSceneController = fxmlLogin.getController();
         loginSceneController.initialize(service, primaryStage);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -41,7 +41,7 @@ public class ToySocialNetworkApp extends Application {
         primaryStage.setOnCloseRequest(event ->
                 ((ScheduledExecutorService)primaryStage.getUserData()).shutdown());
 
-      //  primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Big Blana Society");
         primaryStage.getIcons().add(new Image("images/logo_small.png"));
 

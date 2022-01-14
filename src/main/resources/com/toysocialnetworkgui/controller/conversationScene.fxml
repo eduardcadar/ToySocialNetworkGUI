@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox alignment="BOTTOM_CENTER" prefHeight="635.0" prefWidth="918.0" spacing="60.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
+<HBox alignment="BOTTOM_CENTER" prefHeight="635.0" prefWidth="918.0" spacing="40.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ConversationController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="304.0" prefWidth="612.0">
          <children>
