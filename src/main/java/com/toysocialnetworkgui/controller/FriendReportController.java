@@ -57,23 +57,28 @@ public class FriendReportController {
     private User loggedUser;
     private User otherUser;
     private AnchorPane rightPane;
+    private LocalDate dateFrom;
+    private LocalDate dateUntil;
 
     public void initialize(Service service, User loggedUser, User otherUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
         this.otherUser = otherUser;
         this.rightPane = rightPane;
+        this.dateFrom = dateFrom;
+        this.dateUntil = dateUntil;
         labelTitle.setText("Conversation between " + loggedUser + " and " + otherUser);
         loadMessages(dateFrom, dateUntil);
         populateAllTimeMessages();
     }
     private void populateAllTimeMessages() {
 
-//        List<UserMessageDTO> result = getConvDto(date)
-//        pieChartMessages.getData().add(new PieChart.Data("Messages in interval ", messagesInInterval ));
-//
-//        vboxChart.setVisible(monthsFrq.size() != 0);
-//        noMessages.setVisible(monthsFrq.size() == 0);
+         int allTime =  service.getConversationUserMessageDTOs(List.of(loggedUser.getEmail(), otherUser.getEmail())).size();
+         pieChartMessages.getData().add(new PieChart.Data("In interval ", messagesInInterval ));
+         pieChartMessages.getData().add(new PieChart.Data("All time ", allTime ));
+
+        vboxChart.setVisible(allTime != 0);
+        noMessages.setVisible(allTime == 0);
 
         pieChartMessages.setAnimated(true);
         pieChartMessages.setLabelsVisible(true);
