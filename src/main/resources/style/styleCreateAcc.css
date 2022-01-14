@@ -21,16 +21,20 @@
 }
 
 
-.smallTextField{
+.text-field{
     -fx-min-width: 100px;
-    -fx-max-width: 100px;
     -fx-min-height: 25px;
-    -fx-max-height: 25px;
+    -fx-border-radius: 10px 10px 10px 10px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+.text-field:focused {
+    -fx-border-color: #862CE4 !important;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px 10px 10px 10px;
+
 }
 
-.emailTextField{
-
-}
 
 #textField{
     -fx-border-color: none;
