@@ -33,17 +33,11 @@ public class LoginSceneController {
     @FXML
     protected void onLoginButtonClick() throws IOException {
         User loggedUser;
-        if (textFieldEmail.getText().equals(""))
-             loggedUser = this.service.getUser("stef@gmail.com");
 
-        // TODO
-        //  ONLY FOR TESTING PURPOSES
-        else {
-            loggedUser = this.service.getUser(textFieldEmail.getText());
-            if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
-                MyAlert.StartAlert("Error", "Wrong email or password", Alert.AlertType.ERROR);
-                return;
-            }
+        loggedUser = this.service.getUser(textFieldEmail.getText());
+        if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
+            MyAlert.StartAlert("Error", "Wrong email or password", Alert.AlertType.ERROR);
+            return;
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));

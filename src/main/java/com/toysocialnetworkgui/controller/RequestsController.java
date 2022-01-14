@@ -402,7 +402,6 @@ public class RequestsController implements Observer {
     }
 
     public void onButtonCancelClick() {
-        System.out.println("Cancel click");
         UserRequestDTO dto = tableSentRequestsView.getSelectionModel().getSelectedItem();
         if (dto != null) {
             try {

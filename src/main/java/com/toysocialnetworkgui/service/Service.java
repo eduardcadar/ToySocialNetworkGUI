@@ -468,15 +468,10 @@ public class Service {
      */
     public void cancelPendingRequest(String email1, String email2) {
         List<String> senders = friendshipService.getUserFriendRequests(email2);
-        boolean hasSent = false;
-        for (String sender: senders) {
-            if (sender.equals(email1)) {
-                hasSent = true;
-                new Thread(() -> friendshipService.removeRequest(email1, email2)).start();
-            }
-        }
-        if (!hasSent)
+        senders = senders.stream().filter(s -> s.equals(email1)).toList();
+        if (senders.isEmpty())
             throw new RepoException("There is no pending request available. You can't cancel it!");
+        senders.forEach(s -> new Thread(() -> friendshipService.removeRequest(email1, email2)).start());
     }
 
     /**
