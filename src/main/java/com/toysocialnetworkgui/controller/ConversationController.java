@@ -3,7 +3,6 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
-import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.db.MessageDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
@@ -187,8 +186,14 @@ public class ConversationController implements Observer {
             return;
         }
         String messageText = textFieldMessage.getText();
-        service.sendMessage(idConversation, loggedUser.getEmail(), messageText);
+        Thread t1 = new Thread(() -> service.sendMessage(idConversation, loggedUser.getEmail(), messageText));
+        t1.start();
         textFieldMessage.clear();
+        try {
+            t1.join();
+        } catch (InterruptedException e) {
+            MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+        }
         pageNumber = getLastPageNumber();
         reloadMessages();
     }

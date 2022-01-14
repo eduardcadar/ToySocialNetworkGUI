@@ -6,6 +6,9 @@ import com.toysocialnetworkgui.repository.db.ConversationDbRepo;
 import com.toysocialnetworkgui.repository.db.ConversationParticipantDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.utils.ConversationDTO;
+import com.toysocialnetworkgui.utils.MyAlert;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.util.*;
 
@@ -65,8 +68,20 @@ public class ConversationService implements Observable {
             }
         conv = conversationRepo.save(new Conversation());
         conv.setParticipants(participants);
-        participants.forEach(x -> addConversationParticipant(conv.getID(), x));
-        notifyObservers();
+        List<Thread> threads = new ArrayList<>();
+        participants.forEach(x -> {
+            Thread t = new Thread(() -> addConversationParticipant(conv.getID(), x));
+            t.start();
+            threads.add(t);
+        });
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+            }
+        });
+        Platform.runLater(this::notifyObservers);
         return conv;
     }
 

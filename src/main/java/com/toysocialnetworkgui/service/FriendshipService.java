@@ -3,15 +3,12 @@ package com.toysocialnetworkgui.service;
 import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.FriendshipRequest;
 import com.toysocialnetworkgui.domain.REQUESTSTATE;
-import com.toysocialnetworkgui.repository.FriendshipRepository;
-import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
-import com.toysocialnetworkgui.utils.CommonFriendsDTO;
+import javafx.application.Platform;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendshipService {
@@ -59,10 +56,14 @@ public class FriendshipService {
      * @param email2 - String - the email of the other user
      */
     public void removeFriendship(String email1, String email2) {
-        if (requestRepository.getRequest(email1, email2) != null)
-            removeRequest(email1,email2);
-        if (requestRepository.getRequest(email2, email1) != null)
-            removeRequest(email2, email1);
+        new Thread(() -> {
+            if (requestRepository.getRequest(email1, email2) != null)
+                removeRequest(email1,email2);
+        }).start();
+        new Thread(() -> {
+            if (requestRepository.getRequest(email2, email1) != null)
+                removeRequest(email2, email1);
+        }).start();
         friendshipRepository.removeFriendship(new Friendship(email1, email2));
     }
 
@@ -110,12 +111,12 @@ public class FriendshipService {
                 throw new RepoException("Friend request already rejected");
             }
             if (request.getState() == REQUESTSTATE.APPROVED) {
-                throw new RepoException("Friend request already APPROVED");
+                throw new RepoException("Friend request already approved");
             }
             if (request.getState() == REQUESTSTATE.PENDING) {
                 request.setState(REQUESTSTATE.APPROVED);
-                requestRepository.update(request);
-                friendshipRepository.addFriendship(new Friendship(email1, email2, LocalDate.now()));
+                new Thread(() -> requestRepository.update(request)).start();
+                new Thread(() -> friendshipRepository.addFriendship(new Friendship(email1, email2, LocalDate.now()))).start();
             }
         }
     }
@@ -128,10 +129,9 @@ public class FriendshipService {
      */
     public void rejectFriendship(String email1, String email2) {
         FriendshipRequest request = requestRepository.getRequest(email1, email2);
-        if (request == null){
+        if (request == null) {
             throw new RepoException("There is no pending request between theses 2 users");
-        }
-        else {
+        } else {
             if (request.getState() == REQUESTSTATE.REJECTED) {
                 throw new RepoException("Friend request already rejected");
                 // i will never reach this
@@ -140,11 +140,11 @@ public class FriendshipService {
                 // with email1,email2 and get
             }
             if (request.getState() == REQUESTSTATE.APPROVED) {
-                throw new RepoException("Friend request already APPROVED");
+                throw new RepoException("Friend request already approved");
             }
             if (request.getState() == REQUESTSTATE.PENDING) {
                 request.setState(REQUESTSTATE.REJECTED);
-                requestRepository.update(request);
+                new Thread(() -> requestRepository.update(request)).start();
             }
         }
     }

@@ -33,7 +33,7 @@ public class ToySocialNetworkApp extends Application {
         FXMLLoader fxmlLogin = new FXMLLoader(ToySocialNetworkApp.class.getResource("controller/loginScene.fxml"));
         initialize();
 
-        loginScene = new Scene(fxmlLogin.load());//, CONSTANTS.LOGIN_SCREEN_WIDTH, CONSTANTS.LOGIN_SCREEN_HEIGHT);
+        loginScene = new Scene(fxmlLogin.load());
         loginSceneController = fxmlLogin.getController();
         loginSceneController.initialize(service, primaryStage);
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -73,8 +73,8 @@ public class ToySocialNetworkApp extends Application {
 
         /// EVENTS
         EventDbRepo eventRepo = new EventDbRepo(url, username, password, "events");
-        EventsSubscriptionDbRepo eventsSubscriptionRepo = new EventsSubscriptionDbRepo(url,username,password, "events_subscription", "events");
-        EventService eventService = new EventService(eventRepo,eventsSubscriptionRepo);
-        this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network,eventService );
+        EventsSubscriptionDbRepo eventsSubscriptionRepo = new EventsSubscriptionDbRepo(url, username, password,"events_subscription", "events");
+        EventService eventService = new EventService(eventRepo, eventsSubscriptionRepo);
+        this.service = new Service(uSrv, fSrv, mSrv, mrSrv, network, eventService);
     }
 }

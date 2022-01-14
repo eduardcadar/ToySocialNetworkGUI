@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
+import javafx.application.Platform;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class UserDbRepo implements Observable, UserRepository {
             ps.setString(4, u.getPassword());
             ps.setString(5, u.getProfilePicturePath());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }

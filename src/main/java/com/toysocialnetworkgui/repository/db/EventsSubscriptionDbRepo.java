@@ -84,11 +84,11 @@ public class EventsSubscriptionDbRepo implements Observable {
     public List<Integer> getEventsForUser(String userEmail) {
         List<Integer> eventsId = new ArrayList<>();
         String sql = "SELECT event_id FROM "+ subscriptionsTable + " WHERE user_email = ?";
-        try (Connection connection = DriverManager.getConnection(url,username, password)) {
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1,userEmail);
+            ps.setString(1, userEmail);
             ResultSet resultSet = ps.executeQuery();
-            while(resultSet.next())
+            while (resultSet.next())
                 eventsId.add(resultSet.getInt("event_id"));
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());

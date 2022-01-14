@@ -39,17 +39,18 @@ public class LoginSceneController {
         // TODO
         //  ONLY FOR TESTING PURPOSES
         else {
-             loggedUser = this.service.getUser(textFieldEmail.getText());
+            loggedUser = this.service.getUser(textFieldEmail.getText());
             if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
                 MyAlert.StartAlert("Error", "Wrong email or password", Alert.AlertType.ERROR);
                 return;
             }
         }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loggedScene.fxml"));
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
-        Scene scene = new Scene(root);//, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
+        Scene scene = new Scene(root);
         window.setScene(scene);
     }
 

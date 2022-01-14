@@ -7,10 +7,12 @@ import com.toysocialnetworkgui.repository.UserRepository;
 import com.toysocialnetworkgui.repository.db.*;
 import com.toysocialnetworkgui.utils.*;
 import com.toysocialnetworkgui.validator.ValidatorException;
+import javafx.scene.control.Alert;
 
 import java.time.LocalDate;
 
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 public class Service {
     private final UserService userService;
@@ -185,9 +187,29 @@ public class Service {
     public List<User> getUserFriends(String email) {
         List<User> friends = new ArrayList<>();
         List<String> friendsEmails = friendshipService.getUserFriends(email);
+        List<Thread> threads = new ArrayList<>();
+        Semaphore sem = new Semaphore(1);
         for (String friendEmail : friendsEmails) {
-            friends.add(userService.getUser(friendEmail));
+            Thread t = new Thread(() -> {
+                try {
+                    sem.acquire();
+                    friends.add(userService.getUser(friendEmail));
+                } catch (InterruptedException e) {
+                    MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+                } finally {
+                    sem.release();
+                }
+            });
+            t.start();
+            threads.add(t);
         }
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+            }
+        });
         return friends;
     }
 
@@ -285,13 +307,32 @@ public class Service {
     public List<Conversation> getUserConversations(String email) {
         List<Conversation> conversations = new ArrayList<>();
         List<Integer> conversationIds = conversationService.getUserConversations(email);
+        List<Thread> threads = new ArrayList<>();
+        Semaphore sem = new Semaphore(1);
         conversationIds.forEach(c -> {
-            Conversation conv = conversationService.getConversation(c);
-            List<Message> messages = messageService.getConversationMessages(c);
-            conv.setMessages(messages);
-            conversations.add(conv);
+            Thread t = new Thread(() -> {
+                Conversation conv = conversationService.getConversation(c);
+                List<Message> messages = messageService.getConversationMessages(c);
+                conv.setMessages(messages);
+                try {
+                    sem.acquire();
+                    conversations.add(conv);
+                } catch (InterruptedException e) {
+                    MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+                } finally {
+                    sem.release();
+                }
+            });
+            t.start();
+            threads.add(t);
         });
-
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+            }
+        });
         return conversations;
     }
 
@@ -388,10 +429,9 @@ public class Service {
      * @param idConversation the id of the conversation where the message is sent
      * @param sender the email of the sender
      * @param message the text of the message
-     * @return the saved message
      */
-    public Message sendMessage(int idConversation, String sender, String message) {
-        return messageService.save(idConversation, sender, message);
+    public void sendMessage(int idConversation, String sender, String message) {
+        messageService.save(idConversation, sender, message);
     }
 
     /**
@@ -429,13 +469,13 @@ public class Service {
     public void cancelPendingRequest(String email1, String email2) {
         List<String> senders = friendshipService.getUserFriendRequests(email2);
         boolean hasSent = false;
-        for(String sender: senders){
-            if(sender.equals(email1)){
+        for (String sender: senders) {
+            if (sender.equals(email1)) {
                 hasSent = true;
-                friendshipService.removeRequest(email1, email2);
+                new Thread(() -> friendshipService.removeRequest(email1, email2)).start();
             }
         }
-        if(!hasSent)
+        if (!hasSent)
             throw new RepoException("There is no pending request available. You can't cancel it!");
     }
 

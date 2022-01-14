@@ -3,6 +3,7 @@ package com.toysocialnetworkgui.repository.db;
 import com.toysocialnetworkgui.domain.ConversationParticipant;
 import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
+import javafx.application.Platform;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class ConversationParticipantDbRepo implements Observable {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

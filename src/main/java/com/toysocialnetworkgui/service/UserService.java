@@ -23,9 +23,9 @@ public class UserService {
      * @param password - the new password of the user
      */
     public void save(String firstname, String lastname, String email, String password) {
-        if(firstname.equals("") || lastname.equals("") || email.equals("") || password.equals(""))
+        if (firstname.equals("") || lastname.equals("") || email.equals("") || password.equals(""))
             throw new ValidatorException("Field can't be empty");
-        if(password.length() <= 5)
+        if (password.length() <= 5)
             throw new ValidatorException("The password must contain at least 6 characters");
         repo.save(new User(firstname, lastname, email, password));
 
