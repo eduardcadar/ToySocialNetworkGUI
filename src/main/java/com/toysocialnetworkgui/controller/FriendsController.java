@@ -93,6 +93,10 @@ public class FriendsController implements Observer {
     }
 
     private void initializeFriendsList() {
+        // To not let user re-arrange columns
+        // We need this because of icons, they should stay at a constant position
+        tableViewFriends.getColumns().forEach(e -> e.setReorderable(false));
+
         tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnFirstname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         tableColumnLastname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
