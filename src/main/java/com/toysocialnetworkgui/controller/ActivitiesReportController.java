@@ -15,6 +15,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -56,6 +57,18 @@ public class ActivitiesReportController {
     @FXML
     protected Label captionMessages;
 
+    @FXML
+    protected VBox vboxFriendshipChart;
+
+    @FXML
+    protected Label notEnoughFriends;
+
+    @FXML
+    protected VBox vboxMessagesChart;
+
+    @FXML
+    protected Label notEnoughMessages;
+
     public void initialize(Service service, User loggedUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
@@ -83,21 +96,23 @@ public class ActivitiesReportController {
             for(Map.Entry<String, Integer> senderFr : convFrq.entrySet()){
                 pieChartMessages.getData().add(new PieChart.Data(senderFr.getKey(), senderFr.getValue() ));
             }
+        vboxMessagesChart.setVisible(convFrq.size() != 0);
+        notEnoughMessages.setVisible(convFrq.size() == 0);
         for (final PieChart.Data data : pieChartMessages.getData()) {
-            data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
-                    e -> {
-                        String label = String.valueOf(Math.round(data.getPieValue()));
-                        if( Math.round(data.getPieValue()) == 1)
-                             label += " message from " + data.getName();
-                        else
-                            label += " messages from " + data.getName().toLowerCase(Locale.ROOT);
-                            captionMessages.setText(label);
-                    });
-            data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
-                    e -> {
-                        String label = "Hover slice to get detailed statistics!";
+        data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
+                e -> {
+                    String label = String.valueOf(Math.round(data.getPieValue()));
+                    if( Math.round(data.getPieValue()) == 1)
+                         label += " message from " + data.getName();
+                    else
+                        label += " messages from " + data.getName().toLowerCase(Locale.ROOT);
                         captionMessages.setText(label);
-                    });
+                });
+        data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+                e -> {
+                    String label = "Hover slice to get detailed statistics!";
+                    captionMessages.setText(label);
+                });
 
         }
         pieChartMessages.setAnimated(true);
@@ -109,19 +124,23 @@ public class ActivitiesReportController {
 
     private void populateAllTimeFriendStatistics() {
         HashMap<Month, Integer> monthsFrq = new HashMap<>();
-        Month[] months = Month.values();
-        for(Month m : months)
-            monthsFrq.put(m, 0);
         service.getFriendshipsDTO(loggedUser.getEmail())
                 .forEach( p -> {
                     LocalDate date = p.getDate();
                     Month month = date.getMonth();
-                    Integer frq = monthsFrq.get(month);
-                    monthsFrq.put(month, frq + 1);
+                    if(monthsFrq.get(month) == null)
+                        monthsFrq.put(month,1);
+                    else {
+                        Integer frq = monthsFrq.get(month);
+                        monthsFrq.put(month, frq + 1);
+                    }
                 });
         for(Map.Entry<Month, Integer> monthFr : monthsFrq.entrySet()){
             pieChartFriendships.getData().add(new PieChart.Data(monthFr.getKey().toString(), monthFr.getValue() ));
         }
+        vboxFriendshipChart.setVisible(monthsFrq.size() != 0);
+        notEnoughFriends.setVisible(monthsFrq.size() == 0);
+
         pieChartFriendships.setAnimated(true);
         pieChartFriendships.setLabelsVisible(true);
         pieChartFriendships.setLabelLineLength(10);
