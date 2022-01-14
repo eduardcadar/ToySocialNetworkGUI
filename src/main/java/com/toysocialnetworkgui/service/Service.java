@@ -258,11 +258,13 @@ public class Service {
      * @param email - String the email of the user
      * @return the users that are not friends with the given user
      */
-    public List<User> getNotFriends(String email) {
+    public List<User> getNotFriendsFiltered(String email, String pattern) {
         List<String> friends = friendshipService.getUserFriends(email);
 
         return userService.getAllUsers()
                 .stream()
+                .filter(u -> u.getFirstName().toLowerCase(Locale.ROOT).startsWith(pattern) ||
+                        u.getLastName().toLowerCase(Locale.ROOT).startsWith(pattern))
                 .filter(u -> !friends.contains(u.getEmail()) && u.getEmail().compareTo(email) != 0)
                 .toList();
     }
@@ -583,10 +585,10 @@ public class Service {
      * @param email email of the user
      * @return list of CommonFriendsDTOs
      */
-    public List<CommonFriendsDTO> getUserCommonFriendsDTO(String email) {
+    public List<CommonFriendsDTO> getUserFilteredCommonFriendsDTO(String email, String pattern) {
         List<CommonFriendsDTO> commonFriendsDTOs = new ArrayList<>();
 
-        List<User> notFriends = getNotFriends(email);
+        List<User> notFriends = getNotFriendsFiltered(email, pattern);
         List<User> friends = getUserFriends(email);
         List<String> friendsEmails = new ArrayList<>();
         friends.forEach(f -> friendsEmails.add(f.getEmail()));

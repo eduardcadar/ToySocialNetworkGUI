@@ -3,6 +3,7 @@ package com.toysocialnetworkgui.controller;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.db.DbException;
+import com.toysocialnetworkgui.repository.db.FriendshipDbRepo;
 import com.toysocialnetworkgui.repository.db.FriendshipRequestDbRepo;
 import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
@@ -20,7 +21,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 import java.time.format.DateTimeFormatter;
 
@@ -71,13 +71,22 @@ public class RequestsController implements Observer {
     @FXML
     TableColumn<CommonFriendsDTO, ImageView> tableAddFriendColumnSendReq;
 
+    @FXML
+    TextField textFieldSearch;
+    @FXML
+    Button buttonSearch;
+
+    private String currentPattern;
+
     public void initialize(Service service, User loggedUser) {
         this.service = service;
         this.loggedUser = loggedUser;
+        currentPattern = "";
         initializeRequestsList();
         tableSentRequestsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableReceivedRequestsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         service.getRequestRepo().addObserver(this);
+        service.getFriendshipRepo().addObserver(this);
     }
 
     /**
@@ -100,7 +109,7 @@ public class RequestsController implements Observer {
 
     private ObservableList<CommonFriendsDTO> getNotFriends() {
         return FXCollections.observableArrayList(
-                service.getUserCommonFriendsDTO(loggedUser.getEmail()));
+                service.getUserFilteredCommonFriendsDTO(loggedUser.getEmail(), currentPattern));
     }
 
     private void initializeAddFriendList() {
@@ -351,6 +360,17 @@ public class RequestsController implements Observer {
     public void reloadTables(){
         setSentRequestsList(getSentRequests());
         setReceivedRequestsList(getReceivedRequests());
+        tableAddFriend.setItems(getNotFriends());
+    }
+
+    @FXML
+    protected void onButtonSearchClick() {
+        currentPattern = textFieldSearch.getText();
+        reloadAddFriendTable();
+    }
+
+    private void reloadAddFriendTable() {
+        tableAddFriend.setItems(getNotFriends());
     }
 
     public void onButtonAcceptClick(){
@@ -435,5 +455,6 @@ public class RequestsController implements Observer {
     @Override
     public void update(Object obj) {
         if (obj instanceof FriendshipRequestDbRepo) reloadTables();
+        if (obj instanceof FriendshipDbRepo) reloadTables();
     }
 }

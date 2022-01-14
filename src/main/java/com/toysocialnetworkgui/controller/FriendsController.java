@@ -70,7 +70,7 @@ public class FriendsController implements Observer {
         this.loggedUser = loggedUser;
         currentMonthFilter = 0;
         pageNumber = 1;
-        pageSize = 2;
+        pageSize = 5;
         currentSearchPattern = "";
         service.getFriendshipRepo().addObserver(this);
         comboBoxMonth.setItems(getMonths());

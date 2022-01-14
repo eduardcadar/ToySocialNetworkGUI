@@ -42,7 +42,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
 
     public void addRequest(FriendshipRequest request) {
         if (getRequest(request.getFirst(), request.getSecond()) != null) {
-            throw new RepoException("There is already a request sent by user");
+            throw new RepoException("There is already a request sent to this user");
         }
         String sql = "INSERT INTO " + tableName + " (email1, email2, requeststate, sendDate) values (?, ?, ?,?) ";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {

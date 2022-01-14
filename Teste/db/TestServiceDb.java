@@ -1,7 +1,6 @@
 package db;
 
 import com.toysocialnetworkgui.domain.Conversation;
-import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.Friendship;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.domain.network.Network;
@@ -110,10 +109,10 @@ public class TestServiceDb {
         friends = service.getUserFriends(us4.getEmail());
         assertEquals(1, friends.size());
         assertTrue(friends.contains(us2));
-        List<User> notFriends = service.getNotFriends(us1.getEmail());
+        List<User> notFriends = service.getNotFriendsFiltered(us1.getEmail(), "");
         assertEquals(1, notFriends.size());
         assertTrue(notFriends.contains(us4));
-        notFriends = service.getNotFriends(us3.getEmail());
+        notFriends = service.getNotFriendsFiltered(us3.getEmail(), "");
         assertEquals(2, notFriends.size());
         assertTrue(notFriends.contains(us2));
         assertTrue(notFriends.contains(us4));
