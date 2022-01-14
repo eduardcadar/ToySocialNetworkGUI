@@ -8,11 +8,17 @@
 
 }
 .text-field{
-    -fx-border-radius: 5px;
-    -fx-border-color: #FFFFFF;
-    -fx-border-width: 0px;
+    -fx-border-color: none;
+    -fx-background-radius: 10px 10px 10px 10px;
+    -fx-padding: 0px 10px 5px 10px;
+    -fx-min-width: 200px;
+    /*-fx-highlight-fill:#862CE4;*/
 }
-
+.text-field:focused{
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px 10px 10px 10px;
+}
 #button{
     -fx-border-color: none;
     -fx-background-radius: 10px 10px 10px 10px;
@@ -53,6 +59,7 @@
     -fx-border-color: none;
     -fx-background-radius: 10px 10px 10px 10px;
     -fx-padding: 0px 10px 5px 10px;
+    -fx-min-width: 200px;
 }
 
 
