@@ -21,5 +21,6 @@
    <stylesheets>
       <URL value="@../../../style/styleRequests.css" />
       <URL value="@../../../style/styleEvents.css" />
+      <URL value="@../../../style/styleReports.css" />
    </stylesheets>
 </AnchorPane>
