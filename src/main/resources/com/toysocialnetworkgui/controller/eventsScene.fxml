@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="650.0" prefWidth="831.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.EventsController">
+<AnchorPane prefHeight="650.0" prefWidth="831.0" stylesheets="@../../../style/styleEvents.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.EventsController">
    <children>
       <StackPane layoutX="208.0">
          <children>
@@ -118,7 +118,7 @@
                               <Insets left="103.0" />
                            </VBox.margin>
                            <children>
-                              <TextField id="textField" fx:id="textFieldEventName" alignment="TOP_LEFT" focusTraversable="false" prefHeight="26.0" prefWidth="223.0" promptText="Event Name" styleClass="emailTextField">
+                              <TextField fx:id="textFieldEventName" alignment="CENTER" focusTraversable="false" maxWidth="223.0" prefHeight="26.0" prefWidth="223.0" promptText="Event Name" styleClass="my-text-field">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -135,7 +135,7 @@
                                     <Insets right="5.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <DatePicker fx:id="datePickerEventStart" focusTraversable="false" prefHeight="26.0" prefWidth="98.0" promptText="Start Date" styleClass="date_field" />
+                              <DatePicker fx:id="datePickerEventStart" focusTraversable="false" prefHeight="26.0" prefWidth="98.0" promptText="Start Date" styleClass="text-field-picker" />
                               <Text strokeType="OUTSIDE" strokeWidth="5.0" text="-" textAlignment="CENTER" wrappingWidth="20.0">
                                  <HBox.margin>
                                     <Insets left="20.0" right="20.0" />
@@ -144,7 +144,7 @@
                                     <Font size="19.0" />
                                  </font>
                               </Text>
-                              <DatePicker fx:id="datePickerEventEnd" focusTraversable="false" prefHeight="26.0" prefWidth="106.0" promptText="End Date" styleClass="date_field">
+                              <DatePicker fx:id="datePickerEventEnd" focusTraversable="false" prefHeight="26.0" prefWidth="106.0" promptText="End Date" styleClass="text-field-picker">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -164,7 +164,11 @@
                                     <Image url="@../../../images/location.png" />
                                  </image>
                               </ImageView>
-                              <TextField fx:id="textFieldEventLocation" focusTraversable="false" maxHeight="26.0" maxWidth="265.0" prefHeight="26.0" prefWidth="265.0" promptText="Location" styleClass="event_short_field" />
+                              <TextField fx:id="textFieldEventLocation" focusTraversable="false" maxHeight="26.0" maxWidth="265.0" prefHeight="26.0" prefWidth="265.0" promptText="Location">
+                                 <styleClass>
+                                    <String fx:value="event_short_field" />
+                                    <String fx:value="my-text-field" />
+                                 </styleClass></TextField>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="26.0" prefWidth="418.0">
@@ -177,7 +181,11 @@
                                     <Image url="@../../../images/category.png" />
                                  </image>
                               </ImageView>
-                              <TextField fx:id="textFieldCategory" focusTraversable="false" maxHeight="26.0" maxWidth="270.0" prefHeight="26.0" prefWidth="270.0" promptText="Category" styleClass="event_short_field" />
+                              <TextField fx:id="textFieldCategory" focusTraversable="false" maxHeight="26.0" maxWidth="270.0" prefHeight="26.0" prefWidth="270.0" promptText="Category">
+                                 <styleClass>
+                                    <String fx:value="event_short_field" />
+                                    <String fx:value="my-text-field" />
+                                 </styleClass></TextField>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="414.0">
@@ -248,7 +256,7 @@
       <Button fx:id="buttonSeeSubscribed" layoutX="28.0" layoutY="38.0" mnemonicParsing="false" onAction="#onButtonSeeSubscribedEvents" prefHeight="26.0" prefWidth="94.0" text="Subscribed" />
       <HBox layoutX="28.0" layoutY="99.0" spacing="5.0">
          <children>
-            <TextField fx:id="textFieldSearch" prefHeight="26.0" prefWidth="193.0" promptText="Search event" />
+            <TextField fx:id="textFieldSearch" prefHeight="26.0" prefWidth="193.0" promptText="Search event" styleClass="my-text-field" />
             <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchClick" styleClass="image_wrapper" text="Search">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -261,8 +269,4 @@
          </children>
       </HBox>
    </children>
-   <stylesheets>
-      <URL value="@../../../style/styleEvents.css" />
-      <URL value="@../../../style/style.css" />
-   </stylesheets>
 </AnchorPane>

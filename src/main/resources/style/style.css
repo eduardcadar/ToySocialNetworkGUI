@@ -12,13 +12,14 @@
     -fx-background-radius: 10px 10px 10px 10px;
     -fx-padding: 0px 10px 5px 10px;
     -fx-min-width: 200px;
-    /*-fx-highlight-fill:#862CE4;*/
-}
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;}
 
 .text-field:focused {
     -fx-border-color: #862CE4;
     -fx-border-width: 2px;
     -fx-border-radius: 10px 10px 10px 10px;
+
 }
 
 #button {
