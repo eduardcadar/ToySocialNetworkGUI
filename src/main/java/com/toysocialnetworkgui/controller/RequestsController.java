@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import java.time.format.DateTimeFormatter;
 
@@ -115,6 +116,7 @@ public class RequestsController implements Observer {
     private void initializeAddFriendList() {
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
+        tableAddFriend.setPlaceholder(new Text("No users!"));
         tableAddFriend.getColumns().forEach(e -> e.setReorderable(false));
 
         tableAddFriendColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -150,6 +152,7 @@ public class RequestsController implements Observer {
     private void initializeReceivedRequestsList() {
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
+        tableReceivedRequestsView.setPlaceholder(new Text("No received requests!"));
         tableReceivedRequestsView.getColumns().forEach(e -> e.setReorderable(false));
 
         tableReceivedColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -256,6 +259,7 @@ public class RequestsController implements Observer {
         //
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
+        tableSentRequestsView.setPlaceholder(new Text("No sent requests!"));
         tableSentRequestsView.getColumns().forEach(e -> e.setReorderable(false));
 
         tableSentColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
