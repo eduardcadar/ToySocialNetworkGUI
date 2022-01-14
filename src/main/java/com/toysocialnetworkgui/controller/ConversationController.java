@@ -179,8 +179,10 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onSendMessageButtonClick() {
-        if (textFieldMessage.getLength() == 0)
+        if (textFieldMessage.getLength() == 0) {
+            MyAlert.StartAlert("Can't send empty message", "Type a message please!", Alert.AlertType.WARNING);
             return;
+        }
         if (idConversation == 0) {
             MyAlert.StartAlert("No conversation selected", "Select a conversation!", Alert.AlertType.WARNING);
             return;

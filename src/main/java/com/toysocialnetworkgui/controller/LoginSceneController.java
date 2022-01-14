@@ -32,9 +32,7 @@ public class LoginSceneController {
 
     @FXML
     protected void onLoginButtonClick() throws IOException {
-        User loggedUser;
-
-        loggedUser = this.service.getUser(textFieldEmail.getText());
+        User loggedUser = this.service.getUser(textFieldEmail.getText());
         if (loggedUser == null || !loggedUser.getPassword().equals(PasswordEncryptor.toHexString(PasswordEncryptor.getSHA(textFieldPassword.getText())))) {
             MyAlert.StartAlert("Error", "Wrong email or password", Alert.AlertType.ERROR);
             return;
