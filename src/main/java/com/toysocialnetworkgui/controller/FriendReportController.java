@@ -60,7 +60,7 @@ public class FriendReportController {
     private LocalDate dateFrom;
     private LocalDate dateUntil;
 
-    List<UserMessageDTO> allMessages
+    List<UserMessageDTO> allMessages;
     public void initialize(Service service, User loggedUser, User otherUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
