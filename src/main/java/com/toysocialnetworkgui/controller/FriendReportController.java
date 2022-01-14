@@ -157,8 +157,6 @@ public class FriendReportController {
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
         contentStream.beginText();
 
-        /// TODO
-        //   N am testat nu stiu daca merge
         contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
         contentStream.newLineAtOffset(25, 20);
         contentStream.showText("Report made on: " + LocalDate.now());
