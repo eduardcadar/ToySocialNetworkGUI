@@ -66,11 +66,11 @@ public class ActivitiesReportChooseDateController {
         LocalDate dateFrom = datePickerFrom.getValue();
         LocalDate dateUntil = datePickerUntil.getValue();
         if (dateFrom == null || dateUntil == null) {
-            MyAlert.StartAlert("Error", "Choose from and until date!", Alert.AlertType.WARNING);
+            MyAlert.StartAlert("Error", "Choose from and until date!", Alert.AlertType.ERROR);
             return;
         }
         if (dateFrom.isAfter(dateUntil)) {
-            MyAlert.StartAlert("Error", "From date should be after until date", Alert.AlertType.WARNING);
+            MyAlert.StartAlert("Error", "From date should be after until date", Alert.AlertType.ERROR);
             return;
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("activitiesReport.fxml"));

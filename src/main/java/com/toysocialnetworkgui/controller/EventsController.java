@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -130,6 +131,9 @@ public class EventsController {
         buttonSeeEvents.setEffect(null);
         buttonSeeSubscribed.setEffect(null);
         buttonVisibleCreate.setEffect(new DropShadow());
+        rectangleEnterImage.setFill(Paint.valueOf(Color.WHITE.toString()));
+        textAddEventPhoto.setVisible(true);
+        clearFields();
         showCreateView();
         Callback<DatePicker, DateCell> dontLetUserPickEarlyEnd = dontLetUserPickEarlyDateThanStart();
         datePickerEventEnd.setDayCellFactory(dontLetUserPickEarlyEnd);
@@ -137,6 +141,14 @@ public class EventsController {
         datePickerEventStart.setDayCellFactory(dontLetUserPickEarlyStart);
     }
 
+    private void clearFields() {
+        textFieldEventName.clear();
+        textFieldEventLocation.clear();
+        textCreateEventDescription.clear();
+        textFieldCategory.clear();
+        datePickerEventEnd.setValue(null);
+        datePickerEventStart.setValue(null);
+    }
 
     /**
      * Initialize subscribed events: Hide create view, Show pane for event printing
@@ -204,7 +216,6 @@ public class EventsController {
                         else
                             setDisable(true);
                     }
-
                 };
             }
         };
@@ -233,11 +244,11 @@ public class EventsController {
         String creator = loggedUser.getEmail();
         try {
             service.addEvent(name,creator,location,category, description, startDate, endDate, lastEventPicturePath);
+            initialize(service, loggedUser, window, EventWantedView.ALL);
         }
         catch (ValidatorException | DbException | RepoException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
         }
-        initialize(service, loggedUser, window, EventWantedView.ALL);
     }
 
     /**

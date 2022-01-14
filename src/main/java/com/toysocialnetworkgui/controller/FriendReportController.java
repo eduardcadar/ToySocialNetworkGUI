@@ -78,7 +78,7 @@ public class FriendReportController {
 
             MyAlert.StartAlert("Report", "Report exported to pdf!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
-            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
+            MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.ERROR);
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friendReportChooseDate.fxml"));
