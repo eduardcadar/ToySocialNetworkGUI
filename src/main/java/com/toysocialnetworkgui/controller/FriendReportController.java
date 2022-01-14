@@ -60,6 +60,7 @@ public class FriendReportController {
     private LocalDate dateFrom;
     private LocalDate dateUntil;
 
+    List<UserMessageDTO> allMessages
     public void initialize(Service service, User loggedUser, User otherUser, LocalDate dateFrom, LocalDate dateUntil, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
@@ -73,7 +74,7 @@ public class FriendReportController {
     }
     private void populateAllTimeMessages() {
 
-         int allTime =  service.getConversationUserMessageDTOs(List.of(loggedUser.getEmail(), otherUser.getEmail())).size();
+         int allTime =  allMessages.size();
          pieChartMessages.getData().add(new PieChart.Data("In interval ", messagesInInterval ));
          pieChartMessages.getData().add(new PieChart.Data("All time ", allTime ));
 
@@ -104,7 +105,8 @@ public class FriendReportController {
     }
 
     private List<UserMessageDTO> getConvDto(LocalDate dateFrom, LocalDate dateUntil){
-        List<UserMessageDTO> result =  service.getConversationUserMessageDTOs(List.of(loggedUser.getEmail(), otherUser.getEmail()))
+        allMessages =  service.getConversationUserMessageDTOs(List.of(loggedUser.getEmail(), otherUser.getEmail()));
+        List<UserMessageDTO> result =  allMessages
                 .stream()
                 .filter(m -> !m.getDate().toLocalDate().isAfter(dateUntil) && !m.getDate().toLocalDate().isBefore(dateFrom))
                 .toList();
