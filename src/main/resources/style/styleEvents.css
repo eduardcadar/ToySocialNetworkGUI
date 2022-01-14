@@ -24,7 +24,10 @@
 }
 .date_field{
     -fx-border-radius: 3px;
-
+}
+.date_field:focused{
+    -fx-border-color:#862CE4;
+    -fx-border-width: 2px;
 }
 .event_short_field{
     -fx-border-width: 2px;
@@ -47,4 +50,47 @@
     -fx-text-fill: black;
     -fx-background-color: transparent;
     -fx-background-radius: 0;
+}
+.date-picker .arrow-button {
+     -fx-background-color: #862CE4;
+     -fx-background-radius: 0;
+ }
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white;
+  }
+.date-picker .cell {
+    -fx-background-color: white;
+}
+.date-picker .cell:hover {
+    -fx-background-color:#862CE4;
+    -fx-text-fill: white;
+
+
+}
+.date-picker .cell:focused {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker .selected {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker .selected:focused {
+    -fx-background-color: #862CE4;
+    -fx-text-fill: white;
+}
+.date-picker-popup  {
+    -fx-border-color: transparent;
+}
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #862CE4;
+}
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: white;
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: white;
 }

@@ -22,10 +22,10 @@
                   </Circle>
                </children>
             </StackPane>
-            <TextField id="textFieldLogin" fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />
-            <TextField id="textFieldLogin" fx:id="textFieldLastname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New last name" styleClass="text-field" />
-            <PasswordField id="textFieldLogin" fx:id="textFieldOldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="Old password" styleClass="text-field" />
-            <PasswordField id="textFieldLogin" fx:id="textFieldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="150.0" promptText="New password" styleClass="text-field" stylesheets="@../../../style/style.css" />
+            <TextField fx:id="textFieldFirstname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New first name" styleClass="text-field" />
+            <TextField fx:id="textFieldLastname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New last name" styleClass="text-field" />
+            <PasswordField fx:id="textFieldOldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="Old password" styleClass="text-field" />
+            <PasswordField fx:id="textFieldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="150.0" promptText="New password" stylesheets="@../../../style/style.css" />
             <Button id="button" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0" prefWidth="150.0" text="Update" textFill="WHITE" />
          </children>
       </VBox>
