@@ -177,7 +177,7 @@
                                     <Image url="@../../../images/category.png" />
                                  </image>
                               </ImageView>
-                              <TextField fx:id="textFieldCategory" focusTraversable="false" prefHeight="26.0" prefWidth="139.0" promptText="Category" styleClass="event_short_field" />
+                              <TextField fx:id="textFieldCategory" focusTraversable="false" maxHeight="26.0" maxWidth="270.0" prefHeight="26.0" prefWidth="270.0" promptText="Category" styleClass="event_short_field" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="414.0">
