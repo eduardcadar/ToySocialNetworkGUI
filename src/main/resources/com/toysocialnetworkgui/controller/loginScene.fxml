@@ -20,7 +20,7 @@
 
 <SplitPane dividerPositions="0.35837046467218325" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.LoginSceneController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #862CE4;">
+    <AnchorPane maxHeight="410.0" maxWidth="220.0" minHeight="410.0" minWidth="220.0" prefHeight="410.0" prefWidth="220.0" style="-fx-background-color: #862CE4;">
          <children>
             <VBox layoutX="21.0" layoutY="33.0" prefHeight="343.0" prefWidth="118.0" spacing="40.0">
                <children>
@@ -115,7 +115,7 @@
                </children>
             </VBox>
          </children></AnchorPane>
-      <AnchorPane>
+      <AnchorPane maxHeight="410.0" maxWidth="400.0" minHeight="410.0" minWidth="400.0" prefHeight="410.0" prefWidth="400.0">
          <children>
             <VBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="412.0" prefWidth="402.0" spacing="20.0" stylesheets="@../../../style/style.css">
                <children>

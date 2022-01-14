@@ -152,6 +152,10 @@ public class ConversationController implements Observer {
 
     @FXML
     protected void onRefreshButtonClick() {
+        if (idConversation == 0) {
+            MyAlert.StartAlert("Error", "Choose a conversation", Alert.AlertType.ERROR);
+            return;
+        }
         this.pageNumber = getLastPageNumber();
         reloadMessages();
     }

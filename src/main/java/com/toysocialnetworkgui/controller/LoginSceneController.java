@@ -49,7 +49,7 @@ public class LoginSceneController {
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
-        Scene scene = new Scene(root, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
+        Scene scene = new Scene(root);//, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
         window.setScene(scene);
     }
 
@@ -60,7 +60,6 @@ public class LoginSceneController {
         CreateAccountController controller = loader.getController();
         controller.initialize(service, window);
 
-        window.setScene(new Scene(root, CONSTANTS.ADMIN_SCREEN_WIDTH, CONSTANTS.ADMIN_SCREEN_HEIGHT));
-        window.show();
+        window.getScene().setRoot(root);
     }
 }
