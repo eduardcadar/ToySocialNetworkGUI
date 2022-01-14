@@ -1,12 +1,30 @@
 
+.my-text-field {
+    -fx-border-color: none;
+    -fx-background-radius: 10px 10px 10px 10px;
+    -fx-padding: 0px 10px 5px 10px;
+    -fx-min-width: 200px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
+}
+
+.my-text-field:focused {
+    -fx-border-color: #862CE4;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px 10px 10px 10px;
+}
+
 .list-cell:selected, list-view:focused{
     -fx-text-fill: white;
     -fx-border-width: 0px;
     -fx-background-color: #862CE4;
+
 }
 .list-view{
     -fx-border-color: #862CE4;
     -fx-border-width: 2px;
+    -fx-focus-color: -fx-control-inner-background ;
+    -fx-faint-focus-color: -fx-control-inner-background ;
 }
 .list-view:selected{
     -fx-border-color: transparent;

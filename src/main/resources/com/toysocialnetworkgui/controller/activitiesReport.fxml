@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -29,9 +30,9 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="TOP_RIGHT" layoutX="516.0" layoutY="402.0" spacing="10.0">
+      <HBox alignment="TOP_RIGHT" layoutX="466.0" layoutY="402.0" spacing="10.0">
          <children>
-            <TextField fx:id="textFieldFilename" promptText="file name" />
+            <TextField fx:id="textFieldFilename" promptText="file name" styleClass="my-text-field" />
             <Button fx:id="buttonExport" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to pdf" textFill="WHITE" />
          </children>
       </HBox>
@@ -66,4 +67,8 @@
          </children>
       </StackPane>
    </children>
+   <stylesheets>
+      <URL value="@../../../style/styleReports.css" />
+      <URL value="@../../../style/style.css" />
+   </stylesheets>
 </AnchorPane>
