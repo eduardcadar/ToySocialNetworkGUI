@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="650.0" prefWidth="800.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" stylesheets="@../../../style/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.UpdateUserController">
    <children>
-      <VBox alignment="CENTER" layoutX="393.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="214.0" spacing="15.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="393.0" AnchorPane.rightAnchor="393.0" AnchorPane.topAnchor="5.0">
+      <VBox alignment="CENTER" layoutX="215.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="431.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="354.0" AnchorPane.topAnchor="0.0">
          <children>
             <StackPane fx:id="profilePicturePicker" onMouseClicked="#onProfilePictureClick" prefHeight="150.0" prefWidth="200.0">
                <children>
@@ -26,7 +26,7 @@
             <TextField fx:id="textFieldLastname" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="New last name" styleClass="text-field" />
             <PasswordField fx:id="textFieldOldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0" promptText="Old password" styleClass="text-field" />
             <PasswordField fx:id="textFieldPassword" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="150.0" promptText="New password" stylesheets="@../../../style/style.css" />
-            <Button id="button" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0" prefWidth="150.0" text="Update" textFill="WHITE" />
+            <Button id="button" maxHeight="30.0" maxWidth="193.0" minHeight="30.0" minWidth="150.0" mnemonicParsing="false" onAction="#onUpdateButtonClick" prefHeight="30.0" prefWidth="150.0" text="Update" textFill="WHITE" />
          </children>
       </VBox>
    </children>

@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.FriendsController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.FriendsController">
    <children>
-      <VBox layoutX="121.0" layoutY="149.0" prefHeight="351.0" prefWidth="540.0" spacing="10.0">
+      <VBox layoutX="147.0" layoutY="149.0" prefHeight="351.0" prefWidth="540.0" spacing="10.0">
          <children>
             <HBox spacing="5.0">
                <children>

@@ -11,15 +11,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.FriendReportController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.FriendReportController">
    <children>
-      <HBox alignment="CENTER" />
-      <ListView fx:id="listViewMessages" layoutX="150.0" layoutY="29.0" prefHeight="409.0" prefWidth="600.0" />
+      <ListView fx:id="listViewMessages" layoutX="125.0" layoutY="27.0" prefHeight="409.0" prefWidth="600.0" />
       <HBox alignment="TOP_RIGHT" layoutY="353.6000003814697" spacing="10.0" />
-      <TextField fx:id="textFieldFilename" layoutX="396.0" layoutY="443.0" prefHeight="26.0" prefWidth="251.0" promptText="file name" />
-      <Button fx:id="buttonExport" alignment="CENTER" layoutX="661.0" layoutY="443.0" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to PDF" textFill="WHITE" />
-      <Label fx:id="labelTitle" layoutX="150.0" layoutY="9.0" text="Label" />
+      <TextField fx:id="textFieldFilename" layoutX="364.0" layoutY="442.0" prefHeight="26.0" prefWidth="251.0" promptText="file name" />
+      <Button fx:id="buttonExport" alignment="CENTER" layoutX="636.0" layoutY="442.0" mnemonicParsing="false" onAction="#onButtonExportClick" text="Export to PDF" textFill="WHITE" />
+      <Label fx:id="labelTitle" layoutX="125.0" layoutY="5.0" text="Label" />
       <StackPane layoutX="164.0" layoutY="443.0" prefHeight="150.0" prefWidth="200.0">
          <children>
             <VBox fx:id="vboxChart" alignment="CENTER">

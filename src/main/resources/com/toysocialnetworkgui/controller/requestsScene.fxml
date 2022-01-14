@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="565.0" prefWidth="921.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.RequestsController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.RequestsController">
    <children>
-      <HBox layoutX="14.0" layoutY="48.0" prefHeight="463.0" prefWidth="819.0" spacing="60.0">
+      <HBox layoutX="15.0" layoutY="93.0" prefHeight="463.0" prefWidth="819.0" spacing="60.0">
          <children>
             <VBox spacing="30.0">
                <children>

@@ -2,7 +2,7 @@ package com.toysocialnetworkgui.utils;
 
 public class CONSTANTS {
 
-    public static final int MAIN_SCREEN_WIDTH = 1200;
+    public static final int MAIN_SCREEN_WIDTH = 1100;
     public static final int MAIN_SCREEN_HEIGHT = 650;
 
     public static final int ADMIN_SCREEN_WIDTH = 600;

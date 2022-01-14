@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportChooseDateController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.toysocialnetworkgui.controller.ActivitiesReportChooseDateController">
    <children>
-        <VBox alignment="CENTER" layoutX="362.0" layoutY="152.0" prefHeight="345.0" prefWidth="175.0" spacing="30.0">
+        <VBox alignment="CENTER" layoutX="337.0" layoutY="152.0" prefHeight="345.0" prefWidth="175.0" spacing="30.0">
             <children>
                 <Label text="Choose report period" />
                 <DatePicker fx:id="datePickerFrom" promptText="From" styleClass="text-field-picker" />
