@@ -12,8 +12,8 @@
         <VBox alignment="CENTER" layoutX="362.0" layoutY="152.0" prefHeight="345.0" prefWidth="175.0" spacing="30.0">
             <children>
                 <Label text="Choose report period" />
-                <DatePicker fx:id="datePickerFrom" promptText="From" styleClass="date_field" />
-                <DatePicker fx:id="datePickerUntil" promptText="Until" styleClass="date_field" />
+                <DatePicker fx:id="datePickerFrom" promptText="From" styleClass="text-field-picker" />
+                <DatePicker fx:id="datePickerUntil" promptText="Until" styleClass="text-field-picker" />
                 <Button fx:id="buttonGenerate" alignment="CENTER" mnemonicParsing="false" onAction="#onButtonGenerateClick" style="-fx-alignment: center;" text="Generate report" textFill="WHITE" />
             </children>
         </VBox>
