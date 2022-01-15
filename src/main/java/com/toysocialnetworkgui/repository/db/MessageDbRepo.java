@@ -21,25 +21,25 @@ public class MessageDbRepo implements Observable {
         this.password = password;
         this.messagesTable = messagesTable;
         this.validator = validator;
-        String sql = "CREATE TABLE IF NOT EXISTS " + messagesTable +
-                "(id serial, " +
-                " idconversation int NOT NULL," +
-                " sender varchar NOT NULL," +
-                " messagetext varchar NOT NULL," +
-                " sentdate varchar NOT NULL," +
-                " PRIMARY KEY (id)," +
-                " FOREIGN KEY (idconversation) REFERENCES conversations (id) ON DELETE CASCADE," +
-                " FOREIGN KEY (sender) REFERENCES users (email) ON DELETE CASCADE" +
-                ");" +
-                " CREATE UNIQUE index IF NOT EXISTS " + messagesTable + "_id_uindex ON " +
-                messagesTable + " (id);";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + messagesTable +
+//                "(id serial, " +
+//                " idconversation int NOT NULL," +
+//                " sender varchar NOT NULL," +
+//                " messagetext varchar NOT NULL," +
+//                " sentdate varchar NOT NULL," +
+//                " PRIMARY KEY (id)," +
+//                " FOREIGN KEY (idconversation) REFERENCES conversations (id) ON DELETE CASCADE," +
+//                " FOREIGN KEY (sender) REFERENCES users (email) ON DELETE CASCADE" +
+//                ");" +
+//                " CREATE UNIQUE index IF NOT EXISTS " + messagesTable + "_id_uindex ON " +
+//                messagesTable + " (id);";
+//
+//        try (Connection connection = DriverManager.getConnection(url, username, password);
+//             PreparedStatement ps = connection.prepareStatement(sql)) {
+//            ps.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
     }
 
     /**

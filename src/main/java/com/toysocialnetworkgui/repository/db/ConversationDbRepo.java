@@ -15,18 +15,18 @@ public class ConversationDbRepo implements Observable {
         this.password = password;
         this.conversationsTable = conversationsTable;
 
-        String sql = "CREATE TABLE IF NOT EXISTS " + conversationsTable +
-                "(id serial," +
-                " datecreated varchar," +
-                " PRIMARY KEY (id)" +
-                ");";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + conversationsTable +
+//                "(id serial," +
+//                " datecreated varchar," +
+//                " PRIMARY KEY (id)" +
+//                ");";
+//
+//        try (Connection connection = DriverManager.getConnection(url, username, password);
+//             PreparedStatement ps = connection.prepareStatement(sql)) {
+//            ps.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
     }
 
     public Conversation getConversation(int idConversation) {

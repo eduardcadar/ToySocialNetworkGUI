@@ -28,21 +28,21 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
         this.fshipsTable = fshipsTable;
         this.usersTable = usersTable;
 
-        String sql = "CREATE TABLE IF NOT EXISTS " + fshipsTable +
-                "(email1 varchar," +
-                " email2 varchar, " +
-                " date varchar DEFAULT NULL," +
-                " PRIMARY KEY (email1,email2)," +
-                " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
-                " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
-                ")";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + fshipsTable +
+//                "(email1 varchar," +
+//                " email2 varchar, " +
+//                " date varchar DEFAULT NULL," +
+//                " PRIMARY KEY (email1,email2)," +
+//                " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
+//                " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
+//                ")";
+//
+//        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+//            PreparedStatement ps = connection.prepareStatement(sql);
+//            ps.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
     }
 
     /**
