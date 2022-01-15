@@ -247,9 +247,8 @@ public class ConversationController implements Observer {
         if (idConversation == 0)
             return;
 
-        int lastPage = getLastPageNumber();
         buttonPreviousPage.setVisible(pageNumber != 1);
-        buttonNextPage.setVisible(pageNumber != lastPage);
+        buttonNextPage.setVisible(pageNumber != getLastPageNumber());
 
         this.lastConvSize = service.getConversationSize(idConversation);
         tableViewMessages.setItems(getMessages());

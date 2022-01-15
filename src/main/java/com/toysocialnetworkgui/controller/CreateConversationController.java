@@ -54,6 +54,8 @@ public class CreateConversationController {
     }
 
     private void reloadFriends() {
+        previousPage.setVisible(pageNumber != 1);
+        nextPage.setVisible(pageNumber != getLastPageNumber());
         listFriends.getItems().setAll(service.getUserFriendsFilteredPage(loggedUser.getEmail(), pageNumber, pageSize, currentSearchPattern));
     }
 
@@ -73,12 +75,14 @@ public class CreateConversationController {
 
     @FXML
     protected void onButtonNextPageClick() {
-        int lastPage = ((service
-                .getUserFriendsFilteredSize(loggedUser.getEmail(), currentSearchPattern) - 1) / pageSize) + 1;
-        if (pageNumber == lastPage)
+        if (pageNumber == getLastPageNumber())
             return;
         pageNumber++;
         reloadFriends();
+    }
+
+    private int getLastPageNumber() {
+        return ((service.getUserFriendsFilteredSize(loggedUser.getEmail(), currentSearchPattern) - 1) / pageSize) + 1;
     }
 
     @FXML
