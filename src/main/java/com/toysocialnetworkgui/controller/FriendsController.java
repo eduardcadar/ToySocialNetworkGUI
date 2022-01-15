@@ -8,6 +8,7 @@ import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -239,7 +240,7 @@ public class FriendsController implements Observer {
             return;
         UserFriendDTO friend = tableViewFriends.getSelectionModel().getSelectedItem();
         try {
-            service.removeFriendship(loggedUser.getEmail(), friend.getEmail());
+            new Thread(() -> service.removeFriendship(loggedUser.getEmail(), friend.getEmail())).start();
         } catch (RepoException | DbException e) {
             MyAlert.StartAlert("Error", e.getMessage(), Alert.AlertType.WARNING);
         }

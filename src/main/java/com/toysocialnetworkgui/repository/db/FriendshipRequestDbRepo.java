@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.domain.REQUESTSTATE;
 import com.toysocialnetworkgui.repository.FriendshipRequestRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.observer.Observable;
+import javafx.application.Platform;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -52,7 +53,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
             ps.setString(3, request.getState().toString());
             ps.setString(4, request.getSendDate().toString());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -64,7 +65,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -100,7 +101,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
             ps.setString(1, email1);
             ps.setString(2, email2);
             ResultSet resultSet = ps.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 String requestEmail1 = resultSet.getString("email1");
                 String requestEmail2 = resultSet.getString("email2");
                 REQUESTSTATE requestState = REQUESTSTATE.valueOf(resultSet.getString("requeststate"));
@@ -125,7 +126,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
             ps.setString(1, friendshipRequest.getFirst());
             ps.setString(2, friendshipRequest.getSecond());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -146,7 +147,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
             ps.setString(2, request.getFirst());
             ps.setString(3, request.getSecond());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }

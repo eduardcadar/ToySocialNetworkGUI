@@ -42,7 +42,7 @@ public class LoginSceneController {
         Parent root = loader.load();
         LoggedSceneController controller = loader.getController();
         controller.initialize(service, loggedUser, window);
-        Scene scene = new Scene(root);//, CONSTANTS.MAIN_SCREEN_WIDTH, CONSTANTS.MAIN_SCREEN_HEIGHT);
+        Scene scene = new Scene(root);
         window.setScene(scene);
     }
 

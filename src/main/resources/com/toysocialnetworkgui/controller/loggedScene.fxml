@@ -61,7 +61,7 @@
                                     <VBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="73.0">
                                        <children>
                                           <Text fx:id="textNrConversations" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Messages" />
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Conversations" />
                                        </children>
                                     </VBox>
                                  </children>

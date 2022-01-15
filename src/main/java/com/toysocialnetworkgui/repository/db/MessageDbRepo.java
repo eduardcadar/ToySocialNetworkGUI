@@ -4,6 +4,7 @@ import com.toysocialnetworkgui.domain.Message;
 import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.MessageValidator;
 import com.toysocialnetworkgui.validator.Validator;
+import javafx.application.Platform;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -55,7 +56,7 @@ public class MessageDbRepo implements Observable {
             ps.setString(3, message.getMessage());
             ps.setString(4, String.valueOf(LocalDateTime.now()));
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
             ResultSet res = ps.getGeneratedKeys();
             if (res.next())
                 message.setID(res.getInt(1));

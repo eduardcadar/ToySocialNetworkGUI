@@ -361,7 +361,7 @@ public class RequestsController implements Observer {
      */
     // TODO
     //  might reload only the affected table deal with this later
-    public void reloadTables(){
+    public void reloadTables() {
         setSentRequestsList(getSentRequests());
         setReceivedRequestsList(getReceivedRequests());
         tableAddFriend.setItems(getNotFriends());
@@ -377,7 +377,7 @@ public class RequestsController implements Observer {
         tableAddFriend.setItems(getNotFriends());
     }
 
-    public void onButtonAcceptClick(){
+    public void onButtonAcceptClick() {
         UserRequestDTO requestDTO = tableReceivedRequestsView.getSelectionModel().getSelectedItem();
         if (requestDTO != null) {
             try {
@@ -402,7 +402,6 @@ public class RequestsController implements Observer {
     }
 
     public void onButtonCancelClick() {
-        System.out.println("Cancel click");
         UserRequestDTO dto = tableSentRequestsView.getSelectionModel().getSelectedItem();
         if (dto != null) {
             try {
@@ -438,14 +437,14 @@ public class RequestsController implements Observer {
         if (tableAddFriend.getSelectionModel() != null) {
             if (tableAddFriend.getSelectionModel().getSelectedCells().size() > 0) {
                 if ((tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() == 3) {
-                    sentFriendRequest();
+                    sendFriendRequest();
                     setSentRequestsList(getSentRequests());
                 }
             }
         }
     }
 
-    private void sentFriendRequest() {
+    private void sendFriendRequest() {
         User friend = tableAddFriend.getSelectionModel().getSelectedItem().getUser();
         if (friend == null)
             return;

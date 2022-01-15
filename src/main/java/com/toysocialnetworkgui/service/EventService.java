@@ -4,10 +4,13 @@ import com.toysocialnetworkgui.domain.Event;
 import com.toysocialnetworkgui.domain.User;
 import com.toysocialnetworkgui.repository.db.EventDbRepo;
 import com.toysocialnetworkgui.repository.db.EventsSubscriptionDbRepo;
+import com.toysocialnetworkgui.utils.MyAlert;
+import javafx.scene.control.Alert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class EventService {
 
@@ -83,7 +86,7 @@ public class EventService {
     public void updateEvent(String name, String location, String description, LocalDate startDate, LocalDate endDate) {
     }
 
-    public void remove(){}
+    public void remove() {}
 
     public List<Event> getAllEvents() {
         return eventRepo.getAll();
@@ -92,15 +95,33 @@ public class EventService {
     public List<Event> getUserEvents(String userEmail) {
         List<Integer> eventsId = eventsSubscriptionRepo.getEventsForUser(userEmail);
         List<Event> events = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
+        Semaphore sem = new Semaphore(1);
         eventsId.forEach(id -> {
-            Event event = getEvent(id);
-            events.add(event);
+            Thread t = new Thread(() -> {
+                try {
+                    sem.acquire();
+                    events.add(getEvent(id));
+                } catch (InterruptedException e) {
+                    MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+                } finally {
+                    sem.release();
+                }
+            });
+            threads.add(t);
+            t.start();
+        });
+        threads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                MyAlert.StartAlert("Error", "Program error", Alert.AlertType.ERROR);
+            }
         });
         return events;
     }
 
     public List<User> getUsersForEvent(Event ev){
-
         return null;
     }
 

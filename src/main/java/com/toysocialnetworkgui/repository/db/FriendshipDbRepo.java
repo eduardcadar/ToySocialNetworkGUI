@@ -5,6 +5,7 @@ import com.toysocialnetworkgui.repository.FriendshipRepository;
 import com.toysocialnetworkgui.repository.RepoException;
 import com.toysocialnetworkgui.repository.observer.Observable;
 import com.toysocialnetworkgui.validator.Validator;
+import javafx.application.Platform;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -60,7 +61,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
             ps.setString(2, f.getSecond());
             ps.setString(3, f.getDate().toString());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
@@ -88,7 +89,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
             if (date != null)
                 friendship.setDate(LocalDate.parse(date));
             else
-             friendship.setDate(null);
+                friendship.setDate(null);
             return friendship;
 
         } catch (SQLException throwables) {
@@ -112,7 +113,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
             ps.setString(3, f.getFirst());
             ps.setString(4, f.getSecond());
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -226,7 +227,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
@@ -385,7 +386,7 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
             ps.setString(1, email);
             ps.setString(2, email);
             ps.executeUpdate();
-            notifyObservers();
+            Platform.runLater(this::notifyObservers);
         } catch (SQLException throwables) {
             throw new DbException(throwables.getMessage());
         }
