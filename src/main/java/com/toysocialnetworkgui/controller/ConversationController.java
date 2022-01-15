@@ -80,6 +80,8 @@ public class ConversationController implements Observer {
         this.loggedUser = user;
         this.rightPane = rightPane;
         this.idConversation = 0;
+        buttonPreviousPage.setVisible(false);
+        buttonNextPage.setVisible(false);
         this.exec = (ScheduledExecutorService)rightPane.getParent().getScene().getWindow().getUserData();
         reloadConversationsList();
         initializeMessages();
