@@ -32,9 +32,9 @@ Toy Social Network - University Project in collaboration with [Butacu Stefan](ht
   * Subscribed events
   ![Subscribed events](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Subscribed.JPG)
   * Chat
-  ![Chat](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Messages.JPG)
-  * Explore
-  ![Chat](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Messages.JPG)
+  ![Chat](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Chat.JPG)
+  * Explore community
+  ![Explore community](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Explore.JPG)
 
   
   
