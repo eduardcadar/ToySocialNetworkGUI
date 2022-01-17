@@ -104,6 +104,21 @@ public class ConversationParticipantDbRepo implements Observable {
         return conversations;
     }
 
+    public Integer getUserConversationsSize(String email) {
+        String sql = "SELECT COUNT(*) AS size FROM " + participantsTable +
+                " WHERE participant = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+        PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
+    }
+
     public List<String> getConversationParticipants(int idConversation) {
         List<String> participants = new ArrayList<>();
         String sql = "SELECT participant FROM " + participantsTable +

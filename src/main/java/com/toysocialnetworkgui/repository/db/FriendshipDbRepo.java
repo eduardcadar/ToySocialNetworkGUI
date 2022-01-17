@@ -142,9 +142,11 @@ public class FriendshipDbRepo implements Observable, FriendshipRepository {
      */
     public int getUserFriendsSize(String email) {
         String sql = "SELECT COUNT(*) AS size FROM " + fshipsTable +
-                "WHERE email1 = ? OR email2 = ?";
+                " WHERE email1 = ? OR email2 = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, email);
             ResultSet res = ps.executeQuery();
             if (res.next())
                 return res.getInt("size");

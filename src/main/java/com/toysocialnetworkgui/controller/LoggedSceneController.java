@@ -162,12 +162,12 @@ public class LoggedSceneController implements Observer {
 
     private void reloadConversationsLabel() {
         Platform.runLater(() ->
-                textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size())));
+                textNrConversations.setText(String.valueOf(service.getUserConversationsSize(loggedUser.getEmail()))));
     }
 
     private void reloadFriendsLabel() {
         Platform.runLater(() ->
-                textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size())));
+                textNrFriends.setText(String.valueOf(service.getUserFriendsSize(loggedUser.getEmail()))));
     }
 
     private void reloadEventsLabel() {

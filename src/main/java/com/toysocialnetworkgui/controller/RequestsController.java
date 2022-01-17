@@ -27,7 +27,6 @@ import javafx.scene.text.Text;
 
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class RequestsController implements Observer {
@@ -58,7 +57,6 @@ public class RequestsController implements Observer {
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnSentDate;
 
-
     @FXML
     private TableColumn<UserRequestDTO, ImageView> tableAcceptRequest;
     @FXML
@@ -83,6 +81,9 @@ public class RequestsController implements Observer {
     Button buttonSearch;
 
     private String currentPattern;
+    private Integer lastReceivedReqSize;
+    private Integer lastSentReqSize;
+    private Integer lastAddFriendSize;
 
     public void initialize(Service service, User loggedUser, AnchorPane rightPane) {
         this.service = service;
@@ -95,8 +96,12 @@ public class RequestsController implements Observer {
         service.getFriendshipRepo().addObserver(this);
         ((ScheduledExecutorService)rightPane.getScene().getWindow().getUserData())
                 .scheduleAtFixedRate(() -> {
-                    reloadRequestsTables();
-                    reloadAddFriendTable();
+                    if (!lastSentReqSize.equals(
+                            service.getUserSentRequestsSize(loggedUser.getEmail()))) reloadSentRequestsTable();
+                    if (!lastReceivedReqSize.equals(
+                            service.getUserReceivedRequestsSize(loggedUser.getEmail()))) reloadReceivedRequestsTable();
+                    if (!lastAddFriendSize.equals(
+                            service.getUserNotFriendsSize(loggedUser.getEmail()))) reloadAddFriendTable();
                 }, 5, 10, TimeUnit.SECONDS);
     }
 
@@ -156,7 +161,7 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
         tableAddFriendColumnCommonFriendsNr.setStyle("-fx-alignment: center");
-        tableAddFriend.setItems(getNotFriends());
+        reloadAddFriendTable();
     }
 
     private void initializeReceivedRequestsList() {
@@ -260,13 +265,13 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
 
-        tableReceivedRequestsView.setItems(getReceivedRequests());
         tableReceivedColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
         tableReceivedRequestsView.getSortOrder().add(tableReceivedColumnSentDate);
+        new Thread(() -> lastReceivedReqSize = service.getUserReceivedRequestsSize(loggedUser.getEmail())).start();
+        reloadReceivedRequestsTable();
     }
 
     private void initializeSentRequestsList() {
-        //
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
         tableSentRequestsView.setPlaceholder(new Text("No sent requests!"));
@@ -345,9 +350,10 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
 
-        tableSentRequestsView.setItems(getSentRequests());
         tableSentColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
         tableSentRequestsView.getSortOrder().add(tableSentColumnSentDate);
+        lastSentReqSize = service.getUserSentRequestsSize(loggedUser.getEmail());
+        reloadSentRequestsTable();
     }
 
     private ObservableList<UserRequestDTO> getSentRequests() {
@@ -359,10 +365,18 @@ public class RequestsController implements Observer {
     }
 
     /**
-     * Reloads both tables SentRequests and ReceivedRequests
+     * Reloads SentRequests table
      */
-    public void reloadRequestsTables() {
+    public void reloadSentRequestsTable() {
+        this.lastSentReqSize = service.getUserSentRequestsSize(loggedUser.getEmail());
         Platform.runLater(() -> tableSentRequestsView.setItems(getSentRequests()));
+    }
+
+    /**
+     * Reloads ReceivedRequests table
+     */
+    public void reloadReceivedRequestsTable() {
+        this.lastReceivedReqSize = service.getUserReceivedRequestsSize(loggedUser.getEmail());
         Platform.runLater(() -> tableReceivedRequestsView.setItems(getReceivedRequests()));
     }
 
@@ -372,7 +386,11 @@ public class RequestsController implements Observer {
         reloadAddFriendTable();
     }
 
+    /**
+     * Reloads AddFriends table
+     */
     private void reloadAddFriendTable() {
+        this.lastAddFriendSize = service.getUserNotFriendsSize(loggedUser.getEmail());
         Platform.runLater(() -> tableAddFriend.setItems(getNotFriends()));
     }
 
@@ -456,7 +474,10 @@ public class RequestsController implements Observer {
 
     @Override
     public void update(Object obj) {
-        if (obj instanceof FriendshipRequestDbRepo) reloadRequestsTables();
+        if (obj instanceof FriendshipRequestDbRepo) {
+            reloadSentRequestsTable();
+            reloadReceivedRequestsTable();
+        }
         if (obj instanceof FriendshipDbRepo) reloadAddFriendTable();
     }
 }
