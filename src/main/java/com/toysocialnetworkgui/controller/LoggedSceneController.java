@@ -78,6 +78,9 @@ public class LoggedSceneController implements Observer {
     private User loggedUser;
     private Service service;
     private Stage window;
+    private Integer lastFriendsSize;
+    private Integer lastEventsSize;
+    private Integer lastConvSize;
 
     public void initialize(Service service, User user, Stage window) {
         this.window = window;
@@ -161,18 +164,21 @@ public class LoggedSceneController implements Observer {
     }
 
     private void reloadConversationsLabel() {
+        lastConvSize = service.getUserConversationsSize(loggedUser.getEmail());
         Platform.runLater(() ->
-                textNrConversations.setText(String.valueOf(service.getUserConversationsSize(loggedUser.getEmail()))));
+                textNrConversations.setText(String.valueOf(lastConvSize)));
     }
 
     private void reloadFriendsLabel() {
+        lastFriendsSize = service.getUserFriendsSize(loggedUser.getEmail());
         Platform.runLater(() ->
-                textNrFriends.setText(String.valueOf(service.getUserFriendsSize(loggedUser.getEmail()))));
+                textNrFriends.setText(String.valueOf(lastFriendsSize)));
     }
 
     private void reloadEventsLabel() {
+        lastEventsSize = service.getUserEventsSize(loggedUser.getEmail());
         Platform.runLater(() ->
-                textNrEvents.setText(String.valueOf(service.getUserEventsSize(loggedUser.getEmail()))));
+                textNrEvents.setText(String.valueOf(lastEventsSize)));
     }
 
     @FXML
