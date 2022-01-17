@@ -22,19 +22,19 @@ public class EventsSubscriptionDbRepo implements Observable {
         this.subscriptionsTable = subscriptionTable;
         this.eventsTable = eventsTable;
 
-        String sql = "CREATE TABLE IF NOT EXISTS " + subscriptionTable +
-                "(event_id int not null, " +
-                "user_email varchar not null, " +
-                "PRIMARY KEY(event_id, user_email), " +
-                " FOREIGN KEY (event_id) references  events(id) ON DELETE CASCADE," +
-                " FOREIGN KEY (user_email) references users(email) ON DELETE CASCADE " +
-                ")";
-        try(Connection connection = DriverManager.getConnection(url,username,password)){
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + subscriptionTable +
+//                "(event_id int not null, " +
+//                "user_email varchar not null, " +
+//                "PRIMARY KEY(event_id, user_email), " +
+//                " FOREIGN KEY (event_id) references  events(id) ON DELETE CASCADE," +
+//                " FOREIGN KEY (user_email) references users(email) ON DELETE CASCADE " +
+//                ")";
+//        try(Connection connection = DriverManager.getConnection(url,username,password)){
+//            PreparedStatement ps = connection.prepareStatement(sql);
+//            ps.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
     }
 
     public void addSubscriber(Integer evId, String userEmail){

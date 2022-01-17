@@ -22,30 +22,30 @@ public class EventDbRepo implements EventRepository {
         this.username = username;
         this.password = password;
         this.eventTable = eventTable;
-        String sql = "CREATE TABLE IF NOT EXISTS " + eventTable +
-                "(id serial, "+
-                " name varchar NOT NULL," +
-                " creator varchar NOT NULL," +
-                " description varchar NOT NULL," +
-                " category varchar NOT NULL," +
-                " location varchar NOT NULL," +
-                " date_start varchar NOT NULL," +
-                " date_end varchar NOT NULL," +
-                " PRIMARY KEY(id)" +
-                ")";
-        String updateTableAddPhoto = "ALTER TABLE " + eventTable +
-                " ADD COLUMN IF NOT EXISTS photo_path varchar DEFAULT '/events/error.png'";
-
-
-        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.executeUpdate();
-            PreparedStatement updateStatementAddProfile = connection.prepareStatement(updateTableAddPhoto);
-            updateStatementAddProfile.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + eventTable +
+//                "(id serial, "+
+//                " name varchar NOT NULL," +
+//                " creator varchar NOT NULL," +
+//                " description varchar NOT NULL," +
+//                " category varchar NOT NULL," +
+//                " location varchar NOT NULL," +
+//                " date_start varchar NOT NULL," +
+//                " date_end varchar NOT NULL," +
+//                " PRIMARY KEY(id)" +
+//                ")";
+//        String updateTableAddPhoto = "ALTER TABLE " + eventTable +
+//                " ADD COLUMN IF NOT EXISTS photo_path varchar DEFAULT '/events/error.png'";
+//
+//
+//        try (Connection connection = DriverManager.getConnection(this.url, this.username, this.password)){
+//            PreparedStatement ps = connection.prepareStatement(sql);
+//            ps.executeUpdate();
+//            PreparedStatement updateStatementAddProfile = connection.prepareStatement(updateTableAddPhoto);
+//            updateStatementAddProfile.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            throw new DbException(e.getMessage());
+//        }
     }
 
     /**

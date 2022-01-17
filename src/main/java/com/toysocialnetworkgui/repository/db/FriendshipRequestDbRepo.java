@@ -20,24 +20,24 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
         this.username = username;
         this.password = password;
         this.tableName = tableName;
-        String sql = "CREATE TABLE IF NOT EXISTS " + tableName +
-                "(email1 varchar," +
-                " email2 varchar," +
-                " requeststate varchar DEFAULT 'PENDING'," +
-                " PRIMARY KEY (email1,email2)," +
-                " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
-                " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
-                ")";
-        String updateTableAddSendDate = "ALTER TABLE " + tableName +
-                " ADD COLUMN IF NOT EXISTS sendDate varchar DEFAULT '0001-01-01' ";
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.executeUpdate();
-            PreparedStatement updateTable = connection.prepareStatement(updateTableAddSendDate);
-            updateTable.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + tableName +
+//                "(email1 varchar," +
+//                " email2 varchar," +
+//                " requeststate varchar DEFAULT 'PENDING'," +
+//                " PRIMARY KEY (email1,email2)," +
+//                " FOREIGN KEY (email1) references users(email) ON DELETE CASCADE," +
+//                " FOREIGN KEY (email2) references users(email) ON DELETE CASCADE" +
+//                ")";
+//        String updateTableAddSendDate = "ALTER TABLE " + tableName +
+//                " ADD COLUMN IF NOT EXISTS sendDate varchar DEFAULT '0001-01-01' ";
+//        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+//            PreparedStatement ps = connection.prepareStatement(sql);
+//            ps.executeUpdate();
+//            PreparedStatement updateTable = connection.prepareStatement(updateTableAddSendDate);
+//            updateTable.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
 
     }
 

@@ -19,20 +19,20 @@ public class ConversationParticipantDbRepo implements Observable {
         this.password = password;
         this.participantsTable = participantsTable;
         this.validator = validator;
-        String sql = "CREATE TABLE IF NOT EXISTS " + participantsTable +
-                "(idconversation int NOT NULL," +
-                " participant varchar NOT NULL," +
-                " PRIMARY KEY (idconversation, participant)," +
-                " FOREIGN KEY (idconversation) REFERENCES conversations (id) ON DELETE CASCADE," +
-                " FOREIGN KEY (participant) REFERENCES users (email) ON DELETE CASCADE" +
-                ");";
-
-        try (Connection connection = DriverManager.getConnection(url, username, password);
-        PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DbException(throwables.getMessage());
-        }
+//        String sql = "CREATE TABLE IF NOT EXISTS " + participantsTable +
+//                "(idconversation int NOT NULL," +
+//                " participant varchar NOT NULL," +
+//                " PRIMARY KEY (idconversation, participant)," +
+//                " FOREIGN KEY (idconversation) REFERENCES conversations (id) ON DELETE CASCADE," +
+//                " FOREIGN KEY (participant) REFERENCES users (email) ON DELETE CASCADE" +
+//                ");";
+//
+//        try (Connection connection = DriverManager.getConnection(url, username, password);
+//        PreparedStatement ps = connection.prepareStatement(sql)) {
+//            ps.executeUpdate();
+//        } catch (SQLException throwables) {
+//            throw new DbException(throwables.getMessage());
+//        }
     }
 
     /**
