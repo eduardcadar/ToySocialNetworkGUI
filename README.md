@@ -19,7 +19,23 @@ Toy Social Network - University Project in collaboration with [Butacu Stefan](ht
   - Gradle 
 
 ## Presentation
-  TODO 
+ * Login
+  ![Login](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Login.JPG)
+  * Sign up
+  ![Sign up](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Signup.JPG)
+  * Home
+  ![Home](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Main.JPG)
+  * Events
+  ![All events](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/AllEv.png)
+  * Create Event
+  ![Create Event](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/CreateEv.JPG)
+  * Subscribed events
+  ![Subscribed events](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Subscribed.JPG)
+  * Chat
+  ![Chat](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Chat.JPG)
+  * Explore community
+  ![Explore community](https://github.com/eduardcadar/ToySocialNetworkGUI/blob/future-dev/Presentation/Explore.JPG)
+
   
   
 
