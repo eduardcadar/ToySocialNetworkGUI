@@ -8,7 +8,6 @@ import com.toysocialnetworkgui.repository.observer.Observer;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserFriendDTO;
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -87,6 +86,7 @@ public class FriendsController implements Observer {
 
     private void reloadFriends() {
         int lastPage = getLastPageNumber();
+        while (pageNumber > lastPage) pageNumber--;
         buttonPreviousPage.setVisible(pageNumber != 1);
         buttonNextPage.setVisible(pageNumber != lastPage);
 

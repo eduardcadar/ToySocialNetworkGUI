@@ -356,7 +356,7 @@ public class Service {
     public List<UserRequestDTO> getUserSentRequests(String email) {
         List<FriendshipRequest> friendshipRequests = friendshipService.getAllFriendshipRequests();
         ArrayList<UserRequestDTO> sendRequestsDto = new ArrayList<>();
-        for(FriendshipRequest friendshipRequest: friendshipRequests){
+        for (FriendshipRequest friendshipRequest: friendshipRequests) {
             String sender = friendshipRequest.getFirst();
             String receiver = friendshipRequest.getSecond();
             REQUESTSTATE state = friendshipRequest.getState();
@@ -368,7 +368,30 @@ public class Service {
             }
         }
         return sendRequestsDto;
+    }
 
+    /**
+     * @param email the email of the user
+     * @return number of requests sent by the user
+     */
+    public Integer getUserSentRequestsSize(String email) {
+        return friendshipService.getUserSentRequestsSize(email);
+    }
+
+    /**
+     * @param email the email of the user
+     * @return number of requests received by the user
+     */
+    public Integer getUserReceivedRequestsSize(String email) {
+        return friendshipService.getUserReceivedRequestsSize(email);
+    }
+
+    public Integer getUserFriendsSize(String email) {
+        return friendshipService.getUserFriendsSize(email);
+    }
+
+    public Integer getUserNotFriendsSize(String email) {
+        return userService.size() - friendshipService.getUserFriendsSize(email);
     }
 
     /**
@@ -377,7 +400,7 @@ public class Service {
     public List<UserRequestDTO> getUserReceivedRequests(String email) {
         List<FriendshipRequest> friendshipRequests = friendshipService.getAllFriendshipRequests();
         ArrayList<UserRequestDTO> sendRequestsDto = new ArrayList<>();
-        for(FriendshipRequest friendshipRequest: friendshipRequests){
+        for (FriendshipRequest friendshipRequest: friendshipRequests) {
             String sender = friendshipRequest.getFirst();
             String receiver = friendshipRequest.getSecond();
             REQUESTSTATE state = friendshipRequest.getState();
@@ -389,7 +412,6 @@ public class Service {
             }
         }
         return sendRequestsDto;
-
     }
 
     /**
@@ -422,6 +444,10 @@ public class Service {
         Conversation conversation = conversationService.getConversation(idConversation);
         conversation.setMessages(messageService.getConversationMessagesPage(idConversation, (pageNumber - 1) * pageSize, pageSize));
         return conversation;
+    }
+
+    public Integer getUserConversationsSize(String email) {
+        return conversationService.getUserConversationsSize(email);
     }
 
     /**

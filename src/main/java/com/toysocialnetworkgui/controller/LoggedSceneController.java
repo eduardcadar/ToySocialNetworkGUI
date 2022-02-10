@@ -9,6 +9,7 @@ import com.toysocialnetworkgui.service.ConversationService;
 import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CONSTANTS;
 import com.toysocialnetworkgui.utils.MyAlert;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -77,6 +78,9 @@ public class LoggedSceneController implements Observer {
     private User loggedUser;
     private Service service;
     private Stage window;
+    private Integer lastFriendsSize;
+    private Integer lastEventsSize;
+    private Integer lastConvSize;
 
     public void initialize(Service service, User user, Stage window) {
         this.window = window;
@@ -88,14 +92,20 @@ public class LoggedSceneController implements Observer {
         service.getConversationService().addObserver(this);
 
         setLoggedUser(user);
+        reloadEventsLabel();
+        reloadFriendsLabel();
+        reloadConversationsLabel();
         int numberOfNotification = service.getUserUpcomingEvents(loggedUser.getEmail()).size();
-        if (numberOfNotification != 0) {
+        if (numberOfNotification != 0)
             imageViewNotification.setImage(new Image("images/active_notification.png"));
-        } else {
+        else
             imageViewNotification.setImage(new Image("images/no_notification.png"));
-        }
         setupProfilePicture();
-
+        ((ScheduledExecutorService)window.getUserData()).scheduleAtFixedRate(() -> {
+            reloadFriendsLabel();
+            reloadEventsLabel();
+            reloadConversationsLabel();
+        }, 5, 10, TimeUnit.SECONDS);
         startTask();
     }
 
@@ -150,11 +160,25 @@ public class LoggedSceneController implements Observer {
         firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
         String lastName = user.getLastName();
         lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
-
         textUserFullName.setText(firstName + " "+ lastName);
-        textNrEvents.setText(String.valueOf(service.getUserEvents(loggedUser.getEmail()).size()));
-        textNrFriends.setText(String.valueOf(service.getUserFriends(loggedUser.getEmail()).size()));
-        textNrConversations.setText(String.valueOf(service.getUserConversations(loggedUser.getEmail()).size()));
+    }
+
+    private void reloadConversationsLabel() {
+        lastConvSize = service.getUserConversationsSize(loggedUser.getEmail());
+        Platform.runLater(() ->
+                textNrConversations.setText(String.valueOf(lastConvSize)));
+    }
+
+    private void reloadFriendsLabel() {
+        lastFriendsSize = service.getUserFriendsSize(loggedUser.getEmail());
+        Platform.runLater(() ->
+                textNrFriends.setText(String.valueOf(lastFriendsSize)));
+    }
+
+    private void reloadEventsLabel() {
+        lastEventsSize = service.getUserEventsSize(loggedUser.getEmail());
+        Platform.runLater(() ->
+                textNrEvents.setText(String.valueOf(lastEventsSize)));
     }
 
     @FXML
@@ -222,7 +246,7 @@ public class LoggedSceneController implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("requestsScene.fxml"));
         Parent dashboard = loader.load();
         RequestsController controller = loader.getController();
-        controller.initialize(service, loggedUser);
+        controller.initialize(service, loggedUser, rightPane);
         rightPane.getChildren().setAll(dashboard);
     }
 
@@ -260,8 +284,8 @@ public class LoggedSceneController implements Observer {
 
     @Override
     public void update(Object obj) {
-        if (obj instanceof FriendshipDbRepo) setLoggedUser(loggedUser);
-        if (obj instanceof EventsSubscriptionDbRepo) setLoggedUser(loggedUser);
-        if (obj instanceof ConversationService) setLoggedUser(loggedUser);
+        if (obj instanceof FriendshipDbRepo) reloadFriendsLabel();
+        if (obj instanceof EventsSubscriptionDbRepo) reloadEventsLabel();
+        if (obj instanceof ConversationService) reloadConversationsLabel();
     }
 }

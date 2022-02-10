@@ -154,6 +154,39 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
     }
 
     /**
+     * @param email the email of the user
+     * @return number of requests sent by the user
+     */
+    public Integer getUserSentRequestsSize(String email) {
+        String sql = "SELECT COUNT(*) AS size FROM " + tableName +
+                " WHERE email1 = ?";
+        return getSize(sql, email);
+    }
+
+    /**
+     * @param email the email of the user
+     * @return number of requests received by the user
+     */
+    public Integer getUserReceivedRequestsSize(String email) {
+        String sql = "SELECT COUNT(*) AS size FROM " + tableName +
+                " WHERE email2 = ?";
+        return getSize(sql, email);
+    }
+
+    private Integer getSize(String sql, String email) {
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet res = ps.executeQuery();
+            if (res.next())
+                return res.getInt("size");
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
      * Get a list of pending requests received by user with email equal with param email
      * @param email - String
      * @return - List of strings
@@ -167,7 +200,7 @@ public class FriendshipRequestDbRepo implements Observable, FriendshipRequestRep
             ps.setString(1, email);
             ps.setString(2, "PENDING");
             ResultSet res = ps.executeQuery();
-            while(res.next()) {
+            while (res.next()) {
                 String emailRequest = res.getString("email1");
                 friends.add(emailRequest);
             }

@@ -68,6 +68,26 @@ public class FriendshipService {
     }
 
     /**
+     * @param email the email of the user
+     * @return number of requests sent by the user
+     */
+    public Integer getUserSentRequestsSize(String email) {
+        return requestRepository.getUserSentRequestsSize(email);
+    }
+
+    /**
+     * @param email the email of the user
+     * @return number of requests received by the user
+     */
+    public Integer getUserReceivedRequestsSize(String email) {
+        return requestRepository.getUserReceivedRequestsSize(email);
+    }
+
+    public Integer getUserFriendsSize(String email) {
+        return friendshipRepository.getUserFriendsSize(email);
+    }
+
+    /**
      * @return all the friendships saved in the repository
      */
     public List<Friendship> getFriendships() {

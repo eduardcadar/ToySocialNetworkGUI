@@ -96,6 +96,10 @@ public class ConversationService implements Observable {
         return conversation;
     }
 
+    public Integer getUserConversationsSize(String email) {
+        return participantsRepo.getUserConversationsSize(email);
+    }
+
     public List<String> getConversationParticipants(int id) {
         return participantsRepo.getConversationParticipants(id);
     }

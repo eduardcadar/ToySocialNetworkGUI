@@ -10,6 +10,7 @@ import com.toysocialnetworkgui.service.Service;
 import com.toysocialnetworkgui.utils.CommonFriendsDTO;
 import com.toysocialnetworkgui.utils.MyAlert;
 import com.toysocialnetworkgui.utils.UserRequestDTO;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,9 +22,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class RequestsController implements Observer {
     private Service service;
@@ -53,7 +57,6 @@ public class RequestsController implements Observer {
     @FXML
     private TableColumn<UserRequestDTO, String> tableReceivedColumnSentDate;
 
-
     @FXML
     private TableColumn<UserRequestDTO, ImageView> tableAcceptRequest;
     @FXML
@@ -78,8 +81,11 @@ public class RequestsController implements Observer {
     Button buttonSearch;
 
     private String currentPattern;
+    private Integer lastReceivedReqSize;
+    private Integer lastSentReqSize;
+    private Integer lastAddFriendSize;
 
-    public void initialize(Service service, User loggedUser) {
+    public void initialize(Service service, User loggedUser, AnchorPane rightPane) {
         this.service = service;
         this.loggedUser = loggedUser;
         currentPattern = "";
@@ -88,6 +94,15 @@ public class RequestsController implements Observer {
         tableReceivedRequestsView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         service.getRequestRepo().addObserver(this);
         service.getFriendshipRepo().addObserver(this);
+        ((ScheduledExecutorService)rightPane.getScene().getWindow().getUserData())
+                .scheduleAtFixedRate(() -> {
+                    if (!lastSentReqSize.equals(
+                            service.getUserSentRequestsSize(loggedUser.getEmail()))) reloadSentRequestsTable();
+                    if (!lastReceivedReqSize.equals(
+                            service.getUserReceivedRequestsSize(loggedUser.getEmail()))) reloadReceivedRequestsTable();
+                    if (!lastAddFriendSize.equals(
+                            service.getUserNotFriendsSize(loggedUser.getEmail()))) reloadAddFriendTable();
+                }, 5, 10, TimeUnit.SECONDS);
     }
 
     /**
@@ -146,7 +161,7 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
         tableAddFriendColumnCommonFriendsNr.setStyle("-fx-alignment: center");
-        tableAddFriend.setItems(getNotFriends());
+        reloadAddFriendTable();
     }
 
     private void initializeReceivedRequestsList() {
@@ -250,13 +265,13 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
 
-        setReceivedRequestsList(getReceivedRequests());
         tableReceivedColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
         tableReceivedRequestsView.getSortOrder().add(tableReceivedColumnSentDate);
+        new Thread(() -> lastReceivedReqSize = service.getUserReceivedRequestsSize(loggedUser.getEmail())).start();
+        reloadReceivedRequestsTable();
     }
 
     private void initializeSentRequestsList() {
-        //
         // To not let user re-arrange columns
         // We need this because of icons, they should stay at a constant position
         tableSentRequestsView.setPlaceholder(new Text("No sent requests!"));
@@ -335,17 +350,10 @@ public class RequestsController implements Observer {
             public void removeListener(InvalidationListener listener) {}
         });
 
-        setSentRequestsList(getSentRequests());
         tableSentColumnSentDate.setSortType(TableColumn.SortType.DESCENDING);
         tableSentRequestsView.getSortOrder().add(tableSentColumnSentDate);
-    }
-
-    private void setSentRequestsList(ObservableList<UserRequestDTO> requests) {
-        tableSentRequestsView.setItems(requests);
-    }
-
-    private void setReceivedRequestsList(ObservableList<UserRequestDTO> requests) {
-        tableReceivedRequestsView.setItems(requests);
+        lastSentReqSize = service.getUserSentRequestsSize(loggedUser.getEmail());
+        reloadSentRequestsTable();
     }
 
     private ObservableList<UserRequestDTO> getSentRequests() {
@@ -357,14 +365,19 @@ public class RequestsController implements Observer {
     }
 
     /**
-     * Reloads both tables SentRequests and ReceivedRequests
+     * Reloads SentRequests table
      */
-    // TODO
-    //  might reload only the affected table deal with this later
-    public void reloadTables() {
-        setSentRequestsList(getSentRequests());
-        setReceivedRequestsList(getReceivedRequests());
-        tableAddFriend.setItems(getNotFriends());
+    public void reloadSentRequestsTable() {
+        this.lastSentReqSize = service.getUserSentRequestsSize(loggedUser.getEmail());
+        Platform.runLater(() -> tableSentRequestsView.setItems(getSentRequests()));
+    }
+
+    /**
+     * Reloads ReceivedRequests table
+     */
+    public void reloadReceivedRequestsTable() {
+        this.lastReceivedReqSize = service.getUserReceivedRequestsSize(loggedUser.getEmail());
+        Platform.runLater(() -> tableReceivedRequestsView.setItems(getReceivedRequests()));
     }
 
     @FXML
@@ -373,8 +386,12 @@ public class RequestsController implements Observer {
         reloadAddFriendTable();
     }
 
+    /**
+     * Reloads AddFriends table
+     */
     private void reloadAddFriendTable() {
-        tableAddFriend.setItems(getNotFriends());
+        this.lastAddFriendSize = service.getUserNotFriendsSize(loggedUser.getEmail());
+        Platform.runLater(() -> tableAddFriend.setItems(getNotFriends()));
     }
 
     public void onButtonAcceptClick() {
@@ -438,7 +455,7 @@ public class RequestsController implements Observer {
             if (tableAddFriend.getSelectionModel().getSelectedCells().size() > 0) {
                 if ((tableAddFriend.getSelectionModel().getSelectedCells().get(0)).getColumn() == 3) {
                     sendFriendRequest();
-                    setSentRequestsList(getSentRequests());
+                    tableSentRequestsView.setItems(getSentRequests());
                 }
             }
         }
@@ -457,7 +474,10 @@ public class RequestsController implements Observer {
 
     @Override
     public void update(Object obj) {
-        if (obj instanceof FriendshipRequestDbRepo) reloadTables();
-        if (obj instanceof FriendshipDbRepo) reloadTables();
+        if (obj instanceof FriendshipRequestDbRepo) {
+            reloadSentRequestsTable();
+            reloadReceivedRequestsTable();
+        }
+        if (obj instanceof FriendshipDbRepo) reloadAddFriendTable();
     }
 }
